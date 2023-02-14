@@ -45,9 +45,10 @@ use crate::{
 
 use super::{
     component::{
-        Bip39Input, Button, ButtonMsg, ButtonStyleSheet, CancelConfirmMsg, CancelInfoConfirmMsg,
-        Dialog, DialogMsg, FidoConfirm, FidoMsg, Frame, HoldToConfirm, HoldToConfirmMsg,
-        Homescreen, HomescreenMsg, IconDialog, Lockscreen, MnemonicInput, MnemonicKeyboard,
+        AddressDetails, Bip39Input, Button, ButtonMsg, ButtonStyleSheet, CancelConfirmMsg,
+        CancelInfoConfirmMsg, Dialog, DialogMsg, FidoConfirm, FidoMsg, FloatingButton,
+        FloatingButtonMsg, Frame, HoldToConfirm, HoldToConfirmMsg, Homescreen, HomescreenMsg,
+        HorizontalPage, IconDialog, Lockscreen, MnemonicInput, MnemonicKeyboard,
         MnemonicKeyboardMsg, NotificationFrame, NumberInputDialog, NumberInputDialogMsg,
         PassphraseKeyboard, PassphraseKeyboardMsg, PinKeyboard, PinKeyboardMsg, Progress,
         SelectWordCount, SelectWordCountMsg, SelectWordMsg, Slip39Input, SwipeHoldPage, SwipePage,
@@ -337,6 +338,36 @@ impl ComponentMsgObj for Qr {
     }
 }
 
+impl<T> ComponentMsgObj for FloatingButton<T>
+where
+    T: ComponentMsgObj,
+{
+    fn msg_try_into_obj(&self, msg: Self::Msg) -> Result<Obj, Error> {
+        match msg {
+            FloatingButtonMsg::ButtonClicked => Ok(INFO.as_obj()),
+            FloatingButtonMsg::Content(c) => self.inner().msg_try_into_obj(c),
+        }
+    }
+}
+
+impl<T> ComponentMsgObj for HorizontalPage<T>
+where
+    T: ComponentMsgObj + Paginate,
+{
+    fn msg_try_into_obj(&self, msg: Self::Msg) -> Result<Obj, Error> {
+        self.inner().msg_try_into_obj(msg)
+    }
+}
+
+impl<T> ComponentMsgObj for AddressDetails<T>
+where
+    T: ParagraphStrType,
+{
+    fn msg_try_into_obj(&self, _msg: Self::Msg) -> Result<Obj, Error> {
+        unreachable!();
+    }
+}
+
 extern "C" fn new_confirm_action(n_args: usize, args: *const Obj, kwargs: *mut Map) -> Obj {
     let block = move |_args: &[Obj], kwargs: &Map| {
         let title: StrBuffer = kwargs.get(Qstr::MP_QSTR_title)?.try_into()?;
@@ -421,7 +452,22 @@ fn confirm_blob(
             SwipePage::new(paragraphs, buttons, theme::BG),
         ))?
     } else {
-        panic!("Either `hold=true` or `verb=Some(StrBuffer)` must be specified");
+        let buttons = Button::cancel_confirm(
+            Button::<&'static str>::with_icon(Icon::new(theme::ICON_CANCEL)),
+            Button::<&'static str>::with_icon(Icon::new(theme::ICON_CONFIRM))
+                .styled(theme::button_confirm()),
+            1,
+        );
+        LayoutObj::new(FloatingButton::new(
+            Icon::new(theme::ICON_INFO_CIRCLE),
+            32,
+            8,
+            Frame::left_aligned(
+                theme::label_title(),
+                title,
+                SwipePage::new(paragraphs, buttons, theme::BG),
+            ),
+        ))?
     };
     Ok(obj.into())
 }
@@ -433,23 +479,17 @@ extern "C" fn new_confirm_blob(n_args: usize, args: *const Obj, kwargs: *mut Map
         let description: Option<StrBuffer> =
             kwargs.get(Qstr::MP_QSTR_description)?.try_into_option()?;
         let extra: Option<StrBuffer> = kwargs.get(Qstr::MP_QSTR_extra)?.try_into_option()?;
+        let verb: Option<StrBuffer> = kwargs
+            .get(Qstr::MP_QSTR_verb)
+            .unwrap_or_else(|_| Obj::const_none())
+            .try_into_option()?;
         let verb_cancel: Option<StrBuffer> = kwargs
             .get(Qstr::MP_QSTR_verb_cancel)
             .unwrap_or_else(|_| Obj::const_none())
             .try_into_option()?;
         let hold: bool = kwargs.get_or(Qstr::MP_QSTR_hold, false)?;
 
-        let verb: StrBuffer = "CONFIRM".into();
-
-        confirm_blob(
-            title,
-            data,
-            description,
-            extra,
-            Some(verb),
-            verb_cancel,
-            hold,
-        )
+        confirm_blob(title, data, description, extra, verb, verb_cancel, hold)
     };
     unsafe { util::try_with_args_and_kwargs(n_args, args, kwargs, block) }
 }
@@ -577,6 +617,33 @@ extern "C" fn new_show_qr(n_args: usize, args: *const Obj, kwargs: *mut Map) -> 
             )
             .with_border(theme::borders()),
         )?;
+        Ok(obj.into())
+    };
+    unsafe { util::try_with_args_and_kwargs(n_args, args, kwargs, block) }
+}
+
+extern "C" fn new_show_address_details(n_args: usize, args: *const Obj, kwargs: *mut Map) -> Obj {
+    let block = move |_args: &[Obj], kwargs: &Map| {
+        let address: StrBuffer = kwargs.get(Qstr::MP_QSTR_address)?.try_into()?;
+        let case_sensitive: bool = kwargs.get(Qstr::MP_QSTR_case_sensitive)?.try_into()?;
+        let account: Option<StrBuffer> = kwargs.get(Qstr::MP_QSTR_account)?.try_into_option()?;
+        let path: Option<StrBuffer> = kwargs.get(Qstr::MP_QSTR_path)?.try_into_option()?;
+
+        let xpubs: Obj = kwargs.get(Qstr::MP_QSTR_xpubs)?;
+        let mut iter_buf = IterBuf::new();
+        let iter = Iter::try_from_obj_with_buf(xpubs, &mut iter_buf)?;
+
+        let mut ad = AddressDetails::new(address, case_sensitive, account, path)?;
+
+        for i in iter {
+            let [xtitle, text]: [StrBuffer; 2] = iter_into_array(i)?;
+            ad.add_xpub(xtitle, text)?;
+        }
+
+        let obj = LayoutObj::new(HorizontalPage::new(
+            FloatingButton::new(Icon::new(theme::ICON_CANCEL_LARGER), 32, 8, ad),
+            theme::BG,
+        ))?;
         Ok(obj.into())
     };
     unsafe { util::try_with_args_and_kwargs(n_args, args, kwargs, block) }
@@ -842,6 +909,39 @@ extern "C" fn new_show_info(n_args: usize, args: *const Obj, kwargs: *mut Map) -
             theme::BG,
         );
         new_show_modal(kwargs, icon, theme::button_info())
+    };
+    unsafe { util::try_with_args_and_kwargs(n_args, args, kwargs, block) }
+}
+
+extern "C" fn new_show_mismatch(n_args: usize, args: *const Obj, kwargs: *mut Map) -> Obj {
+    let block = move |_args: &[Obj], _kwargs: &Map| {
+        let title: StrBuffer = "Address mismatch?".into();
+        let description: StrBuffer = "Please contact Trezor support at".into();
+        let url: StrBuffer = "trezor.io/support".into();
+        let button = "QUIT";
+
+        let icon = BlendedImage::new(
+            Icon::new(theme::ICON_OCTA),
+            Icon::new(theme::ICON_OCTA),
+            theme::WARN_COLOR,
+            theme::WARN_COLOR,
+            theme::BG,
+        );
+
+        let obj = LayoutObj::new(
+            IconDialog::new(
+                icon,
+                title,
+                Button::cancel_confirm_square(
+                    Button::with_icon(Icon::new(theme::ICON_BACK)),
+                    Button::with_text(button).styled(theme::button_reset()),
+                ),
+            )
+            .with_description(description)
+            .with_text(&theme::TEXT_DEMIBOLD, url),
+        )?;
+
+        Ok(obj.into())
     };
     unsafe { util::try_with_args_and_kwargs(n_args, args, kwargs, block) }
 }
@@ -1400,6 +1500,7 @@ pub static mp_module_trezorui2: Module = obj_module! {
     ///     data: str | bytes,
     ///     description: str | None,
     ///     extra: str | None,
+    ///     verb: str | None = None,
     ///     verb_cancel: str | None = None,
     ///     hold: bool = False,
     /// ) -> object:
@@ -1433,6 +1534,17 @@ pub static mp_module_trezorui2: Module = obj_module! {
     /// ) -> object:
     ///     """Show QR code."""
     Qstr::MP_QSTR_show_qr => obj_fn_kw!(0, new_show_qr).as_obj(),
+
+    /// def show_address_details(
+    ///     *,
+    ///     address: str,
+    ///     case_sensitive: bool,
+    ///     account: str | None,
+    ///     path: str | None,
+    ///     xpubs: list[tuple[str, str]],
+    /// ) -> object:
+    ///     """Show address details - QR code, account, path, cosigner xpubs."""
+    Qstr::MP_QSTR_show_address_details => obj_fn_kw!(0, new_show_address_details).as_obj(),
 
     /// def confirm_value(
     ///     *,
@@ -1528,6 +1640,10 @@ pub static mp_module_trezorui2: Module = obj_module! {
     /// ) -> object:
     ///     """Info modal. No buttons shown when `button` is empty string."""
     Qstr::MP_QSTR_show_info => obj_fn_kw!(0, new_show_info).as_obj(),
+
+    /// def show_mismatch() -> object:
+    ///     """Warning modal, receiving address mismatch."""
+    Qstr::MP_QSTR_show_mismatch => obj_fn_kw!(0, new_show_mismatch).as_obj(),
 
     /// def show_simple(
     ///     *,

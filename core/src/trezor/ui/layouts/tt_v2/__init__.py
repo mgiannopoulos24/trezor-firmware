@@ -353,24 +353,20 @@ async def confirm_homescreen(
     )
 
 
-def _show_xpub(xpub: str, title: str, cancel: str | None) -> ui.Layout:
-    content = RustLayout(
-        trezorui2.confirm_blob(
-            title=title,
-            data=xpub,
-            verb_cancel=cancel,
-            extra=None,
-            description=None,
-        )
-    )
-    return content
-
-
 async def show_xpub(ctx: GenericContext, xpub: str, title: str) -> None:
     await raise_if_not_confirmed(
         interact(
             ctx,
-            _show_xpub(xpub, title, None),
+            RustLayout(
+                trezorui2.confirm_blob(
+                    title=title,
+                    data=xpub,
+                    verb="CONFIRM",
+                    verb_cancel=None,
+                    extra=None,
+                    description=None,
+                )
+            ),
             "show_xpub",
             ButtonRequestType.PublicKey,
         )
@@ -383,24 +379,24 @@ async def show_address(
     *,
     address_qr: str | None = None,
     case_sensitive: bool = True,
-    title: str = "Confirm address",
+    path: str | None = None,
+    account: str | None = None,
     network: str | None = None,
     multisig_index: int | None = None,
     xpubs: Sequence[str] = (),
-    address_extra: str | None = None,
     title_qr: str | None = None,
 ) -> None:
-    is_multisig = len(xpubs) > 0
     while True:
         result = await interact(
             ctx,
             RustLayout(
                 trezorui2.confirm_blob(
-                    title=title.upper(),
+                    # title=title.upper(),
+                    title="RECEIVE ADDRESS",
                     data=address,
                     description=network or "",
-                    extra=address_extra or "",
-                    verb_cancel="QR",
+                    verb=None,
+                    extra=None,
                 )
             ),
             "show_address",
@@ -409,35 +405,41 @@ async def show_address(
         if result is CONFIRMED:
             break
 
-        result = await interact(
-            ctx,
-            RustLayout(
-                trezorui2.show_qr(
-                    address=address if address_qr is None else address_qr,
-                    case_sensitive=case_sensitive,
-                    title=title.upper() if title_qr is None else title_qr.upper(),
-                    verb_cancel="XPUBs" if is_multisig else "ADDRESS",
-                )
-            ),
-            "show_qr",
-            ButtonRequestType.Address,
-        )
-        if result is CONFIRMED:
-            break
+        if result is INFO:
 
-        if is_multisig:
-            for i, xpub in enumerate(xpubs):
-                cancel = "NEXT" if i < len(xpubs) - 1 else "ADDRESS"
-                title_xpub = f"XPUB #{i + 1}"
-                title_xpub += " (yours)" if i == multisig_index else " (cosigner)"
-                result = await interact(
-                    ctx,
-                    _show_xpub(xpub, title=title_xpub, cancel=cancel),
-                    "show_xpub",
-                    ButtonRequestType.PublicKey,
-                )
-                if result is CONFIRMED:
-                    return
+            def title_fn(i: int):
+                result = f"MULTISIG XPUB #{i + 1}\n"
+                result += " (YOURS)" if i == multisig_index else " (COSIGNER)"
+                return result
+
+            result = await interact(
+                ctx,
+                RustLayout(
+                    trezorui2.show_address_details(
+                        address=address if address_qr is None else address_qr,
+                        case_sensitive=True,
+                        account=account,
+                        path=path,
+                        xpubs=[(title_fn(i), xpub) for i, xpub in enumerate(xpubs)],
+                    )
+                ),
+                "show_address_details",
+                ButtonRequestType.Address,
+            )
+            assert result is INFO
+
+        else:
+            result = await interact(
+                ctx,
+                RustLayout(trezorui2.show_mismatch()),
+                "warning_address_mismatch",
+                ButtonRequestType.Warning,
+            )
+            if result is CONFIRMED:
+                raise ActionCancelled
+            else:
+                assert result is CANCELLED
+                continue
 
 
 def show_pubkey(
@@ -693,6 +695,7 @@ async def confirm_blob(
             data=data,
             extra=None,
             hold=hold,
+            verb="CONFIRM",
         )
     )
 

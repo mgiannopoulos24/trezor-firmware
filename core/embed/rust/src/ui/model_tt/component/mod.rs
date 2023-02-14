@@ -6,6 +6,7 @@ mod fido_icons;
 mod frame;
 mod hold_to_confirm;
 mod homescreen;
+mod horizontal_page;
 mod keyboard;
 mod loader;
 mod number_input;
@@ -16,13 +17,14 @@ mod swipe;
 
 pub use button::{
     Button, ButtonContent, ButtonMsg, ButtonStyle, ButtonStyleSheet, CancelConfirmMsg,
-    CancelInfoConfirmMsg, SelectWordMsg,
+    CancelInfoConfirmMsg, FloatingButton, FloatingButtonMsg, SelectWordMsg,
 };
 pub use dialog::{Dialog, DialogMsg, IconDialog};
 pub use fido::{FidoConfirm, FidoMsg};
 pub use frame::{Frame, NotificationFrame};
 pub use hold_to_confirm::{HoldToConfirm, HoldToConfirmMsg};
 pub use homescreen::{Homescreen, HomescreenMsg, Lockscreen};
+pub use horizontal_page::{AddressDetails, HorizontalPage};
 pub use keyboard::{
     bip39::Bip39Input,
     mnemonic::{MnemonicInput, MnemonicKeyboard, MnemonicKeyboardMsg},
