@@ -5,7 +5,7 @@ use crate::{
             text::{formatted::FormattedFonts, LineBreaking, PageBreaking, TextStyle},
             FixedHeightBar,
         },
-        display::{Color, Font},
+        display::{Color, Font, Icon},
         geometry::Insets,
     },
 };
@@ -63,6 +63,8 @@ pub const ICON_MAGIC: &[u8] = include_res!("model_tt/res/magic.toif");
 pub const ICON_LIST_CURRENT: &[u8] = include_res!("model_tt/res/current.toif");
 pub const ICON_LIST_CHECK: &[u8] = include_res!("model_tt/res/check.toif");
 pub const ICON_LOCK: &[u8] = include_res!("model_tt/res/lock.toif");
+pub const ICON_PAGE_NEXT: &[u8] = include_res!("model_tt/res/page-next.toif");
+pub const ICON_PAGE_PREV: &[u8] = include_res!("model_tt/res/page-prev.toif");
 
 // Large, three-color icons.
 pub const WARN_COLOR: Color = YELLOW;
@@ -384,7 +386,9 @@ pub const TEXT_DEMIBOLD: TextStyle = TextStyle::new(Font::DEMIBOLD, FG, BG, GREY
 pub const TEXT_BOLD: TextStyle = TextStyle::new(Font::BOLD, FG, BG, GREY_LIGHT, GREY_LIGHT);
 pub const TEXT_MONO: TextStyle = TextStyle::new(Font::MONO, FG, BG, GREY_LIGHT, GREY_LIGHT)
     .with_line_breaking(LineBreaking::BreakWordsNoHyphen)
-    .with_page_breaking(PageBreaking::Cut);
+    .with_page_breaking(PageBreaking::CutAndInsertEllipsisBoth)
+    .with_ellipsis_icon(Icon::new(ICON_PAGE_NEXT))
+    .with_prev_page_icon(Icon::new(ICON_PAGE_PREV));
 
 /// Convert Python-side numeric id to a `TextStyle`.
 pub fn textstyle_number(num: i32) -> &'static TextStyle {
