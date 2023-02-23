@@ -211,7 +211,7 @@ macro_rules! obj_module {
 #[allow(unused_macros)] // Should be used only for debugging purposes
 macro_rules! print {
     ($($string:expr),+) => {
-        #[cfg(feature = "debug")]
+        #[cfg(feature = "ui_debug")]
         {
             $(crate::micropython::print::print($string);)+
         }

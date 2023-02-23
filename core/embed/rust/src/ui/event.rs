@@ -45,7 +45,13 @@ impl TouchEvent {
     pub fn new(event: u32, x: u32, y: u32) -> Result<Self, error::Error> {
         let point = Point::new(x.try_into()?, y.try_into()?);
         let result = match event {
-            1 => Self::TouchStart(point),
+            1 => {
+                use crate::ui::util::u32_to_str;
+                let mut buffer = [0u8; 20];
+                let num = 10000000 * event + x * 1000 + y;
+                println!(u32_to_str(num, buffer.as_mut_slice()).unwrap());
+                Self::TouchStart(point)
+            },
             2 => Self::TouchMove(point),
             4 => Self::TouchEnd(point),
             _ => return Err(error::Error::OutOfRange),
