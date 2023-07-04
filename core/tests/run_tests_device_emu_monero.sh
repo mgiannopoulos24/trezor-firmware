@@ -11,7 +11,7 @@ terminate_test() {
   if [ -n "$DOCKER_ID" ]; then docker kill $DOCKER_ID 2>/dev/null >/dev/null; fi
 }
 
-set -e
+set -ex
 trap terminate_test EXIT
 
 export TEST_MIN_HF=15  # No need to test hard fork 12 or lower
@@ -42,7 +42,7 @@ echo "Running tests"
 TIME_TESTS_START=$SECONDS
 if [[ "$OSTYPE" == "linux-gnu" && "$FORCE_DOCKER_USE" != 1 ]]; then
   echo "Note: use --heavy-tests with real device (and TREZOR_PATH) env var"
-  TEST_MAX_HF=15 TEST_MIN_HF=15 "$TREZOR_MONERO_TESTS_PATH" --fix-chain --chain-path=$TREZOR_MONERO_TESTS_CHAIN $@ 2>&1 > "$TREZOR_MONERO_TESTS_LOG"
+  TEST_MAX_HF=15 TEST_MIN_HF=15 "$TREZOR_MONERO_TESTS_PATH" --fix-chain --chain-path=$TREZOR_MONERO_TESTS_CHAIN $@
   error=$?
 
 elif [[ "$OSTYPE" == "darwin"* || "$FORCE_DOCKER_USE" == 1 ]]; then
