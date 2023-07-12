@@ -32,6 +32,7 @@ hardware core regular device test:
     - /^hw\//
   tags:
     - tpmb
+  interruptible: true
   needs:
     - core fw regular debug build
   variables:
@@ -61,6 +62,7 @@ hardware core btconly device test:
     - /^hw\//
   tags:
     - tpmb
+  interruptible: true
   needs:
     - core fw btconly debug build
   variables:
@@ -89,6 +91,7 @@ hardware core monero test:
     - /^hw\//
   tags:
     - tpmb
+  interruptible: true
   needs:
     - core fw regular debug build
   variables:
@@ -120,6 +123,7 @@ hardware legacy regular device test:
     - /^hw\//
   tags:
     - tpmb
+  interruptible: true
   needs:
     - legacy fw regular debug build
   script:
@@ -146,6 +150,7 @@ hardware legacy btconly device test:
     - /^hw\//
   tags:
     - tpmb
+  interruptible: true
   needs:
     - legacy fw btconly debug build
   script:

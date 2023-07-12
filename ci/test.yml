@@ -15,6 +15,7 @@ image: registry.gitlab.com/satoshilabs/trezor/trezor-firmware/trezor-firmware-en
 core unit python test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix regular build
   script:
@@ -24,6 +25,7 @@ core unit python test:
 core unit rust test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug build
   script:
@@ -33,6 +35,7 @@ core unit rust test:
 core unit asan test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix regular asan build
   only:
@@ -54,6 +57,7 @@ core unit asan test:
 core device test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug build
   variables:
@@ -84,6 +88,7 @@ core device test:
 core device R test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen R debug build
   variables:
@@ -115,6 +120,7 @@ core device R test:
 core device asan test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug asan build
   only:
@@ -134,6 +140,7 @@ core device asan test:
 core btconly device test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen btconly debug build
   variables:
@@ -154,6 +161,7 @@ core btconly device test:
 core btconly device asan test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen btconly debug asan build
   only:
@@ -175,6 +183,7 @@ core btconly device asan test:
 core monero test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug build
   variables:
@@ -195,6 +204,7 @@ core monero test:
 core monero asan test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug asan build
   only:
@@ -218,6 +228,7 @@ core monero asan test:
 core u2f test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug build
   variables:
@@ -237,6 +248,7 @@ core u2f test:
 core u2f asan test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug asan build
   only:
@@ -255,6 +267,7 @@ core u2f asan test:
 core fido2 test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug build
   variables:
@@ -278,6 +291,7 @@ core fido2 test:
 core fido2 asan test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug asan build
   only:
@@ -298,6 +312,7 @@ core fido2 asan test:
 core click test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug build
   variables:
@@ -329,6 +344,7 @@ core click test:
 core click R test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen R debug build
   variables:
@@ -357,6 +373,7 @@ core click R test:
 core click asan test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug asan build
   only:
@@ -378,6 +395,7 @@ core click asan test:
 core upgrade test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug build
   variables:
@@ -397,6 +415,7 @@ core upgrade test:
 core upgrade asan test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug asan build
   only:
@@ -419,6 +438,7 @@ core upgrade asan test:
 core persistence test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug build
   variables:
@@ -448,6 +468,7 @@ core persistence test:
 core persistence asan test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug asan build
   only:
@@ -466,6 +487,7 @@ core persistence asan test:
 core hwi test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug build
   allow_failure: true
@@ -490,6 +512,7 @@ crypto test:
       - ci/**
       - crypto/**
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - crypto build
   variables:
@@ -517,6 +540,7 @@ crypto test:
 legacy device test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - legacy emu regular debug build
   variables:
@@ -544,6 +568,7 @@ legacy device test:
 legacy asan test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - legacy emu regular debug asan build
   only:
@@ -556,6 +581,7 @@ legacy asan test:
 legacy btconly test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - legacy emu btconly debug build
   variables:
@@ -576,6 +602,7 @@ legacy btconly test:
 legacy btconly asan test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - legacy emu btconly debug asan build
   only:
@@ -591,6 +618,7 @@ legacy btconly asan test:
 legacy upgrade test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - legacy emu regular debug build
   variables:
@@ -610,6 +638,7 @@ legacy upgrade test:
 legacy upgrade asan test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - legacy emu regular debug asan build
   only:
@@ -631,6 +660,7 @@ legacy upgrade asan test:
 legacy hwi test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - legacy emu regular debug build
   variables:
@@ -651,6 +681,7 @@ legacy hwi test:
 python test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     LC_ALL: "C.UTF-8"
@@ -670,6 +701,7 @@ python test:
 python support test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   script:
     - $NIX_SHELL --run "poetry run make python_support_check | ts -s"
@@ -679,6 +711,7 @@ python support test:
 rust test:
   stage: test
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core unix frozen debug build
   script:
@@ -694,6 +727,7 @@ storage test:
       - ci/**
       - storage/**
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   script:
     - unset PYTEST_TIMEOUT
@@ -714,6 +748,7 @@ core unix memory profiler:
   stage: test
   when: manual
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     PYOPT: "0"
@@ -740,6 +775,7 @@ connect test core:
   when: manual
   tags:
     - runner-internal
+  interruptible: true
   needs:
     - core unix frozen debug build
   variables:

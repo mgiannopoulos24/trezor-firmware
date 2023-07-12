@@ -20,6 +20,7 @@ variables:
 core fw regular build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   script:
     - $NIX_SHELL --run "poetry run make -C core build_boardloader"
@@ -41,6 +42,7 @@ core fw regular build:
 core fw regular debug build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   script:
     - $NIX_SHELL --run "PYOPT=0 poetry run make -C core build_firmware"
@@ -54,6 +56,7 @@ core fw regular debug build:
 core fw regular production build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   only:
     - schedules  # nightly build
@@ -77,6 +80,7 @@ core fw regular production build:
 core fw btconly build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     BITCOIN_ONLY: "1"
@@ -94,6 +98,7 @@ core fw btconly build:
 core fw btconly debug build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     BITCOIN_ONLY: "1"
@@ -117,6 +122,7 @@ core fw btconly debug build:
 core fw btconly production build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   only:
     - schedules  # nightly build
@@ -136,6 +142,7 @@ core fw btconly production build:
 core fw DISC1 build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   only:
     - schedules  # nightly build
@@ -155,6 +162,7 @@ core fw DISC1 build:
 core fw R debug build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     TREZOR_MODEL: "R"
@@ -171,6 +179,7 @@ core fw R debug build:
 core fw R build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     TREZOR_MODEL: "R"
@@ -188,6 +197,7 @@ core fw R build:
 core unix regular build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   script:
     - $NIX_SHELL --run "poetry run make -C core build_unix"
@@ -200,6 +210,7 @@ core unix regular build:
 core unix regular asan build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   only:
     - schedules  # nightly build
@@ -219,6 +230,7 @@ core unix regular asan build:
 core unix frozen regular build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   script:
     - $NIX_SHELL --run "poetry run make -C core build_unix_frozen"
@@ -236,6 +248,7 @@ core unix frozen regular build:
 core unix frozen btconly debug build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     PYOPT: "0"
@@ -252,6 +265,7 @@ core unix frozen btconly debug build:
 core unix frozen btconly debug asan build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   only:
     - schedules  # nightly build
@@ -275,6 +289,7 @@ core unix frozen btconly debug asan build:
 core unix frozen debug build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     PYOPT: "0"
@@ -288,6 +303,7 @@ core unix frozen debug build:
 core unix frozen R debug build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     PYOPT: "0"
@@ -303,6 +319,7 @@ core unix frozen R debug build arm:
   image: nixos/nix
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     PYOPT: "0"
@@ -320,6 +337,7 @@ core unix frozen R debug build arm:
 core unix frozen debug asan build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   only:
     - schedules  # nightly build
@@ -337,6 +355,7 @@ core unix frozen debug build arm:
   image: nixos/nix
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   only:
     - master
@@ -358,6 +377,7 @@ core unix frozen debug build arm:
 core macos frozen regular build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   when: manual
   tags:
@@ -383,6 +403,7 @@ core macos frozen regular build:
 crypto build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     ADDRESS_SANITIZER: "1"
@@ -413,6 +434,7 @@ crypto build:
 legacy fw regular build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   script:
     - $NIX_SHELL --run "export PRODUCTION=1 && poetry run legacy/script/cibuild"
@@ -429,6 +451,7 @@ legacy fw regular build:
 legacy fw regular debug build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     DEBUG_LINK: "1"
@@ -446,6 +469,7 @@ legacy fw regular debug build:
 legacy fw btconly build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     BITCOIN_ONLY: "1"
@@ -465,6 +489,7 @@ legacy fw btconly build:
 legacy fw btconly debug build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     BITCOIN_ONLY: "1"
@@ -486,6 +511,7 @@ legacy fw btconly debug build:
 legacy emu regular debug build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     DEBUG_LINK: "1"
@@ -501,6 +527,7 @@ legacy emu regular debug build:
 legacy emu regular debug asan build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   only:
     - schedules  # nightly build
@@ -520,6 +547,7 @@ legacy emu regular debug build arm:
   image: nixos/nix
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   only:
     - master
@@ -545,6 +573,7 @@ legacy emu regular debug build arm:
 legacy emu btconly debug build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   variables:
     BITCOIN_ONLY: "1"
@@ -562,6 +591,7 @@ legacy emu btconly debug build:
 legacy emu btconly debug asan build:
   stage: build
   <<: *gitlab_caching
+  interruptible: true
   needs: []
   only:
     - schedules  # nightly build

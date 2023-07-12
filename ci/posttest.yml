@@ -12,6 +12,7 @@ core unix coverage posttest:
   variables:
     COVERAGE_THRESHOLD: "78"
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core click test
     - core persistence test
@@ -35,6 +36,7 @@ unix ui changes:
   except:
     - master
   <<: *gitlab_caching
+  interruptible: true
   needs:
     - core click test
     - core click R test

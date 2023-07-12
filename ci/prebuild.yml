@@ -18,6 +18,7 @@ style prebuild:
   variables:
     GIT_SUBMODULE_STRATEGY: "none"
   <<: *gitlab_caching
+  interruptible: true
   script:
     - $NIX_SHELL --run "poetry run make -j1 style_check"
 
@@ -25,6 +26,7 @@ style prebuild:
 common prebuild:
   stage: prebuild
   <<: *gitlab_caching
+  interruptible: true
   script:
     - $NIX_SHELL --run "poetry run make defs_check"
 
@@ -32,6 +34,7 @@ common prebuild:
 gen prebuild:
   stage: prebuild
   <<: *gitlab_caching
+  interruptible: true
   script:
     - $NIX_SHELL --run "poetry run make -j1 gen_check"
 
@@ -39,6 +42,7 @@ gen prebuild:
 editor prebuild:
   stage: prebuild
   <<: *gitlab_caching
+  interruptible: true
   script:
     - $NIX_SHELL --run "make editor_check"
 
@@ -46,6 +50,7 @@ editor prebuild:
 release commit messages prebuild:
   stage: prebuild
   before_script: []  # nothing needed
+  interruptible: true
   variables:
     # We need to clone the repo properly so we can work with origin/master.
     GIT_STRATEGY: clone
@@ -65,6 +70,7 @@ changelog prebuild:
   except:
     - master
   before_script: []  # nothing needed
+  interruptible: true
   variables:
     GIT_SUBMODULE_STRATEGY: "none"
     GIT_STRATEGY: clone
