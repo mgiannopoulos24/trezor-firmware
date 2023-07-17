@@ -8,7 +8,7 @@ release core fw regular deploy:
     DEPLOY_DIRECTORY: "releases/firmwares/tt"
     GIT_SUBMODULE_STRATEGY: "none"
   before_script: []  # no poetry
-  interruptible: true
+  interruptible: false
   needs:
     - core fw regular build
   script:
@@ -30,7 +30,7 @@ release core fw btconly deploy:
     DEPLOY_DIRECTORY: "releases/firmwares/tt"
     GIT_SUBMODULE_STRATEGY: "none"
   before_script: []  # no poetry
-  interruptible: true
+  interruptible: false
   needs:
     - core fw btconly build
   script:
@@ -52,7 +52,7 @@ release core fw regular debug deploy:
     DEPLOY_DIRECTORY: "releases/firmwares/tt"
     GIT_SUBMODULE_STRATEGY: "none"
   before_script: []  # no poetry
-  interruptible: true
+  interruptible: false
   needs:
     - core fw regular debug build
   script:
@@ -74,7 +74,7 @@ release core fw btconly debug deploy:
     DEPLOY_DIRECTORY: "releases/firmwares/tt"
     GIT_SUBMODULE_STRATEGY: "none"
   before_script: []  # no poetry
-  interruptible: true
+  interruptible: false
   needs:
     - core fw btconly debug build
   script:
@@ -98,7 +98,7 @@ release legacy fw regular deploy:
     DEPLOY_DIRECTORY: "releases/firmwares/t1"
     GIT_SUBMODULE_STRATEGY: "none"
   before_script: []  # no poetry
-  interruptible: true
+  interruptible: false
   needs:
     - legacy fw regular build
   script:
@@ -120,7 +120,7 @@ release legacy fw btconly deploy:
     DEPLOY_DIRECTORY: "releases/firmwares/t1"
     GIT_SUBMODULE_STRATEGY: "none"
   before_script: []  # no poetry
-  interruptible: true
+  interruptible: false
   needs:
     - legacy fw btconly build
   script:
@@ -142,7 +142,7 @@ release legacy fw regular debug deploy:
     DEPLOY_DIRECTORY: "releases/firmwares/t1"
     GIT_SUBMODULE_STRATEGY: "none"
   before_script: []  # no poetry
-  interruptible: true
+  interruptible: false
   needs:
     - legacy fw regular debug build
   script:
@@ -164,7 +164,7 @@ release legacy fw btconly debug deploy:
     DEPLOY_DIRECTORY: "releases/firmwares/t1"
     GIT_SUBMODULE_STRATEGY: "none"
   before_script: []  # no poetry
-  interruptible: true
+  interruptible: false
   needs:
     - legacy fw btconly debug build
   script:
@@ -188,7 +188,7 @@ release core unix debug deploy:
     DEPLOY_PATH: "${DEPLOY_BASE_DIR}/releases/emulators"
     GIT_SUBMODULE_STRATEGY: "none"
   before_script: []  # no poetry
-  interruptible: true
+  interruptible: false
   needs:
     - core unix frozen debug build
     - core unix frozen debug build arm
@@ -214,7 +214,7 @@ release legacy unix debug deploy:
     DEPLOY_PATH: "${DEPLOY_BASE_DIR}/releases/emulators"
     GIT_SUBMODULE_STRATEGY: "none"
   before_script: []  # no poetry
-  interruptible: true
+  interruptible: false
   needs:
     - legacy emu regular debug build
     - legacy emu regular debug build arm
@@ -243,7 +243,7 @@ ui tests fixtures deploy:
     BUCKET: "data.trezor.io"
     GIT_SUBMODULE_STRATEGY: "none"
   before_script: []  # no poetry
-  interruptible: true
+  interruptible: false
   needs:
     - core click test
     - core device test
@@ -269,7 +269,7 @@ sync emulators to aws:
     DEPLOY_PATH: "${DEPLOY_BASE_DIR}/releases/emulators/"
     BUCKET: "data.trezor.io"
     GIT_SUBMODULE_STRATEGY: "none"
-  interruptible: true
+  interruptible: false
   before_script: []  # no poetry
   script:
     - source ${AWS_DEPLOY_DATA}
@@ -297,7 +297,7 @@ common sync:
     GIT_DEPTH: 0  # avoid shallow clone
   only:
     - schedules
-  interruptible: true
+  interruptible: false
   needs: []
   before_script: []  # no poetry
   script:
