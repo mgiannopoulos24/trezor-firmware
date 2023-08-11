@@ -63,6 +63,8 @@ storage.resident_credentials
 import storage.resident_credentials
 storage.sd_salt
 import storage.sd_salt
+storage.translations
+import storage.translations
 trezor
 import trezor
 trezor.crypto
@@ -319,6 +321,8 @@ apps.management.backup_device
 import apps.management.backup_device
 apps.management.backup_types
 import apps.management.backup_types
+apps.management.change_language
+import apps.management.change_language
 apps.management.change_pin
 import apps.management.change_pin
 apps.management.change_wipe_code

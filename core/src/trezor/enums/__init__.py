@@ -67,6 +67,9 @@ if TYPE_CHECKING:
         UnlockBootloader = 96
         AuthenticateDevice = 97
         AuthenticityProof = 98
+        ChangeLanguage = 900
+        TranslationDataRequest = 901
+        TranslationDataAck = 902
         SetU2FCounter = 63
         GetNextU2FCounter = 80
         NextU2FCounter = 81

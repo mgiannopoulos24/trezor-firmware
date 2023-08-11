@@ -368,6 +368,7 @@ SOURCE_MICROPYTHON = [
 ]
 
 SOURCE_UNIX = [
+    'embed/trezorhal/unix/translations.c',
     'embed/trezorhal/unix/common.c',
     'embed/trezorhal/unix/display-unix.c',
     'embed/trezorhal/unix/flash.c',
@@ -647,6 +648,8 @@ if FROZEN:
             SOURCE_PY_DIR + 'storage/sd_salt.py',
         ] if not SDCARD else []
     ))
+
+    SOURCE_PY.extend(Glob(SOURCE_PY_DIR + 'trezor/translations/*.py'))
 
     SOURCE_PY.extend(Glob(SOURCE_PY_DIR + 'trezor/messages/__init__.py'))
     SOURCE_PY.extend(Glob(SOURCE_PY_DIR + 'trezor/enums/*.py',

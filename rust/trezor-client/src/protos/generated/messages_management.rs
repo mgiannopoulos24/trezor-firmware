@@ -3424,6 +3424,509 @@ impl ::protobuf::reflect::ProtobufValue for ApplySettings {
 }
 
 #[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:hw.trezor.messages.management.ChangeLanguage)
+pub struct ChangeLanguage {
+    // message fields
+    // @@protoc_insertion_point(field:hw.trezor.messages.management.ChangeLanguage.language)
+    pub language: ::std::option::Option<::std::string::String>,
+    // @@protoc_insertion_point(field:hw.trezor.messages.management.ChangeLanguage.data_length)
+    pub data_length: ::std::option::Option<u32>,
+    // special fields
+    // @@protoc_insertion_point(special_field:hw.trezor.messages.management.ChangeLanguage.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a ChangeLanguage {
+    fn default() -> &'a ChangeLanguage {
+        <ChangeLanguage as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl ChangeLanguage {
+    pub fn new() -> ChangeLanguage {
+        ::std::default::Default::default()
+    }
+
+    // required string language = 1;
+
+    pub fn language(&self) -> &str {
+        match self.language.as_ref() {
+            Some(v) => v,
+            None => "",
+        }
+    }
+
+    pub fn clear_language(&mut self) {
+        self.language = ::std::option::Option::None;
+    }
+
+    pub fn has_language(&self) -> bool {
+        self.language.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_language(&mut self, v: ::std::string::String) {
+        self.language = ::std::option::Option::Some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_language(&mut self) -> &mut ::std::string::String {
+        if self.language.is_none() {
+            self.language = ::std::option::Option::Some(::std::string::String::new());
+        }
+        self.language.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_language(&mut self) -> ::std::string::String {
+        self.language.take().unwrap_or_else(|| ::std::string::String::new())
+    }
+
+    // required uint32 data_length = 2;
+
+    pub fn data_length(&self) -> u32 {
+        self.data_length.unwrap_or(0)
+    }
+
+    pub fn clear_data_length(&mut self) {
+        self.data_length = ::std::option::Option::None;
+    }
+
+    pub fn has_data_length(&self) -> bool {
+        self.data_length.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_data_length(&mut self, v: u32) {
+        self.data_length = ::std::option::Option::Some(v);
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(2);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
+            "language",
+            |m: &ChangeLanguage| { &m.language },
+            |m: &mut ChangeLanguage| { &mut m.language },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
+            "data_length",
+            |m: &ChangeLanguage| { &m.data_length },
+            |m: &mut ChangeLanguage| { &mut m.data_length },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<ChangeLanguage>(
+            "ChangeLanguage",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for ChangeLanguage {
+    const NAME: &'static str = "ChangeLanguage";
+
+    fn is_initialized(&self) -> bool {
+        if self.language.is_none() {
+            return false;
+        }
+        if self.data_length.is_none() {
+            return false;
+        }
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    self.language = ::std::option::Option::Some(is.read_string()?);
+                },
+                16 => {
+                    self.data_length = ::std::option::Option::Some(is.read_uint32()?);
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.language.as_ref() {
+            my_size += ::protobuf::rt::string_size(1, &v);
+        }
+        if let Some(v) = self.data_length {
+            my_size += ::protobuf::rt::uint32_size(2, v);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.language.as_ref() {
+            os.write_string(1, v)?;
+        }
+        if let Some(v) = self.data_length {
+            os.write_uint32(2, v)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> ChangeLanguage {
+        ChangeLanguage::new()
+    }
+
+    fn clear(&mut self) {
+        self.language = ::std::option::Option::None;
+        self.data_length = ::std::option::Option::None;
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static ChangeLanguage {
+        static instance: ChangeLanguage = ChangeLanguage {
+            language: ::std::option::Option::None,
+            data_length: ::std::option::Option::None,
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for ChangeLanguage {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("ChangeLanguage").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for ChangeLanguage {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for ChangeLanguage {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:hw.trezor.messages.management.TranslationDataRequest)
+pub struct TranslationDataRequest {
+    // message fields
+    // @@protoc_insertion_point(field:hw.trezor.messages.management.TranslationDataRequest.data_length)
+    pub data_length: ::std::option::Option<u32>,
+    // special fields
+    // @@protoc_insertion_point(special_field:hw.trezor.messages.management.TranslationDataRequest.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a TranslationDataRequest {
+    fn default() -> &'a TranslationDataRequest {
+        <TranslationDataRequest as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl TranslationDataRequest {
+    pub fn new() -> TranslationDataRequest {
+        ::std::default::Default::default()
+    }
+
+    // optional uint32 data_length = 1;
+
+    pub fn data_length(&self) -> u32 {
+        self.data_length.unwrap_or(0)
+    }
+
+    pub fn clear_data_length(&mut self) {
+        self.data_length = ::std::option::Option::None;
+    }
+
+    pub fn has_data_length(&self) -> bool {
+        self.data_length.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_data_length(&mut self, v: u32) {
+        self.data_length = ::std::option::Option::Some(v);
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
+            "data_length",
+            |m: &TranslationDataRequest| { &m.data_length },
+            |m: &mut TranslationDataRequest| { &mut m.data_length },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<TranslationDataRequest>(
+            "TranslationDataRequest",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for TranslationDataRequest {
+    const NAME: &'static str = "TranslationDataRequest";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                8 => {
+                    self.data_length = ::std::option::Option::Some(is.read_uint32()?);
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.data_length {
+            my_size += ::protobuf::rt::uint32_size(1, v);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.data_length {
+            os.write_uint32(1, v)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> TranslationDataRequest {
+        TranslationDataRequest::new()
+    }
+
+    fn clear(&mut self) {
+        self.data_length = ::std::option::Option::None;
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static TranslationDataRequest {
+        static instance: TranslationDataRequest = TranslationDataRequest {
+            data_length: ::std::option::Option::None,
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for TranslationDataRequest {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("TranslationDataRequest").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for TranslationDataRequest {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for TranslationDataRequest {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:hw.trezor.messages.management.TranslationDataAck)
+pub struct TranslationDataAck {
+    // message fields
+    // @@protoc_insertion_point(field:hw.trezor.messages.management.TranslationDataAck.data_chunk)
+    pub data_chunk: ::std::option::Option<::std::vec::Vec<u8>>,
+    // special fields
+    // @@protoc_insertion_point(special_field:hw.trezor.messages.management.TranslationDataAck.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a TranslationDataAck {
+    fn default() -> &'a TranslationDataAck {
+        <TranslationDataAck as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl TranslationDataAck {
+    pub fn new() -> TranslationDataAck {
+        ::std::default::Default::default()
+    }
+
+    // required bytes data_chunk = 1;
+
+    pub fn data_chunk(&self) -> &[u8] {
+        match self.data_chunk.as_ref() {
+            Some(v) => v,
+            None => &[],
+        }
+    }
+
+    pub fn clear_data_chunk(&mut self) {
+        self.data_chunk = ::std::option::Option::None;
+    }
+
+    pub fn has_data_chunk(&self) -> bool {
+        self.data_chunk.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_data_chunk(&mut self, v: ::std::vec::Vec<u8>) {
+        self.data_chunk = ::std::option::Option::Some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_data_chunk(&mut self) -> &mut ::std::vec::Vec<u8> {
+        if self.data_chunk.is_none() {
+            self.data_chunk = ::std::option::Option::Some(::std::vec::Vec::new());
+        }
+        self.data_chunk.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_data_chunk(&mut self) -> ::std::vec::Vec<u8> {
+        self.data_chunk.take().unwrap_or_else(|| ::std::vec::Vec::new())
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
+            "data_chunk",
+            |m: &TranslationDataAck| { &m.data_chunk },
+            |m: &mut TranslationDataAck| { &mut m.data_chunk },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<TranslationDataAck>(
+            "TranslationDataAck",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for TranslationDataAck {
+    const NAME: &'static str = "TranslationDataAck";
+
+    fn is_initialized(&self) -> bool {
+        if self.data_chunk.is_none() {
+            return false;
+        }
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    self.data_chunk = ::std::option::Option::Some(is.read_bytes()?);
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.data_chunk.as_ref() {
+            my_size += ::protobuf::rt::bytes_size(1, &v);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.data_chunk.as_ref() {
+            os.write_bytes(1, v)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> TranslationDataAck {
+        TranslationDataAck::new()
+    }
+
+    fn clear(&mut self) {
+        self.data_chunk = ::std::option::Option::None;
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static TranslationDataAck {
+        static instance: TranslationDataAck = TranslationDataAck {
+            data_chunk: ::std::option::Option::None,
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for TranslationDataAck {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("TranslationDataAck").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for TranslationDataAck {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for TranslationDataAck {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
 // @@protoc_insertion_point(message:hw.trezor.messages.management.ApplyFlags)
 pub struct ApplyFlags {
     // message fields
@@ -9531,72 +10034,77 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     s\x18\t\x20\x01(\x0e2/.hw.trezor.messages.management.SafetyCheckLevelR\
     \x0csafetyChecks\x123\n\x15experimental_features\x18\n\x20\x01(\x08R\x14\
     experimentalFeatures\x129\n\x19hide_passphrase_from_host\x18\x0b\x20\x01\
-    (\x08R\x16hidePassphraseFromHost\"\"\n\nApplyFlags\x12\x14\n\x05flags\
-    \x18\x01\x20\x02(\rR\x05flags\"#\n\tChangePin\x12\x16\n\x06remove\x18\
-    \x01\x20\x01(\x08R\x06remove\"(\n\x0eChangeWipeCode\x12\x16\n\x06remove\
-    \x18\x01\x20\x01(\x08R\x06remove\"\xaa\x01\n\tSdProtect\x12]\n\toperatio\
-    n\x18\x01\x20\x02(\x0e2?.hw.trezor.messages.management.SdProtect.SdProte\
-    ctOperationTypeR\toperation\">\n\x16SdProtectOperationType\x12\x0b\n\x07\
-    DISABLE\x10\0\x12\n\n\x06ENABLE\x10\x01\x12\x0b\n\x07REFRESH\x10\x02\"O\
-    \n\x04Ping\x12\x1a\n\x07message\x18\x01\x20\x01(\t:\0R\x07message\x12+\n\
-    \x11button_protection\x18\x02\x20\x01(\x08R\x10buttonProtection\"\x08\n\
-    \x06Cancel\"\x20\n\nGetEntropy\x12\x12\n\x04size\x18\x01\x20\x02(\rR\x04\
-    size\"#\n\x07Entropy\x12\x18\n\x07entropy\x18\x01\x20\x02(\x0cR\x07entro\
-    py\"/\n\x0fGetFirmwareHash\x12\x1c\n\tchallenge\x18\x01\x20\x01(\x0cR\tc\
-    hallenge\"\"\n\x0cFirmwareHash\x12\x12\n\x04hash\x18\x01\x20\x02(\x0cR\
-    \x04hash\"2\n\x12AuthenticateDevice\x12\x1c\n\tchallenge\x18\x01\x20\x02\
-    (\x0cR\tchallenge\"U\n\x11AuthenticityProof\x12\"\n\x0ccertificates\x18\
-    \x01\x20\x03(\x0cR\x0ccertificates\x12\x1c\n\tsignature\x18\x02\x20\x02(\
-    \x0cR\tsignature\"\x0c\n\nWipeDevice\"\xb0\x02\n\nLoadDevice\x12\x1c\n\t\
-    mnemonics\x18\x01\x20\x03(\tR\tmnemonics\x12\x10\n\x03pin\x18\x03\x20\
-    \x01(\tR\x03pin\x123\n\x15passphrase_protection\x18\x04\x20\x01(\x08R\
-    \x14passphraseProtection\x12!\n\x08language\x18\x05\x20\x01(\t:\x05en-US\
-    R\x08language\x12\x14\n\x05label\x18\x06\x20\x01(\tR\x05label\x12#\n\rsk\
-    ip_checksum\x18\x07\x20\x01(\x08R\x0cskipChecksum\x12\x1f\n\x0bu2f_count\
-    er\x18\x08\x20\x01(\rR\nu2fCounter\x12!\n\x0cneeds_backup\x18\t\x20\x01(\
-    \x08R\x0bneedsBackup\x12\x1b\n\tno_backup\x18\n\x20\x01(\x08R\x08noBacku\
-    p\"\x9c\x03\n\x0bResetDevice\x12%\n\x0edisplay_random\x18\x01\x20\x01(\
-    \x08R\rdisplayRandom\x12\x1f\n\x08strength\x18\x02\x20\x01(\r:\x03256R\
-    \x08strength\x123\n\x15passphrase_protection\x18\x03\x20\x01(\x08R\x14pa\
-    ssphraseProtection\x12%\n\x0epin_protection\x18\x04\x20\x01(\x08R\rpinPr\
-    otection\x12!\n\x08language\x18\x05\x20\x01(\t:\x05en-USR\x08language\
-    \x12\x14\n\x05label\x18\x06\x20\x01(\tR\x05label\x12\x1f\n\x0bu2f_counte\
-    r\x18\x07\x20\x01(\rR\nu2fCounter\x12\x1f\n\x0bskip_backup\x18\x08\x20\
-    \x01(\x08R\nskipBackup\x12\x1b\n\tno_backup\x18\t\x20\x01(\x08R\x08noBac\
-    kup\x12Q\n\x0bbackup_type\x18\n\x20\x01(\x0e2).hw.trezor.messages.manage\
-    ment.BackupType:\x05Bip39R\nbackupType\"\x0e\n\x0cBackupDevice\"\x10\n\
-    \x0eEntropyRequest\"&\n\nEntropyAck\x12\x18\n\x07entropy\x18\x01\x20\x02\
-    (\x0cR\x07entropy\"\xd4\x03\n\x0eRecoveryDevice\x12\x1d\n\nword_count\
-    \x18\x01\x20\x01(\rR\twordCount\x123\n\x15passphrase_protection\x18\x02\
-    \x20\x01(\x08R\x14passphraseProtection\x12%\n\x0epin_protection\x18\x03\
-    \x20\x01(\x08R\rpinProtection\x12\x1a\n\x08language\x18\x04\x20\x01(\tR\
-    \x08language\x12\x14\n\x05label\x18\x05\x20\x01(\tR\x05label\x12)\n\x10e\
-    nforce_wordlist\x18\x06\x20\x01(\x08R\x0fenforceWordlist\x12T\n\x04type\
-    \x18\x08\x20\x01(\x0e2@.hw.trezor.messages.management.RecoveryDevice.Rec\
-    overyDeviceTypeR\x04type\x12\x1f\n\x0bu2f_counter\x18\t\x20\x01(\rR\nu2f\
-    Counter\x12\x17\n\x07dry_run\x18\n\x20\x01(\x08R\x06dryRun\"Z\n\x12Recov\
-    eryDeviceType\x12%\n!RecoveryDeviceType_ScrambledWords\x10\0\x12\x1d\n\
-    \x19RecoveryDeviceType_Matrix\x10\x01\"\xc5\x01\n\x0bWordRequest\x12N\n\
-    \x04type\x18\x01\x20\x02(\x0e2:.hw.trezor.messages.management.WordReques\
-    t.WordRequestTypeR\x04type\"f\n\x0fWordRequestType\x12\x19\n\x15WordRequ\
-    estType_Plain\x10\0\x12\x1b\n\x17WordRequestType_Matrix9\x10\x01\x12\x1b\
-    \n\x17WordRequestType_Matrix6\x10\x02\"\x1d\n\x07WordAck\x12\x12\n\x04wo\
-    rd\x18\x01\x20\x02(\tR\x04word\"0\n\rSetU2FCounter\x12\x1f\n\x0bu2f_coun\
-    ter\x18\x01\x20\x02(\rR\nu2fCounter\"\x13\n\x11GetNextU2FCounter\"1\n\
-    \x0eNextU2FCounter\x12\x1f\n\x0bu2f_counter\x18\x01\x20\x02(\rR\nu2fCoun\
-    ter\"\x11\n\x0fDoPreauthorized\"\x16\n\x14PreauthorizedRequest\"\x15\n\
-    \x13CancelAuthorization\"\x14\n\x12RebootToBootloader\"\x10\n\x08GetNonc\
-    e:\x04\x88\xb2\x19\x01\"#\n\x05Nonce\x12\x14\n\x05nonce\x18\x01\x20\x02(\
-    \x0cR\x05nonce:\x04\x88\xb2\x19\x01\";\n\nUnlockPath\x12\x1b\n\taddress_\
-    n\x18\x01\x20\x03(\rR\x08addressN\x12\x10\n\x03mac\x18\x02\x20\x01(\x0cR\
-    \x03mac\"'\n\x13UnlockedPathRequest\x12\x10\n\x03mac\x18\x01\x20\x01(\
-    \x0cR\x03mac\"\x14\n\x12ShowDeviceTutorial\"\x12\n\x10UnlockBootloader*>\
-    \n\nBackupType\x12\t\n\x05Bip39\x10\0\x12\x10\n\x0cSlip39_Basic\x10\x01\
-    \x12\x13\n\x0fSlip39_Advanced\x10\x02*G\n\x10SafetyCheckLevel\x12\n\n\
-    \x06Strict\x10\0\x12\x10\n\x0cPromptAlways\x10\x01\x12\x15\n\x11PromptTe\
-    mporarily\x10\x02*0\n\x10HomescreenFormat\x12\x08\n\x04Toif\x10\x01\x12\
-    \x08\n\x04Jpeg\x10\x02\x12\x08\n\x04ToiG\x10\x03BB\n#com.satoshilabs.tre\
-    zor.lib.protobufB\x17TrezorMessageManagement\x80\xa6\x1d\x01\
+    (\x08R\x16hidePassphraseFromHost\"M\n\x0eChangeLanguage\x12\x1a\n\x08lan\
+    guage\x18\x01\x20\x02(\tR\x08language\x12\x1f\n\x0bdata_length\x18\x02\
+    \x20\x02(\rR\ndataLength\"9\n\x16TranslationDataRequest\x12\x1f\n\x0bdat\
+    a_length\x18\x01\x20\x01(\rR\ndataLength\"3\n\x12TranslationDataAck\x12\
+    \x1d\n\ndata_chunk\x18\x01\x20\x02(\x0cR\tdataChunk\"\"\n\nApplyFlags\
+    \x12\x14\n\x05flags\x18\x01\x20\x02(\rR\x05flags\"#\n\tChangePin\x12\x16\
+    \n\x06remove\x18\x01\x20\x01(\x08R\x06remove\"(\n\x0eChangeWipeCode\x12\
+    \x16\n\x06remove\x18\x01\x20\x01(\x08R\x06remove\"\xaa\x01\n\tSdProtect\
+    \x12]\n\toperation\x18\x01\x20\x02(\x0e2?.hw.trezor.messages.management.\
+    SdProtect.SdProtectOperationTypeR\toperation\">\n\x16SdProtectOperationT\
+    ype\x12\x0b\n\x07DISABLE\x10\0\x12\n\n\x06ENABLE\x10\x01\x12\x0b\n\x07RE\
+    FRESH\x10\x02\"O\n\x04Ping\x12\x1a\n\x07message\x18\x01\x20\x01(\t:\0R\
+    \x07message\x12+\n\x11button_protection\x18\x02\x20\x01(\x08R\x10buttonP\
+    rotection\"\x08\n\x06Cancel\"\x20\n\nGetEntropy\x12\x12\n\x04size\x18\
+    \x01\x20\x02(\rR\x04size\"#\n\x07Entropy\x12\x18\n\x07entropy\x18\x01\
+    \x20\x02(\x0cR\x07entropy\"/\n\x0fGetFirmwareHash\x12\x1c\n\tchallenge\
+    \x18\x01\x20\x01(\x0cR\tchallenge\"\"\n\x0cFirmwareHash\x12\x12\n\x04has\
+    h\x18\x01\x20\x02(\x0cR\x04hash\"2\n\x12AuthenticateDevice\x12\x1c\n\tch\
+    allenge\x18\x01\x20\x02(\x0cR\tchallenge\"U\n\x11AuthenticityProof\x12\"\
+    \n\x0ccertificates\x18\x01\x20\x03(\x0cR\x0ccertificates\x12\x1c\n\tsign\
+    ature\x18\x02\x20\x02(\x0cR\tsignature\"\x0c\n\nWipeDevice\"\xb0\x02\n\n\
+    LoadDevice\x12\x1c\n\tmnemonics\x18\x01\x20\x03(\tR\tmnemonics\x12\x10\n\
+    \x03pin\x18\x03\x20\x01(\tR\x03pin\x123\n\x15passphrase_protection\x18\
+    \x04\x20\x01(\x08R\x14passphraseProtection\x12!\n\x08language\x18\x05\
+    \x20\x01(\t:\x05en-USR\x08language\x12\x14\n\x05label\x18\x06\x20\x01(\t\
+    R\x05label\x12#\n\rskip_checksum\x18\x07\x20\x01(\x08R\x0cskipChecksum\
+    \x12\x1f\n\x0bu2f_counter\x18\x08\x20\x01(\rR\nu2fCounter\x12!\n\x0cneed\
+    s_backup\x18\t\x20\x01(\x08R\x0bneedsBackup\x12\x1b\n\tno_backup\x18\n\
+    \x20\x01(\x08R\x08noBackup\"\x9c\x03\n\x0bResetDevice\x12%\n\x0edisplay_\
+    random\x18\x01\x20\x01(\x08R\rdisplayRandom\x12\x1f\n\x08strength\x18\
+    \x02\x20\x01(\r:\x03256R\x08strength\x123\n\x15passphrase_protection\x18\
+    \x03\x20\x01(\x08R\x14passphraseProtection\x12%\n\x0epin_protection\x18\
+    \x04\x20\x01(\x08R\rpinProtection\x12!\n\x08language\x18\x05\x20\x01(\t:\
+    \x05en-USR\x08language\x12\x14\n\x05label\x18\x06\x20\x01(\tR\x05label\
+    \x12\x1f\n\x0bu2f_counter\x18\x07\x20\x01(\rR\nu2fCounter\x12\x1f\n\x0bs\
+    kip_backup\x18\x08\x20\x01(\x08R\nskipBackup\x12\x1b\n\tno_backup\x18\t\
+    \x20\x01(\x08R\x08noBackup\x12Q\n\x0bbackup_type\x18\n\x20\x01(\x0e2).hw\
+    .trezor.messages.management.BackupType:\x05Bip39R\nbackupType\"\x0e\n\
+    \x0cBackupDevice\"\x10\n\x0eEntropyRequest\"&\n\nEntropyAck\x12\x18\n\
+    \x07entropy\x18\x01\x20\x02(\x0cR\x07entropy\"\xd4\x03\n\x0eRecoveryDevi\
+    ce\x12\x1d\n\nword_count\x18\x01\x20\x01(\rR\twordCount\x123\n\x15passph\
+    rase_protection\x18\x02\x20\x01(\x08R\x14passphraseProtection\x12%\n\x0e\
+    pin_protection\x18\x03\x20\x01(\x08R\rpinProtection\x12\x1a\n\x08languag\
+    e\x18\x04\x20\x01(\tR\x08language\x12\x14\n\x05label\x18\x05\x20\x01(\tR\
+    \x05label\x12)\n\x10enforce_wordlist\x18\x06\x20\x01(\x08R\x0fenforceWor\
+    dlist\x12T\n\x04type\x18\x08\x20\x01(\x0e2@.hw.trezor.messages.managemen\
+    t.RecoveryDevice.RecoveryDeviceTypeR\x04type\x12\x1f\n\x0bu2f_counter\
+    \x18\t\x20\x01(\rR\nu2fCounter\x12\x17\n\x07dry_run\x18\n\x20\x01(\x08R\
+    \x06dryRun\"Z\n\x12RecoveryDeviceType\x12%\n!RecoveryDeviceType_Scramble\
+    dWords\x10\0\x12\x1d\n\x19RecoveryDeviceType_Matrix\x10\x01\"\xc5\x01\n\
+    \x0bWordRequest\x12N\n\x04type\x18\x01\x20\x02(\x0e2:.hw.trezor.messages\
+    .management.WordRequest.WordRequestTypeR\x04type\"f\n\x0fWordRequestType\
+    \x12\x19\n\x15WordRequestType_Plain\x10\0\x12\x1b\n\x17WordRequestType_M\
+    atrix9\x10\x01\x12\x1b\n\x17WordRequestType_Matrix6\x10\x02\"\x1d\n\x07W\
+    ordAck\x12\x12\n\x04word\x18\x01\x20\x02(\tR\x04word\"0\n\rSetU2FCounter\
+    \x12\x1f\n\x0bu2f_counter\x18\x01\x20\x02(\rR\nu2fCounter\"\x13\n\x11Get\
+    NextU2FCounter\"1\n\x0eNextU2FCounter\x12\x1f\n\x0bu2f_counter\x18\x01\
+    \x20\x02(\rR\nu2fCounter\"\x11\n\x0fDoPreauthorized\"\x16\n\x14Preauthor\
+    izedRequest\"\x15\n\x13CancelAuthorization\"\x14\n\x12RebootToBootloader\
+    \"\x10\n\x08GetNonce:\x04\x88\xb2\x19\x01\"#\n\x05Nonce\x12\x14\n\x05non\
+    ce\x18\x01\x20\x02(\x0cR\x05nonce:\x04\x88\xb2\x19\x01\";\n\nUnlockPath\
+    \x12\x1b\n\taddress_n\x18\x01\x20\x03(\rR\x08addressN\x12\x10\n\x03mac\
+    \x18\x02\x20\x01(\x0cR\x03mac\"'\n\x13UnlockedPathRequest\x12\x10\n\x03m\
+    ac\x18\x01\x20\x01(\x0cR\x03mac\"\x14\n\x12ShowDeviceTutorial\"\x12\n\
+    \x10UnlockBootloader*>\n\nBackupType\x12\t\n\x05Bip39\x10\0\x12\x10\n\
+    \x0cSlip39_Basic\x10\x01\x12\x13\n\x0fSlip39_Advanced\x10\x02*G\n\x10Saf\
+    etyCheckLevel\x12\n\n\x06Strict\x10\0\x12\x10\n\x0cPromptAlways\x10\x01\
+    \x12\x15\n\x11PromptTemporarily\x10\x02*0\n\x10HomescreenFormat\x12\x08\
+    \n\x04Toif\x10\x01\x12\x08\n\x04Jpeg\x10\x02\x12\x08\n\x04ToiG\x10\x03BB\
+    \n#com.satoshilabs.trezor.lib.protobufB\x17TrezorMessageManagement\x80\
+    \xa6\x1d\x01\
 ";
 
 /// `FileDescriptorProto` object which was a source for this generated file
@@ -9615,7 +10123,7 @@ pub fn file_descriptor() -> &'static ::protobuf::reflect::FileDescriptor {
         let generated_file_descriptor = generated_file_descriptor_lazy.get(|| {
             let mut deps = ::std::vec::Vec::with_capacity(1);
             deps.push(super::messages::file_descriptor().clone());
-            let mut messages = ::std::vec::Vec::with_capacity(41);
+            let mut messages = ::std::vec::Vec::with_capacity(44);
             messages.push(Initialize::generated_message_descriptor_data());
             messages.push(GetFeatures::generated_message_descriptor_data());
             messages.push(Features::generated_message_descriptor_data());
@@ -9623,6 +10131,9 @@ pub fn file_descriptor() -> &'static ::protobuf::reflect::FileDescriptor {
             messages.push(SetBusy::generated_message_descriptor_data());
             messages.push(EndSession::generated_message_descriptor_data());
             messages.push(ApplySettings::generated_message_descriptor_data());
+            messages.push(ChangeLanguage::generated_message_descriptor_data());
+            messages.push(TranslationDataRequest::generated_message_descriptor_data());
+            messages.push(TranslationDataAck::generated_message_descriptor_data());
             messages.push(ApplyFlags::generated_message_descriptor_data());
             messages.push(ChangePin::generated_message_descriptor_data());
             messages.push(ChangeWipeCode::generated_message_descriptor_data());

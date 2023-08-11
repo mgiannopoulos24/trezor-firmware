@@ -2244,6 +2244,50 @@ if TYPE_CHECKING:
         def is_type_of(cls, msg: Any) -> TypeGuard["ApplySettings"]:
             return isinstance(msg, cls)
 
+    class ChangeLanguage(protobuf.MessageType):
+        language: "str"
+        data_length: "int"
+
+        def __init__(
+            self,
+            *,
+            language: "str",
+            data_length: "int",
+        ) -> None:
+            pass
+
+        @classmethod
+        def is_type_of(cls, msg: Any) -> TypeGuard["ChangeLanguage"]:
+            return isinstance(msg, cls)
+
+    class TranslationDataRequest(protobuf.MessageType):
+        data_length: "int | None"
+
+        def __init__(
+            self,
+            *,
+            data_length: "int | None" = None,
+        ) -> None:
+            pass
+
+        @classmethod
+        def is_type_of(cls, msg: Any) -> TypeGuard["TranslationDataRequest"]:
+            return isinstance(msg, cls)
+
+    class TranslationDataAck(protobuf.MessageType):
+        data_chunk: "bytes"
+
+        def __init__(
+            self,
+            *,
+            data_chunk: "bytes",
+        ) -> None:
+            pass
+
+        @classmethod
+        def is_type_of(cls, msg: Any) -> TypeGuard["TranslationDataAck"]:
+            return isinstance(msg, cls)
+
     class ApplyFlags(protobuf.MessageType):
         flags: "int"
 

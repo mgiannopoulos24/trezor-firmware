@@ -138,6 +138,6 @@ vendorheader: ## generate vendor header
 vendorheader_check: ## check that vendor header is up to date
 	./core/embed/vendorheader/generate.sh --quiet --check
 
-gen:  mocks icons templates protobuf ci_docs vendorheader ## regenerate auto-generated files from sources
+gen:  templates mocks icons protobuf ci_docs vendorheader ## regenerate auto-generated files from sources
 
-gen_check: mocks_check icons_check templates_check protobuf_check ci_docs_check vendorheader_check ## check validity of auto-generated files
+gen_check: templates_check mocks_check icons_check protobuf_check ci_docs_check vendorheader_check ## check validity of auto-generated files

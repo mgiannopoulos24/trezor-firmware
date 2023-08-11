@@ -19,6 +19,7 @@ async def recovery_device(msg: RecoveryDevice) -> Success:
     import storage
     import storage.device as storage_device
     import storage.recovery as storage_recovery
+    import trezortranslate as TR
     from trezor import config, wire, workflow
     from trezor.enums import ButtonRequestType
     from trezor.ui.layouts import confirm_action, confirm_reset_device
@@ -57,14 +58,14 @@ async def recovery_device(msg: RecoveryDevice) -> Success:
     # --------------------------------------------------------
     # _continue_dialog
     if not dry_run:
-        await confirm_reset_device("Recover wallet", recovery=True)
+        await confirm_reset_device(TR.tr("recovery__title_recover"), recovery=True)
     else:
         await confirm_action(
             "confirm_seedcheck",
-            "Backup check",
-            description="Check your backup?",
+            TR.tr("recovery__title_dry_run"),
+            description=TR.tr("recovery__check_dry_run"),
             br_code=ButtonRequestType.ProtectCall,
-            verb="Check",
+            verb=TR.tr("buttons__check"),
         )
     # END _continue_dialog
     # --------------------------------------------------------
@@ -75,7 +76,7 @@ async def recovery_device(msg: RecoveryDevice) -> Success:
 
     # for dry run pin needs to be entered
     if dry_run:
-        curpin, salt = await request_pin_and_sd_salt("Enter PIN")
+        curpin, salt = await request_pin_and_sd_salt(TR.tr("pin__enter"))
         if not config.check_pin(curpin, salt):
             await error_pin_invalid()
 

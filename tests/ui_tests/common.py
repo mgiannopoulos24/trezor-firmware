@@ -51,9 +51,9 @@ def prepare_fixtures(
 ) -> tuple[FixturesType, set[TestCase]]:
     """Prepare contents of fixtures.json"""
     # set up brand new contents
-    grouped_tests: dict[tuple[str, str], dict[str, str]] = {}
+    grouped_tests: dict[tuple[str, str, str], dict[str, str]] = {}
     for result in results:
-        idx = result.test.model, result.test.group
+        idx = result.test.model, result.test.group, result.test.language
         group = grouped_tests.setdefault(idx, {})
         group[result.test.fixtures_name] = result.actual_hash
 
@@ -61,14 +61,14 @@ def prepare_fixtures(
 
     # merge with previous fixtures
     fixtures = deepcopy(get_current_fixtures())
-    for (model, group), new_content in grouped_tests.items():
+    for (model, group, language), new_content in grouped_tests.items():
         # for every model/group, update the data with the new content
         current_content = fixtures.setdefault(model, {}).setdefault(group, {})
         if remove_missing:
             new_tests = set(new_content.keys())
             old_tests = set(current_content.keys())
             missing_tests |= {
-                TestCase(model, group, test) for test in old_tests - new_tests
+                TestCase(model, group, test, language) for test in old_tests - new_tests
             }
             current_content.clear()
 
@@ -220,6 +220,7 @@ class TestCase:
     model: str
     group: str
     name: str
+    language: str
 
     @classmethod
     def build(cls, client: Client, request: pytest.FixtureRequest) -> Self:
@@ -232,15 +233,25 @@ class TestCase:
             model=f"T{model}",
             name=name,
             group=group,
+            language=client.features.language or "",
         )
+
+    def is_english(self) -> bool:
+        return self.language in ("en", "en-US")
 
     @property
     def id(self) -> str:
-        return f"{self.model}-{self.group}-{self.name}"
+        if self.is_english():
+            return f"{self.model}-{self.group}-{self.name}"
+        else:
+            return f"{self.model}_{self.language}-{self.group}-{self.name}"
 
     @property
     def fixtures_name(self) -> str:
-        return f"{self.model}_{self.name}"
+        if self.is_english():
+            return f"{self.model}_{self.name}"
+        else:
+            return f"{self.model}_{self.language}_{self.name}"
 
     @property
     def dir(self) -> Path:
@@ -312,6 +323,7 @@ class TestResult:
             model=metadata["test"]["model"],
             group=metadata["test"]["group"],
             name=metadata["test"]["name"],
+            language=metadata["test"]["language"],
         )
         return cls(
             test=test,

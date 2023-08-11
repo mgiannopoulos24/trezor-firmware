@@ -568,6 +568,8 @@ if FROZEN:
         ] if not SDCARD else []
     ))
 
+    SOURCE_PY.extend(Glob(SOURCE_PY_DIR + 'trezor/translations/*.py'))
+
     SOURCE_PY.extend(Glob(SOURCE_PY_DIR + 'trezor/messages/__init__.py'))
     SOURCE_PY.extend(Glob(SOURCE_PY_DIR + 'trezor/enums/*.py',
         exclude=[

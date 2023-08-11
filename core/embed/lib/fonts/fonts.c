@@ -18,19 +18,23 @@
  */
 
 #include "fonts.h"
+#include <stdbool.h>
 
-static uint8_t convert_char(const uint8_t c) {
-  static char last_was_utf8 = 0;
+// TODO: make it return uint32_t (needs logic to assemble at most 4 bytes
+// together)
+static uint16_t convert_char_utf8(const uint8_t c) {
+  // Considering only two-byte UTF-8 characters currently
+  static uint8_t first_utf8_byte = 0;
 
   // non-printable ASCII character
   if (c < ' ') {
-    last_was_utf8 = 0;
+    first_utf8_byte = 0;
     return 0x7F;
   }
 
   // regular ASCII character
   if (c < 0x80) {
-    last_was_utf8 = 0;
+    first_utf8_byte = 0;
     return c;
   }
 
@@ -38,13 +42,13 @@ static uint8_t convert_char(const uint8_t c) {
 
   // bytes 11xxxxxx are first bytes of UTF-8 characters
   if (c >= 0xC0) {
-    last_was_utf8 = 1;
-    return 0x7F;
+    first_utf8_byte = c;
+    return 0;  // not print this
   }
 
-  if (last_was_utf8) {
-    // bytes 10xxxxxx can be successive UTF-8 characters ...
-    return 0;  // skip glyph
+  if (first_utf8_byte) {
+    // encountered a successive UTF-8 character ...
+    return ((uint16_t)first_utf8_byte << 8) | c;
   } else {
     // ... or they are just non-printable ASCII characters
     return 0x7F;
@@ -129,32 +133,169 @@ int font_baseline(int font) {
   return 0;
 }
 
-const uint8_t *font_get_glyph(int font, uint8_t c) {
-  c = convert_char(c);
-  if (!c) return 0;
+const uint8_t utf8_mapping(uint16_t c_2bytes) {
+  switch (c_2bytes) {
+    case 0xC381:
+      return 127;  // Á
+    case 0xC48C:
+      return 128;  // Č
+    case 0xC48E:
+      return 129;  // Ď
+    case 0xC389:
+      return 130;  // É
+    case 0xC49A:
+      return 131;  // Ě
+    case 0xC38D:
+      return 132;  // Í
+    case 0xC587:
+      return 133;  // Ň
+    case 0xC393:
+      return 134;  // Ó
+    case 0xC598:
+      return 135;  // Ř
+    case 0xC5A0:
+      return 136;  // Š
+    case 0xC5A4:
+      return 137;  // Ť
+    case 0xC39A:
+      return 138;  // Ú
+    case 0xC5AE:
+      return 139;  // Ů
+    case 0xC39D:
+      return 140;  // Ý
+    case 0xC5BD:
+      return 141;  // Ž
+    case 0xC3A1:
+      return 142;  // á
+    case 0xC48D:
+      return 143;  // č
+    case 0xC48F:
+      return 144;  // ď
+    case 0xC3A9:
+      return 145;  // é
+    case 0xC49B:
+      return 146;  // ě
+    case 0xC3AD:
+      return 147;  // í
+    case 0xC588:
+      return 148;  // ň
+    case 0xC3B3:
+      return 149;  // ó
+    case 0xC599:
+      return 150;  // ř
+    case 0xC5A1:
+      return 151;  // š
+    case 0xC5A5:
+      return 152;  // ť
+    case 0xC3BA:
+      return 153;  // ú
+    case 0xC5AF:
+      return 154;  // ů
+    case 0xC3BD:
+      return 155;  // ý
+    case 0xC5BE:
+      return 156;  // ž
+    case 0xC380:
+      return 157;  // À
+    case 0xC382:
+      return 158;  // Â
+    case 0xC386:
+      return 159;  // Æ
+    case 0xC387:
+      return 160;  // Ç
+    case 0xC388:
+      return 161;  // È
+    case 0xC38A:
+      return 162;  // Ê
+    case 0xC38B:
+      return 163;  // Ë
+    case 0xC38E:
+      return 164;  // Î
+    case 0xC38F:
+      return 165;  // Ï
+    case 0xC394:
+      return 166;  // Ô
+    case 0xC399:
+      return 167;  // Ù
+    case 0xC39B:
+      return 168;  // Û
+    case 0xC39C:
+      return 169;  // Ü
+    case 0xC5B8:
+      return 170;  // Ÿ
+    case 0xC592:
+      return 171;  // Œ
+    case 0xC3A0:
+      return 172;  // à
+    case 0xC3A2:
+      return 173;  // â
+    case 0xC3A6:
+      return 174;  // æ
+    case 0xC3A7:
+      return 175;  // ç
+    case 0xC3A8:
+      return 176;  // è
+    case 0xC3AA:
+      return 177;  // ê
+    case 0xC3AB:
+      return 178;  // ë
+    case 0xC3AE:
+      return 179;  // î
+    case 0xC3AF:
+      return 180;  // ï
+    case 0xC3B4:
+      return 181;  // ô
+    case 0xC3B9:
+      return 182;  // ù
+    case 0xC3BB:
+      return 183;  // û
+    case 0xC3BC:
+      return 184;  // ü
+    case 0xC3BF:
+      return 185;  // ÿ
+    case 0xC593:
+      return 186;  // œ
+    default:
+      return 0;  // non-printable
+  }
+}
 
-  // printable ASCII character
-  if (c >= ' ' && c < 0x7F) {
+const uint8_t *font_get_glyph(int font, uint8_t c) {
+  uint16_t c_2bytes = convert_char_utf8(c);
+  bool is_printable = c_2bytes != 0x7F;
+  if (!c_2bytes) return 0;
+
+  // found UTF8 character
+  if (c_2bytes > 0xFF) {
+    c_2bytes = utf8_mapping(c_2bytes);
+    if (!c_2bytes) {
+      is_printable = false;
+    }
+  }
+
+  // printable character
+  // TODO: take the highest number as a constant from all the fonts
+  if (is_printable && c_2bytes >= ' ' && c_2bytes <= 186) {
     switch (font) {
 #ifdef TREZOR_FONT_NORMAL_ENABLE
       case FONT_NORMAL:
-        return FONT_NORMAL_DATA[c - ' '];
+        return FONT_NORMAL_DATA[c_2bytes - ' '];
 #endif
 #ifdef TREZOR_FONT_DEMIBOLD_ENABLE
       case FONT_DEMIBOLD:
-        return FONT_DEMIBOLD_DATA[c - ' '];
+        return FONT_DEMIBOLD_DATA[c_2bytes - ' '];
 #endif
 #ifdef TREZOR_FONT_BOLD_ENABLE
       case FONT_BOLD:
-        return FONT_BOLD_DATA[c - ' '];
+        return FONT_BOLD_DATA[c_2bytes - ' '];
 #endif
 #ifdef TREZOR_FONT_MONO_ENABLE
       case FONT_MONO:
-        return FONT_MONO_DATA[c - ' '];
+        return FONT_MONO_DATA[c_2bytes - ' '];
 #endif
 #ifdef TREZOR_FONT_BIG_ENABLE
       case FONT_BIG:
-        return FONT_BIG_DATA[c - ' '];
+        return FONT_BIG_DATA[c_2bytes - ' '];
 #endif
     }
     return 0;

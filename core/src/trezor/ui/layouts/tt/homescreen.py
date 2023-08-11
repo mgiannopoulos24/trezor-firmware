@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
 
 import storage.cache as storage_cache
+import trezortranslate as TR
 import trezorui2
 from trezor import ui
 
@@ -54,6 +55,7 @@ class Homescreen(HomescreenBase):
             notification = notification.rstrip("!")
             if "COINJOIN" in notification.upper():
                 level = 3
+            # TODO: handle translation of EXPERIMENTAL
             elif "EXPERIMENTAL" in notification.upper():
                 level = 2
             elif notification_is_error:
@@ -119,10 +121,12 @@ class Busyscreen(HomescreenBase):
     RENDER_INDICATOR = storage_cache.BUSYSCREEN_ON
 
     def __init__(self, delay_ms: int) -> None:
+        import trezortranslate as TR
+
         skip = storage_cache.homescreen_shown is self.RENDER_INDICATOR
         super().__init__(
             layout=trezorui2.show_progress_coinjoin(
-                title="Waiting for others",
+                title=TR.tr("coinjoin__waiting_for_others"),
                 indeterminate=True,
                 time_ms=delay_ms,
                 skip_first_paint=skip,

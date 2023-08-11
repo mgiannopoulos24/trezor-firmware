@@ -1,6 +1,8 @@
 from typing import TYPE_CHECKING
 from ubinascii import hexlify
 
+import trezortranslate as TR
+
 from . import seed
 
 if TYPE_CHECKING:
@@ -38,7 +40,7 @@ async def get_public_key(
         from apps.common.paths import address_n_to_str
 
         path = address_n_to_str(address_n)
-        await show_pubkey(key.xpub, "Public key", path=path)
+        await show_pubkey(key.xpub, TR.tr("address__public_key"), path=path)
     return key
 
 

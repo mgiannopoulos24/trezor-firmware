@@ -5,6 +5,7 @@ use crate::{
         component::{text::common::TextBox, Child, Component, ComponentExt, Event, EventCtx},
         display::Icon,
         geometry::Rect,
+        translations::tr,
         util::char_to_string,
     },
 };
@@ -43,33 +44,38 @@ const DIGITS_INDEX: usize = 5;
 const SPECIAL_INDEX: usize = 6;
 const SPACE_INDEX: usize = 7;
 
-/// Menu text, action, icon data, middle button with CONFIRM, without_release
-const MENU: [(&str, PassphraseAction, Option<Icon>, bool, bool); MENU_LENGTH] = [
+// Menu text, action, icon data, middle button with CONFIRM, without_release,
+// translate
+const MENU: [(&str, PassphraseAction, Option<Icon>, bool, bool, bool); MENU_LENGTH] = [
     (
-        "SHOW",
+        "inputs__show", // will be translated
         PassphraseAction::Show,
         Some(theme::ICON_EYE),
-        true,
+        true, // CONFIRM
         false,
+        true, // translate
     ),
     (
         "CANCEL_OR_DELETE", // will be chosen dynamically
         PassphraseAction::CancelOrDelete,
         None,
-        true,
+        true, // CONFIRM
         true, // without_release
+        false,
     ),
     (
-        "ENTER",
+        "inputs__enter", // will be translated
         PassphraseAction::Enter,
         Some(theme::ICON_TICK),
-        true,
+        true, // CONFIRM
         false,
+        true, // translate
     ),
     (
         "abc",
         PassphraseAction::Category(ChoiceCategory::LowercaseLetter),
         None,
+        false,
         false,
         false,
     ),
@@ -79,11 +85,13 @@ const MENU: [(&str, PassphraseAction, Option<Icon>, bool, bool); MENU_LENGTH] = 
         None,
         false,
         false,
+        false,
     ),
     (
         "123",
         PassphraseAction::Category(ChoiceCategory::Digit),
         None,
+        false,
         false,
         false,
     ),
@@ -93,13 +101,15 @@ const MENU: [(&str, PassphraseAction, Option<Icon>, bool, bool); MENU_LENGTH] = 
         None,
         false,
         false,
+        false,
     ),
     (
-        "SPACE",
+        "inputs__space", // will be translated
         PassphraseAction::Character(' '),
         Some(theme::ICON_SPACE),
         false,
         false,
+        true, // translate
     ),
 ];
 
@@ -177,22 +187,31 @@ impl ChoiceFactoryPassphrase {
         choice_index: usize,
     ) -> (ChoiceItem<T>, PassphraseAction) {
         // More options for CANCEL/DELETE button
-        let (mut text, action, mut icon, show_confirm, without_release) = MENU[choice_index];
+        let (mut text, action, mut icon, show_confirm, without_release, translate) =
+            MENU[choice_index];
         if matches!(action, PassphraseAction::CancelOrDelete) {
             if self.is_empty {
-                text = "CANCEL";
+                text = tr("inputs__cancel");
                 icon = Some(theme::ICON_CANCEL);
             } else {
-                text = "DELETE";
+                text = tr("inputs__delete");
                 icon = Some(theme::ICON_DELETE);
             }
         }
 
-        let mut menu_item = ChoiceItem::new(text, ButtonLayout::default_three_icons());
+        // Translating when needed
+        if translate {
+            text = tr(text);
+        }
+
+        let mut menu_item = ChoiceItem::new(
+            text,
+            ButtonLayout::arrow_armed_arrow(tr("buttons__select").into()),
+        );
 
         // Action buttons have different middle button text
         if show_confirm {
-            let confirm_btn = ButtonDetails::armed_text("CONFIRM".into());
+            let confirm_btn = ButtonDetails::armed_text(tr("buttons__confirm").into());
             menu_item.set_middle_btn(Some(confirm_btn));
         }
 
@@ -215,14 +234,20 @@ impl ChoiceFactoryPassphrase {
     ) -> (ChoiceItem<T>, PassphraseAction) {
         if is_menu_choice(&self.current_category, choice_index) {
             (
-                ChoiceItem::new("BACK", ButtonLayout::arrow_armed_arrow("RETURN".into()))
-                    .with_icon(theme::ICON_ARROW_BACK_UP),
+                ChoiceItem::new(
+                    tr("inputs__back"),
+                    ButtonLayout::arrow_armed_arrow(tr("inputs__return").into()),
+                )
+                .with_icon(theme::ICON_ARROW_BACK_UP),
                 PassphraseAction::Menu,
             )
         } else {
             let ch = get_char(&self.current_category, choice_index);
             (
-                ChoiceItem::new(char_to_string(ch), ButtonLayout::default_three_icons()),
+                ChoiceItem::new(
+                    char_to_string(ch),
+                    ButtonLayout::arrow_armed_arrow(tr("buttons__select").into()),
+                ),
                 PassphraseAction::Character(ch),
             )
         }

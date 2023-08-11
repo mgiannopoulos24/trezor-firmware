@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 
+import trezortranslate as TR
 from trezor.enums import ButtonRequestType
 from trezor.strings import format_amount
 
@@ -30,9 +31,9 @@ async def ask_transfer(
         # require_confirm_payload
         await confirm_text(
             "confirm_payload",
-            "Confirm payload",
+            TR.tr("nem__confirm_payload"),
             bytes(transfer.payload).decode(),
-            "Encrypted:" if encrypted else "Unencrypted:",
+            TR.tr("nem__encrypted") if encrypted else TR.tr("nem__unencrypted"),
             ButtonRequestType.ConfirmOutput,
         )
 
@@ -67,14 +68,14 @@ async def _ask_transfer_mosaic(
     if definition:
         await confirm_properties(
             "confirm_mosaic",
-            "Confirm mosaic",
+            TR.tr("nem__confirm_mosaic"),
             (
                 (
-                    "Confirm transfer of",
+                    TR.tr("nem__confirm_transfer_of"),
                     format_amount(mosaic_quantity, definition.divisibility)
                     + definition.ticker,
                 ),
-                ("of", definition.name),
+                (TR.tr("nem__of"), definition.name),
             ),
         )
         levy = definition.levy  # local_cache_attribute
@@ -93,25 +94,28 @@ async def _ask_transfer_mosaic(
 
             await confirm_properties(
                 "confirm_mosaic_levy",
-                "Confirm mosaic",
-                (("Confirm mosaic\nlevy fee of", levy_msg),),
+                TR.tr("nem__confirm_mosaic"),
+                ((TR.tr("nem__levy_fee_of"), levy_msg),),
             )
 
     else:
         await confirm_action(
             "confirm_mosaic_unknown",
-            "Confirm mosaic",
-            "Unknown mosaic!",
-            "Divisibility and levy cannot be shown for unknown mosaics",
+            TR.tr("nem__confirm_mosaic"),
+            TR.tr("nem__unknown_mosaic"),
+            TR.tr("nem__divisibility_and_levy_cannot_be_shown"),
             br_code=ButtonRequestType.ConfirmOutput,
         )
 
         await confirm_properties(
             "confirm_mosaic_transfer",
-            "Confirm mosaic",
+            TR.tr("nem__confirm_mosaic"),
             (
-                ("Confirm transfer of", f"{mosaic_quantity} raw units"),
-                ("of", f"{mosaic.namespace}.{mosaic.mosaic}"),
+                (
+                    TR.tr("nem__confirm_transfer_of"),
+                    TR.tr("nem__raw_units_template").format(mosaic_quantity),
+                ),
+                (TR.tr("nem__of"), f"{mosaic.namespace}.{mosaic.mosaic}"),
             ),
         )
 
@@ -136,8 +140,8 @@ async def ask_importance_transfer(
     from ..layout import require_confirm_text
 
     if imp.mode == NEMImportanceTransferMode.ImportanceTransfer_Activate:
-        m = "Activate"
+        m = TR.tr("nem__activate")
     else:
-        m = "Deactivate"
-    await require_confirm_text(m + " remote harvesting?")
+        m = TR.tr("nem__deactivate")
+    await require_confirm_text(m + TR.tr("nem__remote_harvesting"))
     await require_confirm_final(common.fee)

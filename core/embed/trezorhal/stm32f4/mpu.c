@@ -101,6 +101,17 @@ void mpu_config_bootloader(void) {
 }
 
 void mpu_config_firmware(void) {
+  // TODO: Michal said this should be commented, but even with return below
+  // the hardware is not working (blank screen on TT)
+  // It has these warnings during the FW build:
+  // - warning: _popcountsi2.o: missing .note.GNU-stack section implies
+  // executable stack
+  // - NOTE: This behaviour is deprecated and will be removed in a future
+  // version of the linker
+  // - warning: build/firmware/firmware.elf has a LOAD segment with RWX
+  // permissions
+  // return;
+
   // Disable MPU
   HAL_MPU_Disable();
 

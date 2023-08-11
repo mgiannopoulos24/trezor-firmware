@@ -31,6 +31,7 @@ def _get_xpubs(
 
 @with_keychain
 async def get_address(msg: GetAddress, keychain: Keychain, coin: CoinInfo) -> Address:
+    import trezortranslate as TR
     from trezor.enums import InputScriptType
     from trezor.messages import Address
     from trezor.ui.layouts import show_address, show_warning
@@ -102,8 +103,8 @@ async def get_address(msg: GetAddress, keychain: Keychain, coin: CoinInfo) -> Ad
 
             await show_warning(
                 "warning_multisig",
-                "Receiving to a multisig address.",
-                "Continue anyway?",
+                TR.tr("send__receiving_to_multisig"),
+                TR.tr("words__continue_anyway"),
             )
 
             await show_address(
@@ -118,7 +119,7 @@ async def get_address(msg: GetAddress, keychain: Keychain, coin: CoinInfo) -> Ad
         else:
             account_name = address_n_to_name(coin, address_n, script_type)
             if account_name is None:
-                account = "Unknown path"
+                account = TR.tr("bitcoin__unknown_path")
             elif account_name == "":
                 account = coin.coin_shortcut
             else:

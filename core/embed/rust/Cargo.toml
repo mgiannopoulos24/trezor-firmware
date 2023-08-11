@@ -43,7 +43,7 @@ test = [
     "dma2d",
     "touch",
     "backlight",
-    "optiga"
+    "optiga",
 ]
 
 [lib]

@@ -1,5 +1,6 @@
 from typing import Callable, Iterable
 
+import trezortranslate as TR
 import trezorui2
 from trezor.enums import ButtonRequestType
 from trezor.wire.context import wait as ctx_wait
@@ -32,7 +33,9 @@ async def request_word_count(dry_run: bool) -> int:
 
 
 async def request_word(word_index: int, word_count: int, is_slip39: bool) -> str:
-    prompt = f"Type word {word_index + 1} of {word_count}"
+    prompt = TR.tr("recovery__type_word_x_of_y_template").format(
+        word_index + 1, word_count
+    )
     if is_slip39:
         keyboard = RustLayout(trezorui2.request_slip39(prompt=prompt))
     else:
@@ -53,6 +56,7 @@ async def show_remaining_shares(
     pages: list[tuple[str, str]] = []
     for remaining, group in groups:
         if 0 < remaining < MAX_SHARE_COUNT:
+            # TODO: handle translation
             title = strings.format_plural(
                 "{count} more {plural} starting", remaining, "share"
             )
@@ -62,6 +66,7 @@ async def show_remaining_shares(
             remaining == MAX_SHARE_COUNT and shares_remaining.count(0) < group_threshold
         ):
             groups_remaining = group_threshold - shares_remaining.count(0)
+            # TODO: handle translation
             title = strings.format_plural(
                 "{count} more {plural} starting", groups_remaining, "group"
             )
@@ -83,10 +88,10 @@ async def show_group_share_success(share_index: int, group_index: int) -> None:
             RustLayout(
                 trezorui2.show_group_share_success(
                     lines=[
-                        "You have entered",
-                        f"Share {share_index + 1}",
-                        "from",
-                        f"Group {group_index + 1}",
+                        TR.tr("recovery__you_have_entered"),
+                        TR.tr("recovery__share_num_template").format(share_index + 1),
+                        TR.tr("words__from"),
+                        TR.tr("recovery__group_num_template").format(group_index + 1),
                     ],
                 )
             ),
@@ -108,7 +113,7 @@ async def continue_recovery(
 
     if show_info:
         # Show this just one-time
-        description = "You'll only have to select the first 2-3 letters of each word."
+        description = TR.tr("recovery__only_2_to_three_words")
     else:
         description = subtext or ""
 
@@ -135,7 +140,7 @@ async def show_recovery_warning(
     br_type: str,
     content: str,
     subheader: str | None = None,
-    button: str = "TRY AGAIN",
+    button: str = TR.tr("buttons__try_again"),
     br_code: ButtonRequestType = ButtonRequestType.Warning,
 ) -> None:
     await raise_if_not_confirmed(

@@ -2,9 +2,11 @@ from typing import TYPE_CHECKING
 
 import storage.cache as storage_cache
 import storage.device as storage_device
+import trezortranslate as TR
 from trezor import config, utils, wire, workflow
 from trezor.enums import HomescreenFormat, MessageType
 from trezor.messages import Success, UnlockPath
+from trezor.ui.layouts import confirm_action
 
 from . import workflow_handlers
 
@@ -50,7 +52,10 @@ def get_features() -> Features:
     f = Features(
         vendor="trezor.io",
         fw_vendor=utils.firmware_vendor(),
-        language="en-US",
+        # TODO: after wiping, the language is reset, but the translation
+        # data are still there... Have a dynamic way of getting the language
+        # from the translations data?
+        language=storage_device.get_language(),
         major_version=utils.VERSION_MAJOR,
         minor_version=utils.VERSION_MINOR,
         patch_version=utils.VERSION_PATCH,
@@ -217,7 +222,9 @@ async def handle_Ping(msg: Ping) -> Success:
         from trezor.enums import ButtonRequestType as B
         from trezor.ui.layouts import confirm_action
 
-        await confirm_action("ping", "Confirm", "ping", br_code=B.ProtectCall)
+        await confirm_action(
+            "ping", TR.tr("buttons__confirm"), "ping", br_code=B.ProtectCall
+        )
     return Success(message=msg.message)
 
 
@@ -248,7 +255,6 @@ async def handle_DoPreauthorized(msg: DoPreauthorized) -> protobuf.MessageType:
 async def handle_UnlockPath(msg: UnlockPath) -> protobuf.MessageType:
     from trezor.crypto import hmac
     from trezor.messages import UnlockedPathRequest
-    from trezor.ui.layouts import confirm_action
     from trezor.wire.context import call_any, get_context
 
     from apps.common.paths import SLIP25_PURPOSE
@@ -281,8 +287,8 @@ async def handle_UnlockPath(msg: UnlockPath) -> protobuf.MessageType:
         await confirm_action(
             "confirm_coinjoin_access",
             title="Coinjoin",
-            description="Access your coinjoin account?",
-            verb="ACCESS",
+            description=TR.tr("coinjoin__access_account"),
+            verb=TR.tr("buttons__access"),
         )
 
     wire_types = (MessageType.GetAddress, MessageType.GetPublicKey, MessageType.SignTx)

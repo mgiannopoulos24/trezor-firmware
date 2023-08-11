@@ -141,6 +141,7 @@ static void _librust_qstrs(void) {
   MP_QSTR_total_fee_new;
   MP_QSTR_total_label;
   MP_QSTR_touch_event;
+  MP_QSTR_tr;
   MP_QSTR_trace;
   MP_QSTR_trezorproto;
   MP_QSTR_trezorui2;

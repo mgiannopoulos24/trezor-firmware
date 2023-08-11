@@ -76,11 +76,13 @@ async def confirm_fido(
 
 
 async def confirm_fido_reset() -> bool:
+    import trezortranslate as TR
+
     confirm = RustLayout(
         trezorui2.confirm_action(
-            title="FIDO2 RESET",
-            action="erase all credentials?",
-            description="Do you really want to",
+            title=TR.tr("fido__title_reset"),
+            action=TR.tr("fido__erase_credentials"),
+            description=TR.tr("words__really_wanna"),
             reverse=True,
         )
     )
