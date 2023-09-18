@@ -88,6 +88,15 @@
 #include "zkp_context.h"
 #endif
 
+
+void optiga_log_printf(const char *prefix, const uint8_t *data, size_t data_size) {
+    printf("OPTIGA %s ", prefix);
+    for (size_t i = 0; i < data_size; i++) {
+        printf("%02X", data[i]);
+    }
+    printf("\n");
+}
+
 // from util.s
 extern void shutdown_privileged(void);
 
@@ -170,6 +179,7 @@ int main(void) {
 #endif
 
 #ifdef USE_OPTIGA
+  optiga_set_log_hex(optiga_log_printf);
   optiga_init();
   optiga_open_application();
   if (sectrue == secret_ok) {
