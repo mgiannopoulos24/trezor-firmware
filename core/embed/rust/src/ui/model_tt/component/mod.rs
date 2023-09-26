@@ -10,7 +10,6 @@ mod frame;
 mod hold_to_confirm;
 #[cfg(feature = "dma2d")]
 mod homescreen;
-mod horizontal_page;
 mod keyboard;
 mod loader;
 mod number_input;
@@ -18,6 +17,7 @@ mod page;
 mod progress;
 mod result;
 mod scroll;
+mod simple_page;
 mod swipe;
 mod welcome_screen;
 
@@ -31,10 +31,8 @@ pub use dialog::{Dialog, DialogMsg, IconDialog};
 pub use error::ErrorScreen;
 pub use fido::{FidoConfirm, FidoMsg};
 pub use frame::{Frame, FrameMsg};
-pub use hold_to_confirm::{HoldToConfirm, HoldToConfirmMsg};
 #[cfg(feature = "dma2d")]
 pub use homescreen::{Homescreen, HomescreenMsg, Lockscreen};
-pub use horizontal_page::HorizontalPage;
 pub use keyboard::{
     bip39::Bip39Input,
     mnemonic::{MnemonicInput, MnemonicKeyboard, MnemonicKeyboardMsg},
@@ -45,10 +43,11 @@ pub use keyboard::{
 };
 pub use loader::{Loader, LoaderMsg, LoaderStyle, LoaderStyleSheet};
 pub use number_input::{NumberInputDialog, NumberInputDialogMsg};
-pub use page::{SwipeHoldPage, SwipePage};
+pub use page::ButtonPage;
 pub use progress::Progress;
 pub use result::{ResultFooter, ResultScreen, ResultStyle};
 pub use scroll::ScrollBar;
+pub use simple_page::SimplePage;
 pub use swipe::{Swipe, SwipeDirection};
 pub use welcome_screen::WelcomeScreen;
 
