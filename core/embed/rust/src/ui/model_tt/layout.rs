@@ -703,35 +703,30 @@ extern "C" fn new_confirm_homescreen(n_args: usize, args: *const Obj, kwargs: *m
 
         // Layout needs to hold the Obj to play nice with GC. Obj is resolved to &[u8]
         // in every paint pass.
-        // SAFETY: We expect no existing mutable reference. Resulting reference is
-        //         discarded before returning to micropython.
-        let buffer_func = move || unsafe { unwrap!(get_buffer(data)) };
-
-        fn get_layout_obj<'a, F>(title: StrBuffer, buffer_func: F) -> Result<Gc<LayoutObj>, Error>
-        where
-            F: Fn() -> &'a [u8] + 'static,
-        {
-            let size = match jpeg_info(buffer_func()) {
-                Some(info) => info.0,
-                _ => return Err(value_error!("Invalid image.")),
-            };
-
-            let buttons = Button::cancel_confirm_text(None, Some("CHANGE"));
-            LayoutObj::new(Frame::centered(
-                theme::label_title(),
-                title,
-                Dialog::new(painter::jpeg_painter(buffer_func, size, 1), buttons),
-            ))
-        }
-
-        // Incoming data may be empty, meaning we should display default homescreen
-        // image.
-        let obj = if buffer_func().is_empty() {
-            let default_buffer_func = move || theme::IMAGE_HOMESCREEN;
-            get_layout_obj(title, default_buffer_func)?
-        } else {
-            get_layout_obj(title, buffer_func)?
+        let buffer_func = move || {
+            // SAFETY: We expect no existing mutable reference. Resulting reference is
+            //         discarded before returning to micropython.
+            let buffer = unsafe { unwrap!(get_buffer(data)) };
+            // Incoming data may be empty, meaning we should display default homescreen
+            // image.
+            if buffer.is_empty() {
+                theme::IMAGE_HOMESCREEN
+            } else {
+                buffer
+            }
         };
+
+        let size = match jpeg_info(buffer_func()) {
+            Some(info) => info.0,
+            _ => return Err(value_error!("Invalid image.")),
+        };
+
+        let buttons = Button::cancel_confirm_text(None, Some("CHANGE"));
+        let obj = LayoutObj::new(Frame::centered(
+            theme::label_title(),
+            title,
+            Dialog::new(painter::jpeg_painter(buffer_func, size, 1), buttons),
+        ))?;
         Ok(obj.into())
     };
 
