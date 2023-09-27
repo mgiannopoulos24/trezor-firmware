@@ -158,9 +158,6 @@ impl LayoutObj {
         // SAFETY: `inner.root` is unique because of the `inner.borrow_mut()`.
         let msg = unsafe { Gc::as_mut(&mut inner.root) }.obj_event(&mut inner.event_ctx, event)?;
 
-        // All concerning `Child` wrappers should have already marked themselves for
-        // painting by now, and we're prepared for a paint pass.
-
         // Drain any pending timers into the callback.
         while let Some((token, deadline)) = inner.event_ctx.pop_timer() {
             let token = token.try_into();
@@ -175,6 +172,19 @@ impl LayoutObj {
         if let Some(count) = inner.event_ctx.page_count() {
             inner.page_count = count as u16;
         }
+
+        // Mark whole component tree for repaint if requested by inner component.
+        if inner.event_ctx.needs_repaint_root() {
+            inner.event_ctx.clear();
+            // SAFETY: `inner.root` is unique because of the `inner.borrow_mut()`.
+            let paint_msg = unsafe { Gc::as_mut(&mut inner.root) }
+                .obj_event(&mut inner.event_ctx, Event::RequestPaint)?;
+            assert!(paint_msg == Obj::const_none());
+            unsafe { Gc::as_mut(&mut inner.root) }.obj_request_clear();
+        }
+
+        // All concerning `Child` wrappers should have already marked themselves for
+        // painting by now, and we're prepared for a paint pass.
 
         Ok(msg)
     }

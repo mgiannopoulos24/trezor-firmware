@@ -396,6 +396,7 @@ pub struct EventCtx {
     paint_requested: bool,
     anim_frame_scheduled: bool,
     page_count: Option<usize>,
+    root_repaint_requested: bool,
 }
 
 impl EventCtx {
@@ -421,6 +422,7 @@ impl EventCtx {
                                     * `Child::marked_for_paint` being true. */
             anim_frame_scheduled: false,
             page_count: None,
+            root_repaint_requested: false,
         }
     }
 
@@ -459,6 +461,14 @@ impl EventCtx {
         }
     }
 
+    pub fn request_repaint_root(&mut self) {
+        self.root_repaint_requested = true;
+    }
+
+    pub fn needs_repaint_root(&self) -> bool {
+        self.root_repaint_requested
+    }
+
     pub fn set_page_count(&mut self, count: usize) {
         #[cfg(feature = "ui_debug")]
         assert!(self.page_count.is_none());
@@ -478,6 +488,7 @@ impl EventCtx {
         self.paint_requested = false;
         self.anim_frame_scheduled = false;
         self.page_count = None;
+        self.root_repaint_requested = false;
     }
 
     fn register_timer(&mut self, token: TimerToken, deadline: Duration) {
