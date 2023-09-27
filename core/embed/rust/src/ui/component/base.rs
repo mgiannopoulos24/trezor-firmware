@@ -6,7 +6,7 @@ use crate::{
     time::Duration,
     ui::{
         component::{maybe::PaintOverlapping, MsgMap},
-        display::Color,
+        display::{self, Color},
         geometry::{Offset, Rect},
     },
 };
@@ -69,6 +69,7 @@ pub trait Component {
 pub struct Child<T> {
     component: T,
     marked_for_paint: bool,
+    marked_for_clear: bool,
 }
 
 impl<T> Child<T> {
@@ -76,7 +77,15 @@ impl<T> Child<T> {
         Self {
             component,
             marked_for_paint: true,
+            marked_for_clear: false,
         }
+    }
+
+    /// Root child is responsible for clearing the screen before first paint.
+    pub fn root(component: T) -> Self {
+        let mut c = Self::new(component);
+        c.marked_for_clear = true;
+        c
     }
 
     pub fn inner(&self) -> &T {
@@ -118,6 +127,10 @@ impl<T> Child<T> {
     pub fn will_paint(&self) -> bool {
         self.marked_for_paint
     }
+
+    pub fn clear_screen(&mut self) {
+        self.marked_for_clear = true;
+    }
 }
 
 impl<T> Component for Child<T>
@@ -145,6 +158,10 @@ where
     fn paint(&mut self) {
         if self.marked_for_paint {
             self.marked_for_paint = false;
+            if self.marked_for_clear {
+                self.marked_for_clear = false;
+                display::clear()
+            }
             self.component.paint();
         }
     }

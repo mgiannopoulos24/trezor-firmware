@@ -49,6 +49,7 @@ pub trait ObjComponent: MaybeTrace {
     fn obj_paint(&mut self) -> bool;
     fn obj_bounds(&self, _sink: &mut dyn FnMut(Rect)) {}
     fn obj_skip_paint(&mut self) {}
+    fn obj_request_clear(&mut self) {}
 }
 
 impl<T> ObjComponent for Child<T>
@@ -81,6 +82,10 @@ where
     fn obj_skip_paint(&mut self) {
         self.skip_paint()
     }
+
+    fn obj_request_clear(&mut self) {
+        self.clear_screen()
+    }
 }
 
 /// `LayoutObj` is a GC-allocated object exported to MicroPython, with type
@@ -104,7 +109,7 @@ impl LayoutObj {
     pub fn new(root: impl ComponentMsgObj + MaybeTrace + 'static) -> Result<Gc<Self>, Error> {
         // Let's wrap the root component into a `Child` to maintain the top-level
         // invalidation logic.
-        let wrapped_root = Child::new(root);
+        let wrapped_root = Child::root(root);
         // SAFETY: We are coercing GC-allocated sized ptr into an unsized one.
         let root =
             unsafe { Gc::from_raw(Gc::into_raw(Gc::new(wrapped_root)?) as *mut dyn ObjComponent) };
