@@ -7,7 +7,6 @@ mod fido;
 mod fido_icons;
 mod error;
 mod frame;
-mod hold_to_confirm;
 #[cfg(feature = "dma2d")]
 mod homescreen;
 mod keyboard;

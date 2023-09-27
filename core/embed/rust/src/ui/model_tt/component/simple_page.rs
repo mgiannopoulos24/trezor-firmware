@@ -58,7 +58,7 @@ where
     }
 
     fn setup_swipe(&mut self) {
-        if self.axis == Axis::Horizontal {
+        if self.is_horizontal() {
             self.swipe.allow_left = self.scrollbar.has_next_page();
             self.swipe.allow_right =
                 self.scrollbar.has_previous_page() || self.swipe_right_to_go_back;
