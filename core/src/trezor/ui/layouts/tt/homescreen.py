@@ -1,7 +1,6 @@
 from typing import TYPE_CHECKING
 
 import storage.cache as storage_cache
-import trezortranslate as TR
 import trezorui2
 from trezor import ui
 
