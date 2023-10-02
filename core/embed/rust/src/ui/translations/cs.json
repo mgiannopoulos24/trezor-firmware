@@ -388,7 +388,7 @@
     "title_no_usb_connection": "ŽÁDNÉ USB PŘIPOJENÍ",
     "title_pin_not_set": "PIN NEBYL NASTAVEN",
     "title_seedless": "BEZ SEMÍNKA",
-    "title_set": "NASTAVIT ÚVODNÍ OBRAZOVKU"
+    "title_set": "ZMĚNIT ÚVODNÍ OBRAZOVKU?"
   },
   "inputs": {
     "back": "ZPĚT",
@@ -551,6 +551,7 @@
     "title_check_pin": "ZKONTROLOVAT PIN",
     "title_mismatch": "NESHODA PIN",
     "title_settings": "NASTAVENÍ PINU",
+    "title_wrong_pin": "ŠPATNÝ ŠPENDLÍK",
     "tries_left": "zbývající pokusy",
     "turn_off": "Opravdu chcete vypnout ochranu PIN?",
     "turn_on": "Zapnout ochranu PIN?",

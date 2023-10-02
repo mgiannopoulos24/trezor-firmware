@@ -505,6 +505,7 @@ pub static mp_module_trezortranslate: Module = obj_module! {
     ///     "pin__title_check_pin",
     ///     "pin__title_mismatch",
     ///     "pin__title_settings",
+    ///     "pin__title_wrong_pin",
     ///     "pin__tries_left",
     ///     "pin__turn_off",
     ///     "pin__turn_on",

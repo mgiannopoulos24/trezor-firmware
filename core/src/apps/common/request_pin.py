@@ -130,7 +130,7 @@ async def error_pin_invalid() -> NoReturn:
     await show_error_and_raise(
         "warning_wrong_pin",
         TR.tr("pin__entered_not_valid"),
-        TR.tr("pin__wrong_pin"),  # header
+        TR.tr("pin__title_wrong_pin"),  # header
         exc=wire.PinInvalid,
     )
     assert False

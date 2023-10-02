@@ -388,7 +388,7 @@
     "title_no_usb_connection": "NO USB CONNECTION",
     "title_pin_not_set": "PIN NOT SET",
     "title_seedless": "SEEDLESS",
-    "title_set": "CHANGE HOMESCREEN"
+    "title_set": "CHANGE HOMESCREEN?"
   },
   "inputs": {
     "back": "BACK",
@@ -543,7 +543,7 @@
     "info": "PIN will be required to access this device.",
     "invalid_pin": "Invalid PIN",
     "last_attempt": "Last attempt",
-    "mismatch": "The PINs you entered do not match.",
+    "mismatch": "Entered PINs do not match!",
     "please_check_again": "Please check again.",
     "reenter_new": "Re-enter new PIN",
     "reenter_to_confirm": "Please re-enter PIN to confirm.",
@@ -551,6 +551,7 @@
     "title_check_pin": "CHECK PIN",
     "title_mismatch": "PIN MISMATCH",
     "title_settings": "PIN SETTINGS",
+    "title_wrong_pin": "WRONG PIN",
     "tries_left": "tries left",
     "turn_off": "Are you sure you want to turn off PIN protection?",
     "turn_on": "Turn on PIN protection?",

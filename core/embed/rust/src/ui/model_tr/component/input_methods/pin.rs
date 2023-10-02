@@ -138,7 +138,7 @@ where
         let (showing_real_prompt, header_line_content, pin_line_content) = if show_subprompt {
             (
                 false,
-                String::from(tr("pin__wrong_pin")),
+                String::from(tr("pin__title_wrong_pin")),
                 String::from(subprompt.as_ref()),
             )
         } else {

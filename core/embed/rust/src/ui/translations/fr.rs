@@ -495,6 +495,7 @@ pub const TRANSLATIONS: TranslationsGeneral = TranslationsGeneral {
     pin__title_check_pin: "ÉPINGLE",
     pin__title_mismatch: "NON-CONCORDANCE",
     pin__title_settings: "PARAMÈTRES DE LA BROCHE",
+    pin__title_wrong_pin: "MAUVAISE ÉPINGLE",
     pin__tries_left: "essaie à gauche",
     pin__turn_off: "Êtes-vous sûr de vouloir désactiver la protection des broches?",
     pin__turn_on: "Activer la protection des broches?",
