@@ -143,7 +143,15 @@ def _raw_client(request: pytest.FixtureRequest) -> Client:
             client = _find_client(request, interact)
 
     # Setting the appropriate language
-    lang = request.session.config.getoption("lang") or "en"
+    # Not doing it for T1
+    if client.features.model != "1":
+        lang = request.session.config.getoption("lang") or "en"
+        _set_language(client, lang)  # type: ignore
+
+    return client
+
+
+def _set_language(client: Client, lang: str) -> Client:
     if lang == "en":
         with client:
             change_language(client, language="", language_data=b"")
