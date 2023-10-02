@@ -44,73 +44,81 @@ const DIGITS_INDEX: usize = 5;
 const SPECIAL_INDEX: usize = 6;
 const SPACE_INDEX: usize = 7;
 
-// Menu text, action, icon data, middle button with CONFIRM, without_release,
-// translate
-const MENU: [(&str, PassphraseAction, Option<Icon>, bool, bool, bool); MENU_LENGTH] = [
-    (
-        "inputs__show", // will be translated
-        PassphraseAction::Show,
-        Some(theme::ICON_EYE),
-        true, // CONFIRM
-        false,
-        true, // translate
-    ),
-    (
-        "CANCEL_OR_DELETE", // will be chosen dynamically
-        PassphraseAction::CancelOrDelete,
-        None,
-        true, // CONFIRM
-        true, // without_release
-        false,
-    ),
-    (
-        "inputs__enter", // will be translated
-        PassphraseAction::Enter,
-        Some(theme::ICON_TICK),
-        true, // CONFIRM
-        false,
-        true, // translate
-    ),
-    (
-        "abc",
-        PassphraseAction::Category(ChoiceCategory::LowercaseLetter),
-        None,
-        false,
-        false,
-        false,
-    ),
-    (
-        "ABC",
-        PassphraseAction::Category(ChoiceCategory::UppercaseLetter),
-        None,
-        false,
-        false,
-        false,
-    ),
-    (
-        "123",
-        PassphraseAction::Category(ChoiceCategory::Digit),
-        None,
-        false,
-        false,
-        false,
-    ),
-    (
-        "#$!",
-        PassphraseAction::Category(ChoiceCategory::SpecialSymbol),
-        None,
-        false,
-        false,
-        false,
-    ),
-    (
-        "inputs__space", // will be translated
-        PassphraseAction::Character(' '),
-        Some(theme::ICON_SPACE),
-        false,
-        false,
-        true, // translate
-    ),
+#[derive(Copy, Clone)]
+struct MenuItem {
+    text: &'static str,
+    action: PassphraseAction,
+    icon: Option<Icon>,
+    show_confirm: bool,
+    without_release: bool,
+    translate: bool,
+}
+
+const MENU: [MenuItem; MENU_LENGTH] = [
+    MenuItem {
+        text: "inputs__show",
+        action: PassphraseAction::Show,
+        icon: Some(theme::ICON_EYE),
+        show_confirm: true,
+        without_release: false,
+        translate: true,
+    },
+    MenuItem {
+        text: "CANCEL_OR_DELETE",
+        action: PassphraseAction::CancelOrDelete,
+        icon: None,
+        show_confirm: true,
+        without_release: true,
+        translate: false,
+    },
+    MenuItem {
+        text: "inputs__enter",
+        action: PassphraseAction::Enter,
+        icon: Some(theme::ICON_TICK),
+        show_confirm: true,
+        without_release: false,
+        translate: true,
+    },
+    MenuItem {
+        text: "abc",
+        action: PassphraseAction::Category(ChoiceCategory::LowercaseLetter),
+        icon: None,
+        show_confirm: false,
+        without_release: false,
+        translate: false,
+    },
+    MenuItem {
+        text: "ABC",
+        action: PassphraseAction::Category(ChoiceCategory::UppercaseLetter),
+        icon: None,
+        show_confirm: false,
+        without_release: false,
+        translate: false,
+    },
+    MenuItem {
+        text: "123",
+        action: PassphraseAction::Category(ChoiceCategory::Digit),
+        icon: None,
+        show_confirm: false,
+        without_release: false,
+        translate: false,
+    },
+    MenuItem {
+        text: "#$!",
+        action: PassphraseAction::Category(ChoiceCategory::SpecialSymbol),
+        icon: None,
+        show_confirm: false,
+        without_release: false,
+        translate: false,
+    },
+    MenuItem {
+        text: "inputs__space",
+        action: PassphraseAction::Character(' '),
+        icon: Some(theme::ICON_SPACE),
+        show_confirm: false,
+        without_release: false,
+        translate: true,
+    },
 ];
 
 #[derive(Clone, Copy)]
@@ -187,43 +195,42 @@ impl ChoiceFactoryPassphrase {
         choice_index: usize,
     ) -> (ChoiceItem<T>, PassphraseAction) {
         // More options for CANCEL/DELETE button
-        let (mut text, action, mut icon, show_confirm, without_release, translate) =
-            MENU[choice_index];
-        if matches!(action, PassphraseAction::CancelOrDelete) {
+        let mut current_item = MENU[choice_index];
+        if matches!(current_item.action, PassphraseAction::CancelOrDelete) {
             if self.is_empty {
-                text = tr("inputs__cancel");
-                icon = Some(theme::ICON_CANCEL);
+                current_item.text = tr("inputs__cancel");
+                current_item.icon = Some(theme::ICON_CANCEL);
             } else {
-                text = tr("inputs__delete");
-                icon = Some(theme::ICON_DELETE);
+                current_item.text = tr("inputs__delete");
+                current_item.icon = Some(theme::ICON_DELETE);
             }
         }
 
         // Translating when needed
-        if translate {
-            text = tr(text);
+        if current_item.translate {
+            current_item.text = tr(current_item.text);
         }
 
         let mut menu_item = ChoiceItem::new(
-            text,
+            current_item.text,
             ButtonLayout::arrow_armed_arrow(tr("buttons__select").into()),
         );
 
         // Action buttons have different middle button text
-        if show_confirm {
+        if current_item.show_confirm {
             let confirm_btn = ButtonDetails::armed_text(tr("buttons__confirm").into());
             menu_item.set_middle_btn(Some(confirm_btn));
         }
 
         // Making middle button create LongPress events
-        if without_release {
+        if current_item.without_release {
             menu_item = menu_item.with_middle_action_without_release();
         }
 
-        if let Some(icon) = icon {
+        if let Some(icon) = current_item.icon {
             menu_item = menu_item.with_icon(icon);
         }
-        (menu_item, action)
+        (menu_item, current_item.action)
     }
 
     /// Character choices with a BACK to MENU choice at the end (visible from
@@ -478,10 +485,10 @@ where
             "current_category",
             match self.current_category {
                 ChoiceCategory::Menu => "MENU",
-                ChoiceCategory::LowercaseLetter => MENU[LOWERCASE_INDEX].0,
-                ChoiceCategory::UppercaseLetter => MENU[UPPERCASE_INDEX].0,
-                ChoiceCategory::Digit => MENU[DIGITS_INDEX].0,
-                ChoiceCategory::SpecialSymbol => MENU[SPECIAL_INDEX].0,
+                ChoiceCategory::LowercaseLetter => MENU[LOWERCASE_INDEX].text,
+                ChoiceCategory::UppercaseLetter => MENU[UPPERCASE_INDEX].text,
+                ChoiceCategory::Digit => MENU[DIGITS_INDEX].text,
+                ChoiceCategory::SpecialSymbol => MENU[SPECIAL_INDEX].text,
             },
         );
         t.child("choice_page", &self.choice_page);
