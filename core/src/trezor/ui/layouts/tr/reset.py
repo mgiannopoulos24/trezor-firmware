@@ -271,16 +271,15 @@ async def show_success_backup() -> None:
     )
 
 
-_DEF_ARG_buttons__try_again: str = TR.tr("buttons__try_again")
-
-
 async def show_reset_warning(
     br_type: str,
     content: str,
     subheader: str | None = None,
-    button: str = _DEF_ARG_buttons__try_again,
+    button: str | None = None,
     br_code: ButtonRequestType = ButtonRequestType.Warning,
 ) -> None:
+    button = button or TR.tr("buttons__try_again")  # def_arg
+
     await show_warning(
         br_type,
         subheader or "",

@@ -32,10 +32,11 @@ class RustProgress:
 
 
 def progress(
-    message: str = TR.tr("progress__please_wait"),
+    message: str | None = None,
     description: str | None = None,
     indeterminate: bool = False,
 ) -> ProgressLayout:
+    message = message or TR.tr("progress__please_wait")  # def_arg
     return RustProgress(
         layout=trezorui2.show_progress(
             title=message.upper(),

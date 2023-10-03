@@ -24,11 +24,9 @@ class DataError(Error):
         super().__init__(FailureType.DataError, message)
 
 
-_DEF_ARG_errors__cancelled: str = TR.tr("errors__cancelled")
-
-
 class ActionCancelled(Error):
-    def __init__(self, message: str = _DEF_ARG_errors__cancelled) -> None:
+    def __init__(self, message: str | None = None) -> None:
+        message = message or TR.tr("errors__cancelled")  # def_arg
         super().__init__(FailureType.ActionCancelled, message)
 
 
@@ -37,19 +35,15 @@ class PinExpected(Error):
         super().__init__(FailureType.PinExpected, message)
 
 
-_DEF_ARG_errors__pin_entry_cancelled: str = TR.tr("errors__pin_entry_cancelled")
-
-
 class PinCancelled(Error):
-    def __init__(self, message: str = _DEF_ARG_errors__pin_entry_cancelled) -> None:
+    def __init__(self, message: str | None = None) -> None:
+        message = message or TR.tr("errors__pin_entry_cancelled")  # def_arg
         super().__init__(FailureType.PinCancelled, message)
 
 
-_DEF_ARG_errors__pin_invalid: str = TR.tr("errors__pin_invalid")
-
-
 class PinInvalid(Error):
-    def __init__(self, message: str = _DEF_ARG_errors__pin_invalid) -> None:
+    def __init__(self, message: str | None = None) -> None:
+        message = message or TR.tr("errors__pin_invalid")  # def_arg
         super().__init__(FailureType.PinInvalid, message)
 
 
@@ -83,11 +77,9 @@ class WipeCodeMismatch(Error):
         super().__init__(FailureType.WipeCodeMismatch, message)
 
 
-_DEF_ARG_errors__invalid_session: str = TR.tr("errors__invalid_session")
-
-
 class InvalidSession(Error):
-    def __init__(self, message: str = _DEF_ARG_errors__invalid_session) -> None:
+    def __init__(self, message: str | None = None) -> None:
+        message = message or TR.tr("errors__invalid_session")  # def_arg
         super().__init__(FailureType.InvalidSession, message)
 
 

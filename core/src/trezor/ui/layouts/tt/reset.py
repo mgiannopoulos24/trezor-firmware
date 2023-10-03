@@ -349,9 +349,10 @@ async def show_reset_warning(
     br_type: str,
     content: str,
     subheader: str | None = None,
-    button: str = TR.tr("buttons__try_again"),
+    button: str | None = None,
     br_code: ButtonRequestType = ButtonRequestType.Warning,
 ) -> None:
+    button = button or TR.tr("buttons__try_again")  # def_arg
     await raise_if_not_confirmed(
         interact(
             RustLayout(

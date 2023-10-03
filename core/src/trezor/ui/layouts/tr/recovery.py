@@ -96,14 +96,12 @@ async def continue_recovery(
     return result is trezorui2.CONFIRMED
 
 
-_DEF_ARG_buttons__try_again: str = TR.tr("buttons__try_again")
-
-
 async def show_recovery_warning(
     br_type: str,
     content: str,
     subheader: str | None = None,
-    button: str = _DEF_ARG_buttons__try_again,
+    button: str | None = None,
     br_code: ButtonRequestType = ButtonRequestType.Warning,
 ) -> None:
+    button = button or TR.tr("buttons__try_again")  # def_arg
     await show_warning(br_type, content, subheader, button, br_code)
