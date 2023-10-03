@@ -318,7 +318,8 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(mod_trezorconfig_set_obj, 3, 4,
 ///     """
 ///     Save translations data at the certain offset.
 ///     """
-STATIC mp_obj_t mod_trezorconfig_translations_set(mp_obj_t blob, mp_obj_t offset) {
+STATIC mp_obj_t mod_trezorconfig_translations_set(mp_obj_t blob,
+                                                  mp_obj_t offset) {
   mp_buffer_info_t blob_b = {0};
   blob_b.buf = NULL;
   if (blob != mp_const_none) {
