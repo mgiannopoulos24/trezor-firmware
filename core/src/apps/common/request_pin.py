@@ -81,8 +81,11 @@ def _set_last_unlock_time() -> None:
     storage_cache.set_int(storage_cache.APP_COMMON_REQUEST_PIN_LAST_UNLOCK, now)
 
 
+_DEF_ARG_PIN_ENTER: str = TR.tr("pin__enter")
+
+
 async def verify_user_pin(
-    prompt: str = TR.tr("pin__enter"),
+    prompt: str = _DEF_ARG_PIN_ENTER,
     allow_cancel: bool = True,
     retry: bool = True,
     cache_time_ms: int = 0,

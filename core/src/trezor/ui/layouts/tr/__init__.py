@@ -256,6 +256,9 @@ def draw_simple(layout: Any) -> None:
     ui.refresh()
 
 
+_DEF_ARG_buttons__confirm: str = TR.tr("buttons__confirm")
+
+
 # Temporary function, so we know where it is used
 # Should be gradually replaced by custom designs/layouts
 async def _placeholder_confirm(
@@ -264,7 +267,7 @@ async def _placeholder_confirm(
     data: str | None = None,
     description: str | None = None,
     *,
-    verb: str = TR.tr("buttons__confirm"),
+    verb: str = _DEF_ARG_buttons__confirm,
     verb_cancel: str | None = "",
     hold: bool = False,
     br_code: ButtonRequestType = BR_TYPE_OTHER,
@@ -287,7 +290,7 @@ async def get_bool(
     title: str,
     data: str | None = None,
     description: str | None = None,
-    verb: str = TR.tr("buttons__confirm"),
+    verb: str = _DEF_ARG_buttons__confirm,
     verb_cancel: str | None = "",
     hold: bool = False,
     br_code: ButtonRequestType = BR_TYPE_OTHER,
@@ -323,7 +326,7 @@ async def confirm_action(
     action: str | None = None,
     description: str | None = None,
     description_param: str | None = None,
-    verb: str = TR.tr("buttons__confirm"),
+    verb: str = _DEF_ARG_buttons__confirm,
     verb_cancel: str | None = "",
     hold: bool = False,
     hold_danger: bool = False,
@@ -452,6 +455,9 @@ async def confirm_homescreen(
     )
 
 
+_DEF_ARG_addr_mismatch__title: str = TR.tr("addr_mismatch__title")
+
+
 async def show_address(
     address: str,
     *,
@@ -463,7 +469,7 @@ async def show_address(
     network: str | None = None,
     multisig_index: int | None = None,
     xpubs: Sequence[str] = (),
-    mismatch_title: str = TR.tr("addr_mismatch__title"),
+    mismatch_title: str = _DEF_ARG_addr_mismatch__title,
     br_type: str = "show_address",
     br_code: ButtonRequestType = ButtonRequestType.Address,
     chunkify: bool = False,
@@ -537,13 +543,19 @@ async def show_address(
                 raise ActionCancelled
 
 
+_DEF_ARG_address__public_key: str = TR.tr("address__public_key")
+_DEF_ARG_addr_mismatch__title_key_mismatch: str = TR.tr(
+    "addr_mismatch__title_key_mismatch"
+)
+
+
 def show_pubkey(
     pubkey: str,
-    title: str = TR.tr("address__public_key"),
+    title: str = _DEF_ARG_address__public_key,
     *,
     account: str | None = None,
     path: str | None = None,
-    mismatch_title: str = TR.tr("addr_mismatch__title_key_mismatch"),
+    mismatch_title: str = _DEF_ARG_addr_mismatch__title_key_mismatch,
     br_type="show_pubkey",
 ) -> Awaitable[None]:
     return show_address(
@@ -580,11 +592,14 @@ async def _show_modal(
     )
 
 
+_DEF_ARG_buttons__try_again: str = TR.tr("buttons__try_again")
+
+
 async def show_error_and_raise(
     br_type: str,
     content: str,
     subheader: str | None = None,
-    button: str = TR.tr("buttons__try_again"),
+    button: str = _DEF_ARG_buttons__try_again,
     exc: ExceptionType = ActionCancelled,
 ) -> NoReturn:
     await show_warning(
@@ -597,11 +612,14 @@ async def show_error_and_raise(
     raise exc
 
 
+_DEF_ARG_buttons__continue: str = TR.tr("buttons__continue")
+
+
 async def show_warning(
     br_type: str,
     content: str,
     subheader: str | None = None,
-    button: str = TR.tr("buttons__continue"),
+    button: str = _DEF_ARG_buttons__continue,
     br_code: ButtonRequestType = ButtonRequestType.Warning,
 ) -> None:
     await interact(
@@ -621,7 +639,7 @@ def show_success(
     br_type: str,
     content: str,
     subheader: str | None = None,
-    button: str = TR.tr("buttons__continue"),
+    button: str = _DEF_ARG_buttons__continue,
 ) -> Awaitable[None]:
     title = TR.tr("words__title_success")
 
@@ -649,10 +667,13 @@ def show_success(
     )
 
 
+_DEF_ARG_send__confirm_sending: str = TR.tr("send__confirm_sending")
+
+
 async def confirm_output(
     address: str,
     amount: str,
-    title: str = TR.tr("send__confirm_sending"),
+    title: str = _DEF_ARG_send__confirm_sending,
     hold: bool = False,
     br_code: ButtonRequestType = ButtonRequestType.ConfirmOutput,
     address_label: str | None = None,
@@ -723,10 +744,13 @@ async def confirm_payment_request(
     )
 
 
+_DEF_ARG_buttons__show_all: str = TR.tr("buttons__show_all")
+
+
 async def should_show_more(
     title: str,
     para: Iterable[tuple[int, str]],
-    button_text: str = TR.tr("buttons__show_all"),
+    button_text: str = _DEF_ARG_buttons__show_all,
     br_type: str = "should_show_more",
     br_code: ButtonRequestType = BR_TYPE_OTHER,
     confirm: str | bytes | None = None,
@@ -768,7 +792,7 @@ async def confirm_blob(
     title: str,
     data: bytes | str,
     description: str | None = None,
-    verb: str = TR.tr("buttons__confirm"),
+    verb: str = _DEF_ARG_buttons__confirm,
     verb_cancel: str | None = "",  # icon
     hold: bool = False,
     br_code: ButtonRequestType = BR_TYPE_OTHER,
@@ -877,10 +901,13 @@ async def confirm_text(
     )
 
 
+_DEF_ARG_send__amount: str = TR.tr("send__amount")
+
+
 def confirm_amount(
     title: str,
     amount: str,
-    description: str = TR.tr("send__amount"),
+    description: str = _DEF_ARG_send__amount,
     br_type: str = "confirm_amount",
     br_code: ButtonRequestType = BR_TYPE_OTHER,
 ) -> Awaitable[None]:
@@ -961,13 +988,18 @@ def confirm_value(
     )
 
 
+_DEF_ARG_send__title_sending: str = TR.tr("send__title_sending")
+_DEF_ARG_send__total_amount: str = TR.tr("send__total_amount")
+_DEF_ARG_send__including_fee: str = TR.tr("send__including_fee")
+
+
 async def confirm_total(
     total_amount: str,
     fee_amount: str,
     fee_rate_amount: str | None = None,
-    title: str = TR.tr("send__title_sending"),
-    total_label: str = TR.tr("send__total_amount"),
-    fee_label: str = TR.tr("send__including_fee"),
+    title: str = _DEF_ARG_send__title_sending,
+    total_label: str = _DEF_ARG_send__total_amount,
+    fee_label: str = _DEF_ARG_send__including_fee,
     account_label: str | None = None,
     br_type: str = "confirm_total",
     br_code: ButtonRequestType = ButtonRequestType.SignTx,

@@ -157,11 +157,15 @@ async def should_show_domain(name: bytes, version: bytes) -> bool:
     )
 
 
+_DEF_ARG_ethereum__title_confirm_struct: str = TR.tr("ethereum__title_confirm_struct")
+_DEF_ARG_ethereum__show_full_struct: str = TR.tr("ethereum__show_full_struct")
+
+
 async def should_show_struct(
     description: str,
     data_members: list[EthereumStructMember],
-    title: str = TR.tr("ethereum__title_confirm_struct"),
-    button_text: str = TR.tr("ethereum__show_full_struct"),
+    title: str = _DEF_ARG_ethereum__title_confirm_struct,
+    button_text: str = _DEF_ARG_ethereum__show_full_struct,
 ) -> bool:
     para = (
         (ui.DEMIBOLD, description),

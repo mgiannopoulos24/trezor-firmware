@@ -29,8 +29,11 @@ class RustProgress:
         ui.refresh()
 
 
+_DEF_ARG_progress__please_wait: str = TR.tr("progress__please_wait")
+
+
 def progress(
-    message: str = TR.tr("progress__please_wait"),
+    message: str = _DEF_ARG_progress__please_wait,
     description: str | None = None,
     indeterminate: bool = False,
 ) -> ProgressLayout:
