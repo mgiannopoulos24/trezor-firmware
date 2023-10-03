@@ -1,10 +1,5 @@
-// NOTE: things needing micropython do so mostly because of translations
-// (we cannot have them inside bootloader)
-
-#[cfg(feature = "micropython")]
 mod address_details;
 mod button;
-#[cfg(feature = "micropython")]
 mod coinjoin_progress;
 mod dialog;
 mod fido;
@@ -16,9 +11,7 @@ mod frame;
 mod homescreen;
 mod keyboard;
 mod loader;
-#[cfg(feature = "micropython")]
 mod number_input;
-#[cfg(feature = "micropython")]
 mod page;
 mod progress;
 mod result;
@@ -27,13 +20,11 @@ mod simple_page;
 mod swipe;
 mod welcome_screen;
 
-#[cfg(feature = "micropython")]
 pub use address_details::AddressDetails;
 pub use button::{
     Button, ButtonContent, ButtonMsg, ButtonStyle, ButtonStyleSheet, CancelConfirmMsg,
     CancelInfoConfirmMsg, IconText, SelectWordMsg,
 };
-#[cfg(feature = "micropython")]
 pub use coinjoin_progress::CoinJoinProgress;
 pub use dialog::{Dialog, DialogMsg, IconDialog};
 pub use error::ErrorScreen;
@@ -50,7 +41,6 @@ pub use keyboard::{
     word_count::{SelectWordCount, SelectWordCountMsg},
 };
 pub use loader::{Loader, LoaderMsg, LoaderStyle, LoaderStyleSheet};
-#[cfg(feature = "micropython")]
 pub use number_input::{NumberInputDialog, NumberInputDialogMsg};
 pub use page::ButtonPage;
 pub use progress::Progress;

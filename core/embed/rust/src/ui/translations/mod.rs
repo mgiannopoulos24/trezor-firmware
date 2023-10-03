@@ -1,13 +1,13 @@
 mod en;
+#[cfg(feature = "micropython")]
 mod export;
 mod general;
 
-pub use en::EN_TRANSLATIONS;
+use en::EN_TRANSLATIONS;
 
-use crate::{
-    micropython::{buffer::StrBuffer, obj::Obj, util},
-    trezorhal::storage::translations_get,
-};
+#[cfg(feature = "micropython")]
+use crate::micropython::{buffer::StrBuffer, obj::Obj, util};
+use crate::trezorhal::storage::translations_get;
 
 use core::str;
 
@@ -16,6 +16,7 @@ const DELIMITER_BYTE: u8 = b'*';
 const TERMINATE_BYTE: u8 = 0xFF;
 
 /// Translation function callable from micropython.
+#[cfg(feature = "micropython")]
 pub extern "C" fn translate_obj(key: Obj) -> Obj {
     let block = || {
         let str_key: StrBuffer = key.try_into()?;

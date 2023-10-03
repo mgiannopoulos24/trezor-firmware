@@ -1,6 +1,3 @@
-// NOTE: things needing micropython do so mostly because of translations
-// (we cannot have them inside bootloader)
-
 mod button;
 mod button_controller;
 mod common;
@@ -28,39 +25,32 @@ pub use loader::{Loader, LoaderMsg, LoaderStyle, LoaderStyleSheet};
 pub use result::ResultScreen;
 pub use welcome_screen::WelcomeScreen;
 
-#[cfg(feature = "micropython")]
 mod address_details;
 mod changing_text;
-#[cfg(feature = "micropython")]
 mod coinjoin_progress;
 mod flow;
 mod flow_pages;
 mod frame;
 #[cfg(feature = "micropython")]
 mod homescreen;
-#[cfg(feature = "micropython")]
 mod page;
 mod progress;
 mod result_anim;
 mod result_popup;
 mod scrollbar;
-#[cfg(feature = "micropython")]
 mod share_words;
 mod show_more;
 mod title;
 
-#[cfg(feature = "micropython")]
 pub use address_details::AddressDetails;
 
 pub use changing_text::ChangingTextLine;
-#[cfg(feature = "micropython")]
 pub use coinjoin_progress::CoinJoinProgress;
 pub use flow::Flow;
 pub use flow_pages::{FlowPages, Page};
 pub use frame::{Frame, ScrollableContent, ScrollableFrame};
 #[cfg(feature = "micropython")]
 pub use homescreen::{ConfirmHomescreen, Homescreen, Lockscreen};
-#[cfg(feature = "micropython")]
 pub use input_methods::{
     number_input::NumberInput,
     passphrase::PassphraseEntry,
@@ -68,12 +58,10 @@ pub use input_methods::{
     simple_choice::SimpleChoice,
     wordlist::{WordlistEntry, WordlistType},
 };
-#[cfg(feature = "micropython")]
 pub use page::ButtonPage;
 pub use progress::Progress;
 pub use result_anim::{ResultAnim, ResultAnimMsg};
 pub use result_popup::{ResultPopup, ResultPopupMsg};
 pub use scrollbar::ScrollBar;
-#[cfg(feature = "micropython")]
 pub use share_words::ShareWords;
 pub use show_more::{CancelInfoConfirmMsg, ShowMore};
