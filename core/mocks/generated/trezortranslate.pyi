@@ -2,6 +2,11 @@ from typing import *
 
 
 # rust/src/ui/translations/export.rs
+def language_name() -> str:
+    """Get the name of the current language."""
+
+
+# rust/src/ui/translations/export.rs
 def tr(key: Literal[
     "addr_mismatch__contact_support",
     "addr_mismatch__key_mismatch",

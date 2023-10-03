@@ -4,16 +4,17 @@
 
 use crate::micropython::{map::Map, module::Module, qstr::Qstr};
 
-use super::translate_obj;
+use super::{language_name_obj, translate_obj};
 
 #[no_mangle]
 #[rustfmt::skip]
 pub static mp_module_trezortranslate: Module = obj_module! {
-    // TODO: add function to get the language ID (e.g. "cs"/"fr")
-    // - it should be either the first or last index in the list
-
     // TODO: add function to get all the translations keys in order
     // - so that client can validate it is sending correct keys in correct order
+
+    /// def language_name() -> str:
+    ///     """Get the name of the current language."""
+    Qstr::MP_QSTR_language_name => obj_fn_0!(language_name_obj).as_obj(),
 
     /// def tr(key: Literal[
     ///     "addr_mismatch__contact_support",

@@ -5,6 +5,7 @@ if TYPE_CHECKING:
     from trezor.messages import ChangeLanguage, Success, TranslationDataAck
 
 _CHUNK_SIZE = const(1024)
+_DELIMITER = "*"
 
 
 async def change_language(msg: ChangeLanguage) -> Success:
@@ -19,7 +20,10 @@ async def change_language(msg: ChangeLanguage) -> Success:
     if len(language) > storage_device.LANGUAGE_MAXLENGTH:
         raise wire.DataError("Language identifier too long")
 
-    if data_length > storage_translations.DATA_MAXLENGTH:
+    if _DELIMITER in language:
+        raise wire.DataError(f"Language name contains delimiter '{_DELIMITER}'")
+
+    if data_length > storage_translations.TRANSLATIONS_MAXLENGTH:
         raise wire.DataError("Translations too long")
 
     # When empty data, reverting the language to default (english)
@@ -33,10 +37,15 @@ async def change_language(msg: ChangeLanguage) -> Success:
     if data_length > 0:
         offset = 0
         data_left = data_length
+        # Store the language name as the first item
+        # (Done so that we can get the language name even after device/storage is wiped)
+        language_entry = (language + _DELIMITER).encode()
+        storage_translations.write(language_entry, offset)
+        offset += len(language_entry)
         while data_left > 0:
             resp = await send_request_chunk(data_left)
             data_left -= len(resp.data_chunk)
-            storage_translations.validate_and_set(resp.data_chunk, offset)
+            storage_translations.write(resp.data_chunk, offset)
             offset += len(resp.data_chunk)
 
     storage_device.set_language(language)
