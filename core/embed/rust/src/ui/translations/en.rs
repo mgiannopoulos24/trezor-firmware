@@ -596,7 +596,7 @@ pub const EN_TRANSLATIONS: TranslationsGeneral = TranslationsGeneral {
     reset__slip39_checklist_set_num_groups: "Set number of groups",
     reset__slip39_checklist_set_num_shares: "Set number of shares",
     reset__slip39_checklist_set_sizes: "Set sizes and thresholds",
-    reset__slip39_checklist_set_sizes_longer: "Set sizes and thresholds for each group",
+    reset__slip39_checklist_set_sizes_longer: "Set size and threshold for each group",
     reset__slip39_checklist_set_threshold: "Set threshold",
     reset__slip39_checklist_title: "BACKUP CHECKLIST",
     reset__slip39_checklist_write_down: "Write down and check all shares",
