@@ -679,7 +679,8 @@ extern "C" fn new_confirm_reset_device(n_args: usize, args: *const Obj, kwargs: 
             Paragraph::new(
                 &theme::TEXT_NORMAL,
                 StrBuffer::from(tr("reset__by_continuing")),
-            ).with_bottom_padding(17), // simulating a carriage return
+            )
+            .with_bottom_padding(17), // simulating a carriage return
             Paragraph::new(
                 &theme::TEXT_NORMAL,
                 StrBuffer::from(tr("reset__more_info_at")),
