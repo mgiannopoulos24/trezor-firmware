@@ -20,7 +20,7 @@ from typing import Generator
 
 import pytest
 
-from trezorlib import device, exceptions, translations
+from trezorlib import debuglink, device, exceptions, translations
 from trezorlib.debuglink import TrezorClientDebugLink as Client
 
 pytestmark = pytest.mark.skip_t1
@@ -33,34 +33,42 @@ CS_JSON = TRANSLATIONS / "cs.json"
 FR_JSON = TRANSLATIONS / "fr.json"
 
 MOCK_LANG_DATA = "abc*def*".encode()
-MAX_LENGTH = 32 * 1024
+MAX_LANGUAGE_LENGTH = 32
+MAX_DATA_LENGTH = 32 * 1024 - (MAX_LANGUAGE_LENGTH + 1)
 
 
 @contextmanager
 def _set_english_return_back(client: Client) -> Generator[Client, None, None]:
     lang_before = client.features.language or ""
     try:
-        with client:
-            device.change_language(client, language="", language_data=b"")
+        _set_default_english(client)
         yield client
     finally:
         if lang_before.startswith("en"):
-            with client:
-                device.change_language(client, language="", language_data=b"")
+            _set_default_english(client)
         elif lang_before == "cs":
-            with client, open(CS_JSON, "r") as f:
-                language_data = translations.blob_from_file(f)
-                device.change_language(
-                    client, language="cs", language_data=language_data
-                )
+            _set_full_czech(client)
         elif lang_before == "fr":
-            with client, open(FR_JSON, "r") as f:
-                language_data = translations.blob_from_file(f)
-                device.change_language(
-                    client, language="fr", language_data=language_data
-                )
+            _set_full_french(client)
         else:
             raise RuntimeError(f"Unknown language: {lang_before}")
+
+
+def _set_full_czech(client: Client):
+    with client, open(CS_JSON, "r") as f:
+        language_data = translations.blob_from_file(f)
+        device.change_language(client, language="cs", language_data=language_data)
+
+
+def _set_full_french(client: Client):
+    with client, open(FR_JSON, "r") as f:
+        language_data = translations.blob_from_file(f)
+        device.change_language(client, language="fr", language_data=language_data)
+
+
+def _set_default_english(client: Client):
+    with client:
+        device.change_language(client, language="", language_data=b"")
 
 
 def test_change_language(client: Client):
@@ -80,7 +88,7 @@ def test_change_language(client: Client):
         # Max length is accepted
         with client:
             device.change_language(
-                client, language="cs", language_data=b"a" * MAX_LENGTH
+                client, language="cs", language_data=b"a" * MAX_DATA_LENGTH
             )
         assert client.features.language == "cs"
 
@@ -103,7 +111,7 @@ def test_change_language_errors(client: Client):
             exceptions.TrezorFailure, match="Translations too long"
         ), client:
             device.change_language(
-                client, language="cs", language_data=(MAX_LENGTH + 1) * b"a"
+                client, language="cs", language_data=(MAX_DATA_LENGTH + 1) * b"a"
             )
         assert client.features.language == "en-US"
 
@@ -113,18 +121,36 @@ def test_full_language_change(client: Client):
         assert client.features.language == "en-US"
 
         # Setting cs language
-        with client, open(CS_JSON, "r") as f:
-            language_data = translations.blob_from_file(f)
-            device.change_language(client, language="cs", language_data=language_data)
+        _set_full_czech(client)
         assert client.features.language == "cs"
 
         # Setting fr language
-        with client, open(FR_JSON, "r") as f:
-            language_data = translations.blob_from_file(f)
-            device.change_language(client, language="fr", language_data=language_data)
+        _set_full_french(client)
         assert client.features.language == "fr"
 
         # Setting the default language via empty data
-        with client:
-            device.change_language(client, language="", language_data=b"")
+        _set_default_english(client)
         assert client.features.language == "en-US"
+
+
+def test_language_stays_after_wipe(client: Client):
+    with _set_english_return_back(client) as client:
+        assert client.features.language == "en-US"
+
+        # Setting cs language
+        _set_full_czech(client)
+        assert client.features.language == "cs"
+
+        # Wipe device
+        device.wipe(client)
+        assert client.features.language == "cs"
+
+        # Load it again
+        debuglink.load_device(
+            client,
+            mnemonic=" ".join(["all"] * 12),
+            pin=None,
+            passphrase_protection=False,
+            label="test",
+        )
+        assert client.features.language == "cs"
