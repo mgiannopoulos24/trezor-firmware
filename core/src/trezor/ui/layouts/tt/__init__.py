@@ -517,8 +517,6 @@ async def show_error_and_raise(
     button: str = TR.tr("buttons__try_again"),
     exc: ExceptionType = ActionCancelled,
 ) -> NoReturn:
-    if subheader:
-        subheader = subheader.upper()
     await interact(
         RustLayout(
             trezorui2.show_error(
@@ -1274,9 +1272,9 @@ async def pin_mismatch_popup(
 ) -> None:
     await button_request("pin_mismatch", code=BR_TYPE_OTHER)
     title = (
-        TR.tr("wipe_code__title_mismatch")
+        TR.tr("wipe_code__wipe_code_mismatch")
         if is_wipe_code
-        else TR.tr("pin__title_mismatch")
+        else TR.tr("pin__pin_mismatch")
     )
     description = (
         TR.tr("wipe_code__mismatch") if is_wipe_code else TR.tr("pin__mismatch")
@@ -1310,7 +1308,7 @@ async def confirm_set_new_pin(
                 trezorui2.confirm_emphasized(
                     title=title.upper(),
                     items=(
-                        (True, description),
+                        (True, description + "\n\n"),
                         information,
                     ),
                     verb=TR.tr("buttons__turn_on"),

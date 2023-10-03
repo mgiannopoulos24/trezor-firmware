@@ -544,12 +544,12 @@
     "invalid_pin": "Invalid PIN",
     "last_attempt": "Last attempt",
     "mismatch": "Entered PINs do not match!",
+    "pin_mismatch": "PIN mismatch",
     "please_check_again": "Please check again.",
     "reenter_new": "Re-enter new PIN",
     "reenter_to_confirm": "Please re-enter PIN to confirm.",
     "should_be_long": "PIN should be 4-50 digits long.",
     "title_check_pin": "CHECK PIN",
-    "title_mismatch": "PIN MISMATCH",
     "title_settings": "PIN SETTINGS",
     "title_wrong_pin": "WRONG PIN",
     "tries_left": "tries left",
@@ -657,10 +657,12 @@
     "share_words_title": "STANDARD BACKUP",
     "slip39_checklist_num_groups": "Number of groups",
     "slip39_checklist_num_shares": "Number of shares",
+    "slip39_checklist_set_num_shares": "Set number of shares",
     "slip39_checklist_set_sizes": "Set sizes and thresholds",
     "slip39_checklist_set_threshold": "Set threshold",
     "slip39_checklist_title": "BACKUP CHECKLIST",
     "slip39_checklist_write_down": "Write down and check all shares",
+    "slip39_checklist_write_down_recovery": "Write down and check all recovery shares",
     "the_threshold_sets_the_number_of_shares": "The threshold sets the number of shares ",
     "threshold_info": "= minimum number of unique word lists used for recovery.",
     "title_backup_is_done": "BACKUP IS DONE",
@@ -721,7 +723,7 @@
     "title_problem": "SD CARD PROBLEM",
     "unknown_filesystem": "Unknown filesystem.",
     "unplug_and_insert_correct": "Please unplug the device and insert the correct SD card.",
-    "use_different_card": "Use a different card or format the SD card to the FAT32 filesystem",
+    "use_different_card": "Use a different card or format the SD card to the FAT32 filesystem.",
     "wanna_format": "Do you really want to format the SD card?",
     "wrong_sd_card": "Wrong SD card."
   },
@@ -878,10 +880,10 @@
     "reenter_to_confirm": "Please re-enter wipe code to confirm.",
     "title_check": "CHECK WIPE CODE",
     "title_invalid": "INVALID WIPE CODE",
-    "title_mismatch": "WIPE CODE MISMATCH",
     "title_settings": "WIPE CODE SETTINGS",
     "turn_off": "Turn off wipe code protection?",
-    "turn_on": "Turn on wipe code protection?"
+    "turn_on": "Turn on wipe code protection?",
+    "wipe_code_mismatch": "Wipe code mismatch"
   },
   "word_count": {
     "title": "NUMBER OF WORDS"
