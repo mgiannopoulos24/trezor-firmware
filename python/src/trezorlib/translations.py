@@ -31,7 +31,6 @@ def _blob_from_data(data: Dict[str, Dict[str, str]]) -> bytes:
 
     buffer_str = ""
     for _key, value in items_to_write:
-        value_newlines_encoded = value.replace("\n", "\\n").replace("\r", "\\r")
-        buffer_str += f"{value_newlines_encoded}{DELIMITER}"
+        buffer_str += f"{value}{DELIMITER}"
 
     return buffer_str.encode()
