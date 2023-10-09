@@ -61,7 +61,7 @@ impl TranslationsGeneral {
         self.get_info(key).map(|(_, pos)| pos + TRANSLATIONS_OFFSET)
     }
 
-    pub fn get_info(&self, key: &str) -> Option<(&'static str, usize)> {
+    fn get_info(&self, key: &str) -> Option<(&'static str, usize)> {
         match key {
 % for index, name in enumerate(sorted(cs_keys)):
             ${utf8_str(name)} => Some((self.${name}, ${index})),

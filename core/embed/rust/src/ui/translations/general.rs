@@ -847,7 +847,7 @@ impl TranslationsGeneral {
         self.get_info(key).map(|(_, pos)| pos + TRANSLATIONS_OFFSET)
     }
 
-    pub fn get_info(&self, key: &str) -> Option<(&'static str, usize)> {
+    fn get_info(&self, key: &str) -> Option<(&'static str, usize)> {
         match key {
             "addr_mismatch__contact_support" => Some((self.addr_mismatch__contact_support, 0)),
             "addr_mismatch__key_mismatch" => Some((self.addr_mismatch__key_mismatch, 1)),
