@@ -241,16 +241,6 @@ pub fn delete(appkey: u16) -> StorageResult<()> {
     }
 }
 
-pub fn translations_get(offset: u32, len: u32) -> StorageResult<&'static [u8]> {
-    let ptr = unsafe { ffi::translations_read(offset, len) };
-    if ptr.is_null() {
-        Err(StorageError::ReadFailed)
-    } else {
-        let slice = unsafe { core::slice::from_raw_parts(ptr, len as usize) };
-        Ok(slice)
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;

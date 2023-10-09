@@ -3,6 +3,7 @@
 #include "common.h"
 #include "flash.h"
 #include "model.h"
+#include <assert.h>
 
 void translations_write(uint8_t* data, uint32_t offset, uint32_t len) {
   ensure(flash_unlock_write(), "translations_write unlock");
@@ -13,8 +14,12 @@ void translations_write(uint8_t* data, uint32_t offset, uint32_t len) {
   ensure(flash_lock_write(), "translations_write lock");
 }
 
-const uint8_t* translations_read(uint32_t offset, uint32_t len) {
-  return flash_area_get_address(&TRANSLATIONS_AREA, offset, len);
+const uint8_t* translations_read(uint32_t* len) {
+  // TODO: _Static_assert was not happy with TRANSLATIONS_AREA.num_subareas == 1
+  // error: expression in static assertion is not constant
+  assert(TRANSLATIONS_AREA.num_subareas == 1);
+  *len = flash_area_get_size(&TRANSLATIONS_AREA);
+  return flash_area_get_address(&TRANSLATIONS_AREA, 0, 0);
 }
 
 void translations_erase(void) {
