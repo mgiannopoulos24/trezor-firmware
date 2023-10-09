@@ -142,7 +142,7 @@ Bitcoin-only version.
 ## TEST stage - [test.yml](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml)
 All the tests run test cases on the freshly built emulators from the previous `BUILD` stage.
 
-Consists of **40 jobs** below:
+Consists of **42 jobs** below:
 
 ### [core unit python test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L15)
 Python unit tests, checking core functionality.
@@ -190,64 +190,68 @@ FIDO2 device tests.
 Click tests - UI.
 See [docs/tests/click-tests](../tests/click-tests.md) for more info.
 
-### [core click R test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L397)
+### [core click test czech](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L395)
+
+### [core click R test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L428)
 Click tests.
 See [docs/tests/click-tests](../tests/click-tests.md) for more info.
 
-### [core click asan test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L426)
+### [core click R test czech](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L457)
 
-### [core upgrade test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L447)
+### [core click asan test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L487)
+
+### [core upgrade test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L508)
 Upgrade tests.
 See [docs/tests/upgrade-tests](../tests/upgrade-tests.md) for more info.
 
-### [core upgrade asan test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L466)
+### [core upgrade asan test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L527)
 
-### [core persistence test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L488)
+### [core persistence test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L549)
 Persistence tests - UI.
 
-### [core persistence asan test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L518)
+### [core persistence asan test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L579)
 
-### [core hwi test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L536)
+### [core hwi test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L597)
 
-### [crypto test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L555)
+### [crypto test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L616)
 
-### [legacy device test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L587)
+### [legacy device test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L648)
 Legacy device test - UI.
 
-### [legacy asan test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L615)
+### [legacy asan test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L676)
 
-### [legacy btconly test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L627)
+### [legacy btconly test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L688)
 
-### [legacy btconly asan test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L647)
+### [legacy btconly asan test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L708)
 
-### [legacy upgrade test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L662)
+### [legacy upgrade test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L723)
 
-### [legacy upgrade asan test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L681)
+### [legacy upgrade asan test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L742)
 
-### [legacy hwi test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L702)
+### [legacy hwi test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L763)
 
-### [python test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L722)
+### [python test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L783)
 
-### [python support test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L741)
+### [python support test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L802)
 
-### [rust test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L750)
+### [rust test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L811)
 
-### [storage test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L760)
+### [storage test](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L821)
 
-### [core unix memory profiler](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L784)
+### [core unix memory profiler](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L845)
 
-### [core firmware flash size checker](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L810)
+### [core firmware flash size checker](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L871)
 Finds out how much flash space we have left in the firmware build
 Fails if the free space is less than certain threshold
 
-### [core firmware flash size compare master](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L823)
+### [core firmware flash size compare master](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L884)
 Compares the current flash space with the situation in the current master
 Fails if the new binary is significantly larger than the master one
 (the threshold is defined in the script, currently 5kb).
 Allowing fir failure, not to prevent the merge.
 Also generates a report with the current situation
 
-### [connect test core](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L838)
+### [connect test core](https://github.com/trezor/trezor-firmware/blob/master/ci/test.yml#L899)
 
 ---
 ## TEST-HW stage - [test-hw.yml](https://github.com/trezor/trezor-firmware/blob/master/ci/test-hw.yml)
