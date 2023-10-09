@@ -316,12 +316,6 @@
     "voter": "Volitel:",
     "yes": "Ano"
   },
-  "errors": {
-    "cancelled": "Zrušeno",
-    "invalid_session": "Neplatná relace",
-    "pin_entry_cancelled": "Vstup PIN zrušen",
-    "pin_invalid": "Neplatný PIN"
-  },
   "ethereum": {
     "amount_sent": "Odeslaná částka:",
     "confirm_fee": "Potvrdit poplatek",

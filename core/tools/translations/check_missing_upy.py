@@ -260,6 +260,7 @@ if __name__ == "__main__":
         "all_modules.py",
         "workflow_handlers.py",
         "messages.py",
+        "errors.py",
     ]
 
     # folder = CORE_SRC / "apps"

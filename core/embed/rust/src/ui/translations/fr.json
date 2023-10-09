@@ -316,12 +316,6 @@
     "voter": "TODO:missing",
     "yes": "Oui"
   },
-  "errors": {
-    "cancelled": "Annulé",
-    "invalid_session": "Session invalide",
-    "pin_entry_cancelled": "Entrée d'épingle annulée",
-    "pin_invalid": "Épingle non valide"
-  },
   "ethereum": {
     "amount_sent": "Montant envoyé:",
     "confirm_fee": "Confirmer les frais",

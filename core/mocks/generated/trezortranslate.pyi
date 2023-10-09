@@ -294,10 +294,6 @@ class TR:
     eos__vote_for_proxy: str
     eos__voter: str
     eos__yes: str
-    errors__cancelled: str
-    errors__invalid_session: str
-    errors__pin_entry_cancelled: str
-    errors__pin_invalid: str
     ethereum__amount_sent: str
     ethereum__confirm_fee: str
     ethereum__contract: str

@@ -316,12 +316,6 @@
     "voter": "Voter:",
     "yes": "Yes"
   },
-  "errors": {
-    "cancelled": "Cancelled",
-    "invalid_session": "Invalid session",
-    "pin_entry_cancelled": "PIN entry cancelled",
-    "pin_invalid": "PIN invalid"
-  },
   "ethereum": {
     "amount_sent": "Amount sent:",
     "confirm_fee": "Confirm fee",
