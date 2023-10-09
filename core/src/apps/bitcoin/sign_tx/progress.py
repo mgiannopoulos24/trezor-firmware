@@ -112,9 +112,9 @@ class Progress:
         self.report()
 
     def report_init(self) -> None:
-        from trezortranslate import TR
         from trezor import workflow
         from trezor.ui.layouts.progress import bitcoin_progress, coinjoin_progress
+        from trezortranslate import TR
 
         progress_layout = coinjoin_progress if self.is_coinjoin else bitcoin_progress
         workflow.close_others()

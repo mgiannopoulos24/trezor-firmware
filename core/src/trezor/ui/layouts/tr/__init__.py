@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING
 
-from trezortranslate import TR
 import trezorui2
 from trezor import io, loop, ui
 from trezor.enums import ButtonRequestType
 from trezor.wire import ActionCancelled
 from trezor.wire.context import wait as ctx_wait
+from trezortranslate import TR
 
 from ..common import button_request, interact
 

@@ -1,11 +1,11 @@
 from micropython import const
 from typing import TYPE_CHECKING
 
-from trezortranslate import TR
 from trezor.enums import ButtonRequestType
 from trezor.strings import format_amount
 from trezor.ui import layouts
 from trezor.ui.layouts import confirm_metadata
+from trezortranslate import TR
 
 from apps.common.paths import address_n_to_str
 
@@ -166,9 +166,7 @@ async def confirm_payment_request(
         elif m.refund_memo is not None:
             pass
         elif m.coin_purchase_memo is not None:
-            memo_texts.append(
-                f"{TR.words__buying} {m.coin_purchase_memo.amount}."
-            )
+            memo_texts.append(f"{TR.words__buying} {m.coin_purchase_memo.amount}.")
         else:
             raise wire.DataError("Unrecognized memo type in payment request memo.")
 

@@ -1,8 +1,8 @@
 from typing import TYPE_CHECKING
 
-from trezortranslate import TR
 import trezorui2
 from trezor import ui
+from trezortranslate import TR
 
 if TYPE_CHECKING:
     from typing import Any

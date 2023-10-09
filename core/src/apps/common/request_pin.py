@@ -2,9 +2,9 @@ import utime
 from typing import Any, NoReturn
 
 import storage.cache as storage_cache
-from trezortranslate import TR
 from trezor import config, utils, wire
 from trezor.ui.layouts import show_error_and_raise
+from trezortranslate import TR
 
 
 async def _request_sd_salt(

@@ -1,6 +1,5 @@
 from typing import TYPE_CHECKING
 
-from trezortranslate import TR
 from trezor import ui
 from trezor.enums import (
     ButtonRequestType,
@@ -11,6 +10,7 @@ from trezor.enums import (
 from trezor.strings import format_amount
 from trezor.ui import layouts
 from trezor.ui.layouts import confirm_metadata, confirm_properties
+from trezortranslate import TR
 
 from apps.common.paths import address_n_to_str
 

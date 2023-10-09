@@ -7,11 +7,11 @@ if TYPE_CHECKING:
 
 
 async def reboot_to_bootloader(msg: RebootToBootloader) -> NoReturn:
-    from trezortranslate import TR
     from trezor import io, loop, utils
     from trezor.messages import Success
     from trezor.ui.layouts import confirm_action
     from trezor.wire.context import get_context
+    from trezortranslate import TR
 
     await confirm_action(
         "reboot",

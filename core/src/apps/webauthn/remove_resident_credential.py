@@ -7,10 +7,10 @@ if TYPE_CHECKING:
 async def remove_resident_credential(msg: WebAuthnRemoveResidentCredential) -> Success:
     import storage.device
     import storage.resident_credentials
-    from trezortranslate import TR
     from trezor import wire
     from trezor.messages import Success
     from trezor.ui.layouts.fido import confirm_fido
+    from trezortranslate import TR
 
     from .resident_credentials import get_resident_credential
 

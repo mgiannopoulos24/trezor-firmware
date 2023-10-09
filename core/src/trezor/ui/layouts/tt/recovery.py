@@ -1,9 +1,9 @@
 from typing import Callable, Iterable
 
-from trezortranslate import TR
 import trezorui2
 from trezor.enums import ButtonRequestType
 from trezor.wire.context import wait as ctx_wait
+from trezortranslate import TR
 
 from ..common import interact
 from . import RustLayout, raise_if_not_confirmed

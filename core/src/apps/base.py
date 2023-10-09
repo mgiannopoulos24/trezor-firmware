@@ -2,11 +2,11 @@ from typing import TYPE_CHECKING
 
 import storage.cache as storage_cache
 import storage.device as storage_device
-from trezortranslate import TR
 from trezor import config, utils, wire, workflow
 from trezor.enums import HomescreenFormat, MessageType
 from trezor.messages import Success, UnlockPath
 from trezor.ui.layouts import confirm_action
+from trezortranslate import TR
 
 from . import workflow_handlers
 

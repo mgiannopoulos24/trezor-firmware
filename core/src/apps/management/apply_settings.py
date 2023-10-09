@@ -1,12 +1,12 @@
 from typing import TYPE_CHECKING
 
 import storage.device as storage_device
-from trezortranslate import TR
 import trezorui2
 from trezor import utils
 from trezor.enums import ButtonRequestType
 from trezor.ui.layouts import confirm_action
 from trezor.wire import DataError
+from trezortranslate import TR
 
 if TYPE_CHECKING:
     from trezor.enums import SafetyCheckLevel

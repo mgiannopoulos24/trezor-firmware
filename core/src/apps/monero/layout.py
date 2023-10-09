@@ -1,6 +1,5 @@
 from typing import TYPE_CHECKING
 
-from trezortranslate import TR
 from trezor.enums import ButtonRequestType
 from trezor.ui.layouts import confirm_action, confirm_metadata  # noqa: F401
 from trezor.ui.layouts.progress import (  # noqa: F401
@@ -8,6 +7,7 @@ from trezor.ui.layouts.progress import (  # noqa: F401
     monero_live_refresh_progress,
     monero_transaction_progress_inner,
 )
+from trezortranslate import TR
 
 DUMMY_PAYMENT_ID = b"\x00\x00\x00\x00\x00\x00\x00\x00"
 
@@ -33,19 +33,17 @@ class MoneroTransactionProgress:
         elif step == state.STEP_INP:
             info = f"{TR.monero__processing_inputs}\n{sub_step + 1}/{state.input_count}"
         elif step == state.STEP_VINI:
-            info = (
-                f"{TR.monero__hashing_inputs}n{sub_step + 1}/{state.input_count}"
-            )
+            info = f"{TR.monero__hashing_inputs}n{sub_step + 1}/{state.input_count}"
         elif step == state.STEP_ALL_IN:
             info = TR.monero__processing
         elif step == state.STEP_OUT:
-            info = f"{TR.monero__processing_outputs}\n{sub_step + 1}/{state.output_count}"
+            info = (
+                f"{TR.monero__processing_outputs}\n{sub_step + 1}/{state.output_count}"
+            )
         elif step == state.STEP_ALL_OUT:
             info = TR.monero__postprocessing
         elif step == state.STEP_SIGN:
-            info = (
-                f"{TR.monero__signing_inputs}\n{sub_step + 1}/{state.input_count}"
-            )
+            info = f"{TR.monero__signing_inputs}\n{sub_step + 1}/{state.input_count}"
         else:
             info = TR.monero__processing
 

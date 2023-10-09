@@ -8,10 +8,10 @@ if TYPE_CHECKING:
 async def get_public_key(
     msg: GetPublicKey, auth_msg: MessageType | None = None
 ) -> PublicKey:
-    from trezortranslate import TR
     from trezor import wire
     from trezor.enums import InputScriptType
     from trezor.messages import HDNodeType, PublicKey, UnlockPath
+    from trezortranslate import TR
 
     from apps.common import coininfo, paths
     from apps.common.keychain import FORBIDDEN_KEY_PATH, get_keychain

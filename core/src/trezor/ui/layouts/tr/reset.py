@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING
 
-from trezortranslate import TR
 import trezorui2
 from trezor.enums import ButtonRequestType
 from trezor.wire import ActionCancelled
+from trezortranslate import TR
 
 from ..common import interact
 from . import RustLayout, confirm_action, show_warning
@@ -30,7 +30,9 @@ async def show_share_words(
         check_title = TR.reset__check_backup_title
     elif group_index is None:
         title = f"{TR.words__title_share} #{share_index + 1}"
-        check_title = f"{TR.words__title_check} {TR.words__title_share} #{share_index + 1}"
+        check_title = (
+            f"{TR.words__title_check} {TR.words__title_share} #{share_index + 1}"
+        )
     else:
         title = f"{TR.words__title_group} {group_index + 1} - {TR.words__title_share} {share_index + 1}"
         check_title = f"{TR.words__title_group} {group_index + 1} - {TR.words__title_share} {share_index + 1}"

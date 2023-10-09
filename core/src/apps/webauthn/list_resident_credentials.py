@@ -7,9 +7,9 @@ if TYPE_CHECKING:
 async def list_resident_credentials(
     msg: WebAuthnListResidentCredentials,
 ) -> WebAuthnCredentials:
-    from trezortranslate import TR
     from trezor.messages import WebAuthnCredential, WebAuthnCredentials
     from trezor.ui.layouts import confirm_action
+    from trezortranslate import TR
 
     from . import resident_credentials
 

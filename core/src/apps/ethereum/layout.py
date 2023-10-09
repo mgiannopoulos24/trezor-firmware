@@ -1,6 +1,5 @@
 from typing import TYPE_CHECKING
 
-from trezortranslate import TR
 from trezor import ui
 from trezor.enums import ButtonRequestType
 from trezor.strings import format_plural
@@ -10,6 +9,7 @@ from trezor.ui.layouts import (
     confirm_text,
     should_show_more,
 )
+from trezortranslate import TR
 
 from .helpers import address_from_bytes, decode_typed_data
 

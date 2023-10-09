@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
-from trezortranslate import TR
 from trezor.wire import ProcessError
+from trezortranslate import TR
 
 from .signer import Signer
 

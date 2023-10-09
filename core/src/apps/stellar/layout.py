@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING
 
 import trezor.ui.layouts as layouts
-from trezortranslate import TR
 from trezor import strings
 from trezor.enums import ButtonRequestType
+from trezortranslate import TR
 
 from . import consts
 
