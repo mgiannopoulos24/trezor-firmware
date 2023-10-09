@@ -846,15 +846,15 @@
   },
   "tutorial": {
     "middle_click": "Stiskněte současně vlevo a vpravo pro potvrzení.",
-    "press_and_hold": "Stiskněte a podržte pravé tlačítko pro\nschválení důležitých operací.",
-    "ready_to_use": "Jste připraveni\npoužívat Trezor.",
-    "scroll_down": "Stiskněte vpravo pro posun dolů a přečtěte si veškerý obsah, pokud text nezapadne na jednu obrazovku.\n\rStiskněte vlevo pro posun nahoru.",
-    "sure_you_want_skip": "Jste si jisti, že chcete\ntutoriál přeskočit?",
+    "press_and_hold": "Stiskněte a podržte pravé tlačítko pro schválení důležitých operací.",
+    "ready_to_use": "Jste připraveni používat Trezor.",
+    "scroll_down": "Stiskněte vpravo pro posun dolů a přečtěte si veškerý obsah, pokud text nezapadne na jednu obrazovku. Stiskněte vlevo pro posun nahoru.",
+    "sure_you_want_skip": "Jste si jisti, že chcete tutoriál přeskočit?",
     "title_hello": "AHOJ",
     "title_screen_scroll": "POSUN OBRAZOVKY",
     "title_skip": "PŘESKOČIT TUTORIÁL",
     "title_tutorial_complete": "TUTORIÁL DOKONČEN",
-    "use_trezor": "Použijte Trezor stisknutím levého a pravého tlačítka.\n\rPokračujte vpravo.",
+    "use_trezor": "Trezor má levé a pravé tlačítko.\n\rPokračujte vpravo.",
     "welcome_press_right": "Vítejte v Trezoru. Stiskněte vpravo pro pokračování."
   },
   "u2f": {
