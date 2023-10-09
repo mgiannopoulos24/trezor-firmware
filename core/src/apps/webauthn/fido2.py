@@ -5,7 +5,7 @@ from micropython import const
 from typing import TYPE_CHECKING
 
 import storage.device as storage_device
-import trezortranslate as TR
+from trezortranslate import TR
 from trezor import config, io, log, loop, utils, wire, workflow
 from trezor.crypto import hashlib
 from trezor.crypto.curve import nist256p1
@@ -617,15 +617,15 @@ async def _confirm_bogus_app(title: str) -> None:
     if _last_auth_valid:
         await show_error_popup(
             title,
-            TR.tr("fido__device_already_registered"),
-            TR.tr("fido__already_registered"),
+            TR.fido__device_already_registered,
+            TR.fido__already_registered,
             timeout_ms=_POPUP_TIMEOUT_MS,
         )
     else:
         await show_error_popup(
             title,
-            TR.tr("fido__device_not_registered"),
-            TR.tr("fido__not_registered"),
+            TR.fido__device_not_registered,
+            TR.fido__not_registered,
             timeout_ms=_POPUP_TIMEOUT_MS,
         )
 
@@ -685,7 +685,7 @@ class U2fConfirmRegister(U2fState):
             await _confirm_bogus_app("U2F")
             return False
         else:
-            return await _confirm_fido(TR.tr("fido__title_u2f_register"), self._cred)
+            return await _confirm_fido(TR.fido__title_u2f_register, self._cred)
 
     def __eq__(self, other: object) -> bool:
         return (
@@ -695,7 +695,7 @@ class U2fConfirmRegister(U2fState):
 
 class U2fConfirmAuthenticate(U2fState):
     async def confirm_dialog(self) -> bool:
-        return await _confirm_fido(TR.tr("fido__title_u2f_auth"), self._cred)
+        return await _confirm_fido(TR.fido__title_u2f_auth, self._cred)
 
     def __eq__(self, other: object) -> bool:
         return (
@@ -804,7 +804,7 @@ class Fido2ConfirmMakeCredential(Fido2State):
         if self._cred.rp_id == _BOGUS_RP_ID:
             await _confirm_bogus_app("FIDO2")
             return True
-        if not await _confirm_fido(TR.tr("fido__title_register"), self._cred):
+        if not await _confirm_fido(TR.fido__title_register, self._cred):
             return False
         if self._user_verification:
             return await verify_user(KeepaliveCallback(self.cid, self.iface))
@@ -840,9 +840,9 @@ class Fido2ConfirmExcluded(Fido2ConfirmMakeCredential):
         self.finished = True
 
         await show_error_popup(
-            TR.tr("fido__title_register"),
-            TR.tr("fido__device_already_registered_with_template"),
-            TR.tr("fido__already_registered"),
+            TR.fido__title_register,
+            TR.fido__device_already_registered_with_template,
+            TR.fido__already_registered,
             self._cred.rp_id,  # description_param
             timeout_ms=_POPUP_TIMEOUT_MS,
         )
@@ -870,9 +870,7 @@ class Fido2ConfirmGetAssertion(Fido2State):
     async def confirm_dialog(self) -> bool:
         # There is a choice from more than one credential.
         try:
-            index = await _confirm_fido_choose(
-                TR.tr("fido__title_authenticate"), self._creds
-            )
+            index = await _confirm_fido_choose(TR.fido__title_authenticate, self._creds)
         except wire.ActionCancelled:
             return False
 
@@ -925,9 +923,9 @@ class Fido2ConfirmNoPin(State):
         self.finished = True
 
         await show_error_popup(
-            TR.tr("fido__title_verify_user"),
-            TR.tr("fido__please_enable_pin_protection"),
-            TR.tr("fido__unable_to_verify_user"),
+            TR.fido__title_verify_user,
+            TR.fido__please_enable_pin_protection,
+            TR.fido__unable_to_verify_user,
             timeout_ms=_POPUP_TIMEOUT_MS,
         )
         return False
@@ -948,9 +946,9 @@ class Fido2ConfirmNoCredentials(Fido2ConfirmGetAssertion):
         self.finished = True
 
         await show_error_popup(
-            TR.tr("fido__title_authenticate"),
-            TR.tr("fido__not_registered_with_template"),
-            TR.tr("fido__not_registered"),
+            TR.fido__title_authenticate,
+            TR.fido__not_registered_with_template,
+            TR.fido__not_registered,
             self._creds[0].app_name(),  # description_param
             timeout_ms=_POPUP_TIMEOUT_MS,
         )

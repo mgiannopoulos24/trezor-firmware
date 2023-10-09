@@ -105,12 +105,12 @@ class Busyscreen(HomescreenBase):
     RENDER_INDICATOR = storage_cache.BUSYSCREEN_ON
 
     def __init__(self, delay_ms: int) -> None:
-        import trezortranslate as TR
+        from trezortranslate import TR
 
         skip = storage_cache.homescreen_shown is self.RENDER_INDICATOR
         super().__init__(
             layout=trezorui2.show_progress_coinjoin(
-                title=TR.tr("coinjoin__waiting_for_others"),
+                title=TR.coinjoin__waiting_for_others,
                 indeterminate=True,
                 time_ms=delay_ms,
                 skip_first_paint=skip,

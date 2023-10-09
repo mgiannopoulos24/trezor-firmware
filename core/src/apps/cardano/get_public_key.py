@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 from ubinascii import hexlify
 
-import trezortranslate as TR
+from trezortranslate import TR
 
 from . import seed
 
@@ -40,7 +40,7 @@ async def get_public_key(
         from apps.common.paths import address_n_to_str
 
         path = address_n_to_str(address_n)
-        await show_pubkey(key.xpub, TR.tr("address__public_key"), path=path)
+        await show_pubkey(key.xpub, TR.address__public_key, path=path)
     return key
 
 

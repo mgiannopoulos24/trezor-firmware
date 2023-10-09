@@ -67,7 +67,7 @@ async def _generate_typed_data_hash(
 
     metamask_v4_compat - a flag that enables compatibility with MetaMask's signTypedData_v4 method
     """
-    import trezortranslate as TR
+    from trezortranslate import TR
 
     from .layout import (
         confirm_empty_typed_message,
@@ -100,8 +100,8 @@ async def _generate_typed_data_hash(
         show_message = await should_show_struct(
             primary_type,
             typed_data_envelope.types[primary_type].members,
-            TR.tr("ethereum__title_confirm_message"),
-            TR.tr("ethereum__show_full_message"),
+            TR.ethereum__title_confirm_message,
+            TR.ethereum__show_full_message,
         )
         message_hash = await typed_data_envelope.hash_struct(
             primary_type,

@@ -119,7 +119,7 @@ def set_label(label: str) -> None:
 
 
 def get_language() -> str:
-    import trezortranslate as TR
+    from trezortranslate import language_name
 
     language = common.get(_NAMESPACE, _LANGUAGE, True)  # public
     if language:
@@ -127,7 +127,7 @@ def get_language() -> str:
 
     # After storage wipe, language can still be set in translations area.
     # In that case, saving it to the storage for the next quick retrieval.
-    translation_lang = TR.language_name()
+    translation_lang = language_name()
     if translation_lang:
         set_language(translation_lang)
         return translation_lang

@@ -6,7 +6,7 @@ if TYPE_CHECKING:
 
 async def wipe_device(msg: WipeDevice) -> Success:
     import storage
-    import trezortranslate as TR
+    from trezortranslate import TR
     from trezor.enums import ButtonRequestType
     from trezor.messages import Success
     from trezor.ui.layouts import confirm_action
@@ -15,11 +15,11 @@ async def wipe_device(msg: WipeDevice) -> Success:
 
     await confirm_action(
         "confirm_wipe",
-        TR.tr("wipe__title"),
-        TR.tr("wipe__info"),
-        TR.tr("wipe__want_to_wipe"),
+        TR.wipe__title,
+        TR.wipe__info,
+        TR.wipe__want_to_wipe,
         reverse=True,
-        verb=TR.tr("buttons__hold_to_confirm"),
+        verb=TR.buttons__hold_to_confirm,
         hold=True,
         hold_danger=True,
         br_code=ButtonRequestType.WipeDevice,

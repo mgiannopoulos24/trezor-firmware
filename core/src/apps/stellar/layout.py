@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 import trezor.ui.layouts as layouts
-import trezortranslate as TR
+from trezortranslate import TR
 from trezor import strings
 from trezor.enums import ButtonRequestType
 
@@ -18,12 +18,12 @@ async def require_confirm_init(
     accounts_match: bool,
 ) -> None:
     description = (
-        TR.tr("stellar__initialize_signing_with") + TR.tr("stellar__your_account")
+        TR.stellar__initialize_signing_with + TR.stellar__your_account
         if accounts_match
         else ""
     )
     await layouts.confirm_address(
-        TR.tr("stellar__confirm_stellar"),
+        TR.stellar__confirm_stellar,
         address,
         description,
         "confirm_init",
@@ -33,15 +33,15 @@ async def require_confirm_init(
     if network_passphrase == consts.NETWORK_PASSPHRASE_PUBLIC:
         network = None
     elif network_passphrase == consts.NETWORK_PASSPHRASE_TESTNET:
-        network = TR.tr("stellar__testnet_network")
+        network = TR.stellar__testnet_network
     else:
-        network = TR.tr("stellar__private_network")
+        network = TR.stellar__private_network
 
     if network:
         await layouts.confirm_metadata(
             "confirm_init_network",
-            TR.tr("stellar__confirm_network"),
-            TR.tr("stellar__on_network_template"),
+            TR.stellar__confirm_network,
+            TR.stellar__on_network_template,
             network,
             ButtonRequestType.ConfirmOutput,
         )
@@ -50,19 +50,19 @@ async def require_confirm_init(
 async def require_confirm_timebounds(start: int, end: int) -> None:
     await layouts.confirm_properties(
         "confirm_timebounds",
-        TR.tr("stellar__confirm_timebounds"),
+        TR.stellar__confirm_timebounds,
         (
             (
-                TR.tr("stellar__valid_from"),
+                TR.stellar__valid_from,
                 strings.format_timestamp(start)
                 if start > 0
-                else TR.tr("stellar__no_restriction"),
+                else TR.stellar__no_restriction,
             ),
             (
-                TR.tr("stellar__valid_to"),
+                TR.stellar__valid_to,
                 strings.format_timestamp(end)
                 if end > 0
-                else TR.tr("stellar__no_restriction"),
+                else TR.stellar__no_restriction,
             ),
         ),
     )
@@ -82,15 +82,15 @@ async def require_confirm_memo(memo_type: StellarMemoType, memo_text: str) -> No
     else:
         return await layouts.confirm_action(
             "confirm_memo",
-            TR.tr("stellar__confirm_memo"),
-            TR.tr("stellar__no_memo_set"),
-            TR.tr("stellar__exchanges_require_memo"),
+            TR.stellar__confirm_memo,
+            TR.stellar__no_memo_set,
+            TR.stellar__exchanges_require_memo,
             br_code=ButtonRequestType.ConfirmOutput,
         )
 
     await layouts.confirm_blob(
         "confirm_memo",
-        TR.tr("stellar__confirm_memo"),
+        TR.stellar__confirm_memo,
         memo_text,
         description,
     )
@@ -99,12 +99,13 @@ async def require_confirm_memo(memo_type: StellarMemoType, memo_text: str) -> No
 async def require_confirm_final(fee: int, num_operations: int) -> None:
     # TODO: handle translation
     op_str = strings.format_plural("{count} {plural}", num_operations, "operation")
-    text = TR.tr("stellar__sign_tx_count_template").format(op_str) + TR.tr(
-        "stellar__sign_tx_fee_template"
+    text = (
+        TR.stellar__sign_tx_count_template.format(op_str)
+        + TR.stellar__sign_tx_fee_template
     )
     await layouts.confirm_metadata(
         "confirm_final",
-        TR.tr("stellar__final_confirm"),
+        TR.stellar__final_confirm,
         text,
         format_amount(fee),
         hold=True,

@@ -1,4 +1,4 @@
-import trezortranslate as TR
+from trezortranslate import TR
 from storage.sd_salt import SD_CARD_HOT_SWAPPABLE
 from trezor import io, wire
 from trezor.ui.layouts import confirm_action, show_error_and_raise
@@ -12,18 +12,18 @@ async def _confirm_retry_wrong_card() -> None:
     if SD_CARD_HOT_SWAPPABLE:
         await confirm_action(
             "warning_wrong_sd",
-            TR.tr("sd_card__title"),
-            TR.tr("sd_card__wrong_sd_card"),
-            TR.tr("sd_card__insert_correct_card"),
-            verb=TR.tr("buttons__retry"),
-            verb_cancel=TR.tr("buttons__abort"),
+            TR.sd_card__title,
+            TR.sd_card__wrong_sd_card,
+            TR.sd_card__insert_correct_card,
+            verb=TR.buttons__retry,
+            verb_cancel=TR.buttons__abort,
             exc=SdCardUnavailable("Wrong SD card."),
         )
     else:
         await show_error_and_raise(
             "warning_wrong_sd",
-            TR.tr("sd_card__unplug_and_insert_correct"),
-            TR.tr("sd_card__wrong_sd_card"),
+            TR.sd_card__unplug_and_insert_correct,
+            TR.sd_card__wrong_sd_card,
             exc=SdCardUnavailable("Wrong SD card."),
         )
 
@@ -32,18 +32,18 @@ async def _confirm_retry_insert_card() -> None:
     if SD_CARD_HOT_SWAPPABLE:
         await confirm_action(
             "warning_no_sd",
-            TR.tr("sd_card__title"),
-            TR.tr("sd_card__card_required"),
-            TR.tr("sd_card__please_insert"),
-            verb=TR.tr("buttons__retry"),
-            verb_cancel=TR.tr("buttons__abort"),
+            TR.sd_card__title,
+            TR.sd_card__card_required,
+            TR.sd_card__please_insert,
+            verb=TR.buttons__retry,
+            verb_cancel=TR.buttons__abort,
             exc=SdCardUnavailable("SD card required."),
         )
     else:
         await show_error_and_raise(
             "warning_no_sd",
-            TR.tr("sd_card__please_unplug_and_insert"),
-            TR.tr("sd_card__card_required"),
+            TR.sd_card__please_unplug_and_insert,
+            TR.sd_card__card_required,
             exc=SdCardUnavailable("SD card required."),
         )
 
@@ -52,22 +52,22 @@ async def _confirm_format_card() -> None:
     # Format card? yes/no
     await confirm_action(
         "warning_format_sd",
-        TR.tr("sd_card__error"),
-        TR.tr("sd_card__unknown_filesystem"),
-        TR.tr("sd_card__use_different_card"),
-        verb=TR.tr("buttons__format"),
-        verb_cancel=TR.tr("buttons__cancel"),
+        TR.sd_card__error,
+        TR.sd_card__unknown_filesystem,
+        TR.sd_card__use_different_card,
+        verb=TR.buttons__format,
+        verb_cancel=TR.buttons__cancel,
         exc=SdCardUnavailable("SD card not formatted."),
     )
 
     # Confirm formatting
     await confirm_action(
         "confirm_format_sd",
-        TR.tr("sd_card__format_card"),
-        TR.tr("sd_card__all_data_will_be_lost"),
-        TR.tr("sd_card__wanna_format"),
+        TR.sd_card__format_card,
+        TR.sd_card__all_data_will_be_lost,
+        TR.sd_card__wanna_format,
         reverse=True,
-        verb=TR.tr("sd_card__format_card"),
+        verb=TR.sd_card__format_card,
         hold=True,
         exc=SdCardUnavailable("SD card not formatted."),
     )
@@ -78,11 +78,11 @@ async def confirm_retry_sd(
 ) -> None:
     await confirm_action(
         "warning_sd_retry",
-        TR.tr("sd_card__title_problem"),
+        TR.sd_card__title_problem,
         None,
-        TR.tr("sd_card__problem_accessing"),
-        verb=TR.tr("buttons__retry"),
-        verb_cancel=TR.tr("buttons__abort"),
+        TR.sd_card__problem_accessing,
+        verb=TR.buttons__retry,
+        verb_cancel=TR.buttons__abort,
         exc=exc,
     )
 

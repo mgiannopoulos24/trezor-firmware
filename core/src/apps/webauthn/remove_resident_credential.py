@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 async def remove_resident_credential(msg: WebAuthnRemoveResidentCredential) -> Success:
     import storage.device
     import storage.resident_credentials
-    import trezortranslate as TR
+    from trezortranslate import TR
     from trezor import wire
     from trezor.messages import Success
     from trezor.ui.layouts.fido import confirm_fido
@@ -24,7 +24,7 @@ async def remove_resident_credential(msg: WebAuthnRemoveResidentCredential) -> S
         raise wire.ProcessError("Invalid credential index.")
 
     await confirm_fido(
-        TR.tr("fido__title_remove_credential"),
+        TR.fido__title_remove_credential,
         cred.app_name(),
         cred.icon_name(),
         [cred.account_name()],

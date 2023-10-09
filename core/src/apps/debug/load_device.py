@@ -6,7 +6,7 @@ if TYPE_CHECKING:
 
 async def load_device(msg: LoadDevice) -> Success:
     import storage.device as storage_device
-    import trezortranslate as TR
+    from trezortranslate import TR
     from trezor import config
     from trezor.crypto import bip39, slip39
     from trezor.enums import BackupType
@@ -40,9 +40,9 @@ async def load_device(msg: LoadDevice) -> Success:
     # _warn
     await confirm_action(
         "warn_loading_seed",
-        TR.tr("debug__loading_seed"),
-        TR.tr("debug__loading_seed_not_recommended"),
-        TR.tr("words__know_what_your_doing"),
+        TR.debug__loading_seed,
+        TR.debug__loading_seed_not_recommended,
+        TR.words__know_what_your_doing,
     )
     # END _warn
 

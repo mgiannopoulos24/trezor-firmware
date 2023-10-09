@@ -1,6 +1,6 @@
 from micropython import const
 
-import trezortranslate as TR
+from trezortranslate import TR
 
 # https://book.world.dev.cardano.org/environments.html
 MAINNET = const(764824073)
@@ -21,4 +21,4 @@ def is_mainnet(protocol_magic: int) -> bool:
 
 
 def to_ui_string(value: int) -> str:
-    return NAMES.get(value, TR.tr("cardano__unknown"))
+    return NAMES.get(value, TR.cardano__unknown)

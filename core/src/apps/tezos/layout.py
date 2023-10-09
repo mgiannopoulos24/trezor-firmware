@@ -1,4 +1,4 @@
-import trezortranslate as TR
+from trezortranslate import TR
 from trezor.enums import ButtonRequestType
 from trezor.ui.layouts import confirm_address, confirm_metadata, confirm_properties
 
@@ -22,15 +22,15 @@ async def require_confirm_fee(value: int, fee: int) -> None:
     await confirm_total(
         format_tezos_amount(value),
         format_tezos_amount(fee),
-        total_label=TR.tr("tezos__amount"),
+        total_label=TR.tezos__amount,
     )
 
 
 async def require_confirm_origination(address: str) -> None:
     await confirm_address(
-        TR.tr("tezos__confirm_origination"),
+        TR.tezos__confirm_origination,
         address,
-        TR.tr("tezos__address"),
+        TR.tezos__address,
         "confirm_origination",
         BR_SIGN_TX,
     )
@@ -39,10 +39,10 @@ async def require_confirm_origination(address: str) -> None:
 async def require_confirm_origination_fee(balance: int, fee: int) -> None:
     await confirm_properties(
         "confirm_origination_final",
-        TR.tr("tezos__confirm_origination"),
+        TR.tezos__confirm_origination,
         (
-            (TR.tr("tezos__balance"), format_tezos_amount(balance)),
-            (TR.tr("tezos__fee"), format_tezos_amount(fee)),
+            (TR.tezos__balance, format_tezos_amount(balance)),
+            (TR.tezos__fee, format_tezos_amount(fee)),
         ),
         hold=True,
     )
@@ -50,9 +50,9 @@ async def require_confirm_origination_fee(balance: int, fee: int) -> None:
 
 async def require_confirm_delegation_baker(baker: str) -> None:
     await confirm_address(
-        TR.tr("tezos__confirm_delegation"),
+        TR.tezos__confirm_delegation,
         baker,
-        TR.tr("tezos__baker_address"),
+        TR.tezos__baker_address,
         "confirm_delegation",
         BR_SIGN_TX,
     )
@@ -61,8 +61,8 @@ async def require_confirm_delegation_baker(baker: str) -> None:
 async def require_confirm_set_delegate(fee: int) -> None:
     await confirm_metadata(
         "confirm_delegation_final",
-        TR.tr("tezos__confirm_delegation"),
-        TR.tr("tezos__fee") + "\n{}",
+        TR.tezos__confirm_delegation,
+        TR.tezos__fee + "\n{}",
         format_tezos_amount(fee),
         BR_SIGN_TX,
         hold=True,
@@ -72,10 +72,10 @@ async def require_confirm_set_delegate(fee: int) -> None:
 async def require_confirm_register_delegate(address: str, fee: int) -> None:
     await confirm_properties(
         "confirm_register_delegate",
-        TR.tr("tezos__register_delegate"),
+        TR.tezos__register_delegate,
         (
-            (TR.tr("tezos__fee"), format_tezos_amount(fee)),
-            (TR.tr("tezos__address"), address),
+            (TR.tezos__fee, format_tezos_amount(fee)),
+            (TR.tezos__address, address),
         ),
         hold=True,
         br_code=BR_SIGN_TX,
@@ -94,10 +94,10 @@ def format_tezos_amount(value: int) -> str:
 async def require_confirm_ballot(proposal: str, ballot: str) -> None:
     await confirm_properties(
         "confirm_ballot",
-        TR.tr("tezos__submit_ballot"),
+        TR.tezos__submit_ballot,
         (
-            (TR.tr("tezos__ballot"), ballot),
-            (f"{TR.tr('tezos__proposal')}:", proposal),
+            (TR.tezos__ballot, ballot),
+            (f"{TR.tezos__proposal}:", proposal),
         ),
         hold=True,
         br_code=BR_SIGN_TX,
@@ -107,11 +107,9 @@ async def require_confirm_ballot(proposal: str, ballot: str) -> None:
 async def require_confirm_proposals(proposals: list[str]) -> None:
     await confirm_properties(
         "confirm_proposals",
-        TR.tr("tezos__submit_proposals")
-        if len(proposals) > 1
-        else TR.tr("tezos__submit_proposal"),
+        TR.tezos__submit_proposals if len(proposals) > 1 else TR.tezos__submit_proposal,
         [
-            (f"{TR.tr('tezos__proposal')} " + str(i), proposal)
+            (f"{TR.tezos__proposal} " + str(i), proposal)
             for i, proposal in enumerate(proposals, 1)
         ],
         hold=True,
@@ -121,9 +119,9 @@ async def require_confirm_proposals(proposals: list[str]) -> None:
 
 async def require_confirm_delegation_manager_withdraw(address: str) -> None:
     await confirm_address(
-        TR.tr("tezos__remove_delegation"),
+        TR.tezos__remove_delegation,
         address,
-        TR.tr("tezos__delegator"),
+        TR.tezos__delegator,
         "confirm_undelegation",
         BR_SIGN_TX,
     )
@@ -132,8 +130,8 @@ async def require_confirm_delegation_manager_withdraw(address: str) -> None:
 async def require_confirm_manager_remove_delegate(fee: int) -> None:
     await confirm_metadata(
         "confirm_undelegation_final",
-        TR.tr("tezos__remove_delegation"),
-        TR.tr("tezos__fee") + "\n{}",
+        TR.tezos__remove_delegation,
+        TR.tezos__fee + "\n{}",
         format_tezos_amount(fee),
         BR_SIGN_TX,
         hold=True,

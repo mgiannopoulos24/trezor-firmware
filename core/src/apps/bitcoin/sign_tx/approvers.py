@@ -257,18 +257,18 @@ class BasicApprover(Approver):
     def _replacement_title(
         self, tx_info: TxInfo, orig_txs: list[OriginalTxInfo]
     ) -> str:
-        import trezortranslate as TR
+        from trezortranslate import TR
 
         if self.is_payjoin():
-            return TR.tr("bitcoin__title_payjoin")
+            return TR.bitcoin__title_payjoin
         elif tx_info.rbf_disabled() and any(
             not orig.rbf_disabled() for orig in orig_txs
         ):
-            return TR.tr("bitcoin__title_finalize_transaction")
+            return TR.bitcoin__title_finalize_transaction
         elif len(orig_txs) > 1:
-            return TR.tr("bitcoin__title_meld_transaction")
+            return TR.bitcoin__title_meld_transaction
         else:
-            return TR.tr("bitcoin__title_update_transaction")
+            return TR.bitcoin__title_update_transaction
 
     async def approve_tx(self, tx_info: TxInfo, orig_txs: list[OriginalTxInfo]) -> None:
         from trezor.wire import NotEnoughFunds

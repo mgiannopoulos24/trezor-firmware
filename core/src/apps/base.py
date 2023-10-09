@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 
 import storage.cache as storage_cache
 import storage.device as storage_device
-import trezortranslate as TR
+from trezortranslate import TR
 from trezor import config, utils, wire, workflow
 from trezor.enums import HomescreenFormat, MessageType
 from trezor.messages import Success, UnlockPath
@@ -222,9 +222,7 @@ async def handle_Ping(msg: Ping) -> Success:
         from trezor.enums import ButtonRequestType as B
         from trezor.ui.layouts import confirm_action
 
-        await confirm_action(
-            "ping", TR.tr("buttons__confirm"), "ping", br_code=B.ProtectCall
-        )
+        await confirm_action("ping", TR.buttons__confirm, "ping", br_code=B.ProtectCall)
     return Success(message=msg.message)
 
 
@@ -287,8 +285,8 @@ async def handle_UnlockPath(msg: UnlockPath) -> protobuf.MessageType:
         await confirm_action(
             "confirm_coinjoin_access",
             title="Coinjoin",
-            description=TR.tr("coinjoin__access_account"),
-            verb=TR.tr("buttons__access"),
+            description=TR.coinjoin__access_account,
+            verb=TR.buttons__access,
         )
 
     wire_types = (MessageType.GetAddress, MessageType.GetPublicKey, MessageType.SignTx)

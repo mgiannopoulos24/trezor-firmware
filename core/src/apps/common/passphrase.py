@@ -30,7 +30,7 @@ async def get() -> str:
 
 
 async def _request_on_host() -> str:
-    import trezortranslate as TR
+    from trezortranslate import TR
     from trezor.messages import PassphraseAck, PassphraseRequest
     from trezor.ui.layouts import request_passphrase_on_host
     from trezor.wire.context import call
@@ -61,20 +61,20 @@ async def _request_on_host() -> str:
         if storage_device.get_hide_passphrase_from_host():
             await confirm_action(
                 "passphrase_host1_hidden",
-                TR.tr("passphrase__hidden_wallet"),
-                description=f"{TR.tr('passphrase__access_hidden_wallet')}\n{TR.tr('passphrase__from_host_not_shown')}",
+                TR.passphrase__hidden_wallet,
+                description=f"{TR.passphrase__access_hidden_wallet}\n{TR.passphrase__from_host_not_shown}",
             )
         else:
             await confirm_action(
                 "passphrase_host1",
-                TR.tr("passphrase__hidden_wallet"),
-                description=TR.tr("passphrase__next_screen_will_show_passphrase"),
-                verb=TR.tr("buttons__continue"),
+                TR.passphrase__hidden_wallet,
+                description=TR.passphrase__next_screen_will_show_passphrase,
+                verb=TR.buttons__continue,
             )
 
             await confirm_blob(
                 "passphrase_host2",
-                TR.tr("passphrase__title_confirm"),
+                TR.passphrase__title_confirm,
                 passphrase,
             )
 

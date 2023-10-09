@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-import trezortranslate as TR
+from trezortranslate import TR
 from trezor.wire import ProcessError
 
 from .signer import Signer
@@ -14,7 +14,7 @@ class MultisigSigner(Signer):
     The multisig signing mode only allows signing with multisig (and minting) keys.
     """
 
-    SIGNING_MODE_TITLE = TR.tr("cardano__confirming_a_multisig_transaction")
+    SIGNING_MODE_TITLE = TR.cardano__confirming_a_multisig_transaction
 
     def _validate_tx_init(self) -> None:
         msg = self.msg  # local_cache_attribute

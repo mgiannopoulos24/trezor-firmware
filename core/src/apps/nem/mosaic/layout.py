@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-import trezortranslate as TR
+from trezortranslate import TR
 
 from ..layout import require_confirm_content, require_confirm_final
 
@@ -19,12 +19,12 @@ async def ask_mosaic_creation(
     from ..layout import require_confirm_fee
 
     creation_message = [
-        (TR.tr("nem__create_mosaic"), creation.definition.mosaic),
-        (TR.tr("nem__under_namespace"), creation.definition.namespace),
+        (TR.nem__create_mosaic, creation.definition.mosaic),
+        (TR.nem__under_namespace, creation.definition.namespace),
     ]
-    await require_confirm_content(TR.tr("nem__create_mosaic"), creation_message)
+    await require_confirm_content(TR.nem__create_mosaic, creation_message)
     await _require_confirm_properties(creation.definition)
-    await require_confirm_fee(TR.tr("nem__confirm_creation_fee"), creation.fee)
+    await require_confirm_fee(TR.nem__confirm_creation_fee, creation.fee)
 
     await require_confirm_final(common.fee)
 
@@ -37,18 +37,18 @@ async def ask_supply_change(
     from ..layout import require_confirm_text
 
     supply_message = [
-        (TR.tr("nem__modify_supply_for"), change.mosaic),
-        (TR.tr("nem__under_namespace"), change.namespace),
+        (TR.nem__modify_supply_for, change.mosaic),
+        (TR.nem__under_namespace, change.namespace),
     ]
-    await require_confirm_content(TR.tr("nem__supply_change"), supply_message)
+    await require_confirm_content(TR.nem__supply_change, supply_message)
     if change.type == NEMSupplyChangeType.SupplyChange_Decrease:
-        action = TR.tr("nem__decrease")
+        action = TR.nem__decrease
     elif change.type == NEMSupplyChangeType.SupplyChange_Increase:
-        action = TR.tr("nem__increase")
+        action = TR.nem__increase
     else:
         raise ValueError("Invalid supply change type")
     await require_confirm_text(
-        TR.tr("nem__supply_units_template").format(action, change.delta)
+        TR.nem__supply_units_template.format(action, change.delta)
     )
 
     await require_confirm_final(common.fee)
@@ -63,20 +63,18 @@ async def _require_confirm_properties(definition: NEMMosaicDefinition) -> None:
 
     # description
     if definition.description:
-        append((TR.tr("nem__description"), definition.description))
+        append((TR.nem__description, definition.description))
 
     # transferable
-    transferable = TR.tr("nem__yes") if definition.transferable else TR.tr("nem__no")
-    append((TR.tr("nem__transferable"), transferable))
+    transferable = TR.nem__yes if definition.transferable else TR.nem__no
+    append((TR.nem__transferable, transferable))
 
     # mutable_supply
-    imm = (
-        TR.tr("nem__mutable") if definition.mutable_supply else TR.tr("nem__immutable")
-    )
+    imm = TR.nem__mutable if definition.mutable_supply else TR.nem__immutable
     if definition.supply:
-        append((TR.tr("nem__initial_supply"), str(definition.supply) + "\n" + imm))
+        append((TR.nem__initial_supply, str(definition.supply) + "\n" + imm))
     else:
-        append((TR.tr("nem__initial_supply"), imm))
+        append((TR.nem__initial_supply, imm))
 
     # levy
     if definition.levy:
@@ -85,23 +83,23 @@ async def _require_confirm_properties(definition: NEMMosaicDefinition) -> None:
         assert definition.levy_namespace is not None
         assert definition.levy_mosaic is not None
 
-        append((TR.tr("nem__levy_recipient"), definition.levy_address))
+        append((TR.nem__levy_recipient, definition.levy_address))
 
-        append((TR.tr("nem__levy_fee"), str(definition.fee)))
-        append((TR.tr("nem__levy_divisibility"), str(definition.divisibility)))
+        append((TR.nem__levy_fee, str(definition.fee)))
+        append((TR.nem__levy_divisibility, str(definition.divisibility)))
 
-        append((TR.tr("nem__levy_namespace"), definition.levy_namespace))
-        append((TR.tr("nem__levy_mosaic"), definition.levy_mosaic))
+        append((TR.nem__levy_namespace, definition.levy_namespace))
+        append((TR.nem__levy_mosaic, definition.levy_mosaic))
 
         levy_type = (
-            TR.tr("nem__absolute")
+            TR.nem__absolute
             if definition.levy == NEMMosaicLevy.MosaicLevy_Absolute
-            else TR.tr("nem__percentile")
+            else TR.nem__percentile
         )
-        append((TR.tr("nem__levy_type"), levy_type))
+        append((TR.nem__levy_type, levy_type))
 
     await confirm_properties(
         "confirm_properties",
-        TR.tr("nem__confirm_properties"),
+        TR.nem__confirm_properties,
         properties,
     )

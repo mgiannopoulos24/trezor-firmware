@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-import trezortranslate as TR
+from trezortranslate import TR
 from trezor.enums import ButtonRequestType
 from trezor.ui.layouts import confirm_properties
 
@@ -52,11 +52,11 @@ async def _confirm_properties(
 async def confirm_action_buyram(msg: EosActionBuyRam) -> None:
     await _confirm_properties(
         "confirm_buyram",
-        TR.tr("eos__buy_ram"),
+        TR.eos__buy_ram,
         (
-            (TR.tr("eos__payer"), eos_name_to_string(msg.payer)),
-            (TR.tr("eos__receiver"), eos_name_to_string(msg.receiver)),
-            (TR.tr("eos__amount"), eos_asset_to_string(msg.quantity)),
+            (TR.eos__payer, eos_name_to_string(msg.payer)),
+            (TR.eos__receiver, eos_name_to_string(msg.receiver)),
+            (TR.eos__amount, eos_asset_to_string(msg.quantity)),
         ),
     )
 
@@ -64,32 +64,32 @@ async def confirm_action_buyram(msg: EosActionBuyRam) -> None:
 async def confirm_action_buyrambytes(msg: EosActionBuyRamBytes) -> None:
     await _confirm_properties(
         "confirm_buyrambytes",
-        TR.tr("eos__buy_ram"),
+        TR.eos__buy_ram,
         (
-            (TR.tr("eos__payer"), eos_name_to_string(msg.payer)),
-            (TR.tr("eos__receiver"), eos_name_to_string(msg.receiver)),
-            (TR.tr("eos__bytes"), str(msg.bytes)),
+            (TR.eos__payer, eos_name_to_string(msg.payer)),
+            (TR.eos__receiver, eos_name_to_string(msg.receiver)),
+            (TR.eos__bytes, str(msg.bytes)),
         ),
     )
 
 
 async def confirm_action_delegate(msg: EosActionDelegate) -> None:
     props = [
-        (TR.tr("eos__sender"), eos_name_to_string(msg.sender)),
-        (TR.tr("eos__receiver"), eos_name_to_string(msg.receiver)),
-        (TR.tr("eos__cpu"), eos_asset_to_string(msg.cpu_quantity)),
-        (TR.tr("eos__net"), eos_asset_to_string(msg.net_quantity)),
+        (TR.eos__sender, eos_name_to_string(msg.sender)),
+        (TR.eos__receiver, eos_name_to_string(msg.receiver)),
+        (TR.eos__cpu, eos_asset_to_string(msg.cpu_quantity)),
+        (TR.eos__net, eos_asset_to_string(msg.net_quantity)),
     ]
     append = props.append  # local_cache_attribute
     if msg.transfer:
-        append((TR.tr("eos__transfer"), TR.tr("eos__yes")))
-        append((TR.tr("eos__receiver"), eos_name_to_string(msg.receiver)))
+        append((TR.eos__transfer, TR.eos__yes))
+        append((TR.eos__receiver, eos_name_to_string(msg.receiver)))
     else:
-        append((TR.tr("eos__transfer"), TR.tr("eos__no")))
+        append((TR.eos__transfer, TR.eos__no))
 
     await _confirm_properties(
         "confirm_delegate",
-        TR.tr("eos__delegate"),
+        TR.eos__delegate,
         props,
     )
 
@@ -97,10 +97,10 @@ async def confirm_action_delegate(msg: EosActionDelegate) -> None:
 async def confirm_action_sellram(msg: EosActionSellRam) -> None:
     await _confirm_properties(
         "confirm_sellram",
-        TR.tr("eos__sell_ram"),
+        TR.eos__sell_ram,
         (
-            (TR.tr("eos__receiver"), eos_name_to_string(msg.account)),
-            (TR.tr("eos__bytes"), str(msg.bytes)),
+            (TR.eos__receiver, eos_name_to_string(msg.account)),
+            (TR.eos__bytes, str(msg.bytes)),
         ),
     )
 
@@ -108,12 +108,12 @@ async def confirm_action_sellram(msg: EosActionSellRam) -> None:
 async def confirm_action_undelegate(msg: EosActionUndelegate) -> None:
     await _confirm_properties(
         "confirm_undelegate",
-        TR.tr("eos__undelegate"),
+        TR.eos__undelegate,
         (
-            (TR.tr("eos__sender"), eos_name_to_string(msg.sender)),
-            (TR.tr("eos__receiver"), eos_name_to_string(msg.receiver)),
-            (TR.tr("eos__cpu"), eos_asset_to_string(msg.cpu_quantity)),
-            (TR.tr("eos__net"), eos_asset_to_string(msg.net_quantity)),
+            (TR.eos__sender, eos_name_to_string(msg.sender)),
+            (TR.eos__receiver, eos_name_to_string(msg.receiver)),
+            (TR.eos__cpu, eos_asset_to_string(msg.cpu_quantity)),
+            (TR.eos__net, eos_asset_to_string(msg.net_quantity)),
         ),
     )
 
@@ -121,8 +121,8 @@ async def confirm_action_undelegate(msg: EosActionUndelegate) -> None:
 async def confirm_action_refund(msg: EosActionRefund) -> None:
     await _confirm_properties(
         "confirm_refund",
-        TR.tr("eos__refund"),
-        ((TR.tr("eos__owner"), eos_name_to_string(msg.owner)),),
+        TR.eos__refund,
+        ((TR.eos__owner, eos_name_to_string(msg.owner)),),
     )
 
 
@@ -133,10 +133,10 @@ async def confirm_action_voteproducer(msg: EosActionVoteProducer) -> None:
         # PROXY
         await _confirm_properties(
             "confirm_voteproducer",
-            TR.tr("eos__vote_for_proxy"),
+            TR.eos__vote_for_proxy,
             (
-                (TR.tr("eos__voter"), eos_name_to_string(msg.voter)),
-                (TR.tr("eos__proxy"), eos_name_to_string(msg.proxy)),
+                (TR.eos__voter, eos_name_to_string(msg.voter)),
+                (TR.eos__proxy, eos_name_to_string(msg.proxy)),
             ),
         )
 
@@ -144,7 +144,7 @@ async def confirm_action_voteproducer(msg: EosActionVoteProducer) -> None:
         # PRODUCERS
         await _confirm_properties(
             "confirm_voteproducer",
-            TR.tr("eos__vote_for_producers"),
+            TR.eos__vote_for_producers,
             (
                 (f"{wi:2d}. {eos_name_to_string(producer)}", None)
                 for wi, producer in enumerate(producers, 1)
@@ -155,37 +155,37 @@ async def confirm_action_voteproducer(msg: EosActionVoteProducer) -> None:
         # Cancel vote
         await _confirm_properties(
             "confirm_voteproducer",
-            TR.tr("eos__cancel_vote"),
-            ((TR.tr("eos__voter"), eos_name_to_string(msg.voter)),),
+            TR.eos__cancel_vote,
+            ((TR.eos__voter, eos_name_to_string(msg.voter)),),
         )
 
 
 async def confirm_action_transfer(msg: EosActionTransfer, account: str) -> None:
     props = [
-        (TR.tr("eos__from"), eos_name_to_string(msg.sender)),
-        (TR.tr("eos__to"), eos_name_to_string(msg.receiver)),
-        (TR.tr("eos__amount"), eos_asset_to_string(msg.quantity)),
-        (TR.tr("eos__contract"), account),
+        (TR.eos__from, eos_name_to_string(msg.sender)),
+        (TR.eos__to, eos_name_to_string(msg.receiver)),
+        (TR.eos__amount, eos_asset_to_string(msg.quantity)),
+        (TR.eos__contract, account),
     ]
     if msg.memo is not None:
-        props.append((TR.tr("eos__memo"), msg.memo[:512]))
+        props.append((TR.eos__memo, msg.memo[:512]))
     await _confirm_properties(
         "confirm_transfer",
-        TR.tr("eos__transfer").replace(":", ""),
+        TR.eos__transfer.replace(":", ""),
         props,
     )
 
 
 async def confirm_action_updateauth(msg: EosActionUpdateAuth) -> None:
     props: list[PropertyType] = [
-        (TR.tr("eos__account"), eos_name_to_string(msg.account)),
-        (TR.tr("eos__permission"), eos_name_to_string(msg.permission)),
-        (TR.tr("eos__parent"), eos_name_to_string(msg.parent)),
+        (TR.eos__account, eos_name_to_string(msg.account)),
+        (TR.eos__permission, eos_name_to_string(msg.permission)),
+        (TR.eos__parent, eos_name_to_string(msg.parent)),
     ]
     props.extend(authorization_fields(msg.auth))
     await _confirm_properties(
         "confirm_updateauth",
-        TR.tr("eos__update_auth"),
+        TR.eos__update_auth,
         props,
     )
 
@@ -193,10 +193,10 @@ async def confirm_action_updateauth(msg: EosActionUpdateAuth) -> None:
 async def confirm_action_deleteauth(msg: EosActionDeleteAuth) -> None:
     await _confirm_properties(
         "confirm_deleteauth",
-        TR.tr("eos__delete_auth"),
+        TR.eos__delete_auth,
         (
-            (TR.tr("eos__account"), eos_name_to_string(msg.account)),
-            (TR.tr("eos__permission"), eos_name_to_string(msg.permission)),
+            (TR.eos__account, eos_name_to_string(msg.account)),
+            (TR.eos__permission, eos_name_to_string(msg.permission)),
         ),
     )
 
@@ -204,12 +204,12 @@ async def confirm_action_deleteauth(msg: EosActionDeleteAuth) -> None:
 async def confirm_action_linkauth(msg: EosActionLinkAuth) -> None:
     await _confirm_properties(
         "confirm_linkauth",
-        TR.tr("eos__link_auth"),
+        TR.eos__link_auth,
         (
-            (TR.tr("eos__account"), eos_name_to_string(msg.account)),
-            (TR.tr("eos__code"), eos_name_to_string(msg.code)),
-            (TR.tr("eos__type"), eos_name_to_string(msg.type)),
-            (TR.tr("eos__requirement"), eos_name_to_string(msg.requirement)),
+            (TR.eos__account, eos_name_to_string(msg.account)),
+            (TR.eos__code, eos_name_to_string(msg.code)),
+            (TR.eos__type, eos_name_to_string(msg.type)),
+            (TR.eos__requirement, eos_name_to_string(msg.requirement)),
         ),
     )
 
@@ -217,25 +217,25 @@ async def confirm_action_linkauth(msg: EosActionLinkAuth) -> None:
 async def confirm_action_unlinkauth(msg: EosActionUnlinkAuth) -> None:
     await _confirm_properties(
         "confirm_unlinkauth",
-        TR.tr("eos__unlink_auth"),
+        TR.eos__unlink_auth,
         (
-            (TR.tr("eos__account"), eos_name_to_string(msg.account)),
-            (TR.tr("eos__code"), eos_name_to_string(msg.code)),
-            (TR.tr("eos__type"), eos_name_to_string(msg.type)),
+            (TR.eos__account, eos_name_to_string(msg.account)),
+            (TR.eos__code, eos_name_to_string(msg.code)),
+            (TR.eos__type, eos_name_to_string(msg.type)),
         ),
     )
 
 
 async def confirm_action_newaccount(msg: EosActionNewAccount) -> None:
     props: list[PropertyType] = [
-        (TR.tr("eos__creator"), eos_name_to_string(msg.creator)),
-        (TR.tr("eos__name"), eos_name_to_string(msg.name)),
+        (TR.eos__creator, eos_name_to_string(msg.creator)),
+        (TR.eos__name, eos_name_to_string(msg.name)),
     ]
     props.extend(authorization_fields(msg.owner))
     props.extend(authorization_fields(msg.active))
     await _confirm_properties(
         "confirm_newaccount",
-        TR.tr("eos__new_account"),
+        TR.eos__new_account,
         props,
     )
 
@@ -243,11 +243,11 @@ async def confirm_action_newaccount(msg: EosActionNewAccount) -> None:
 async def confirm_action_unknown(action: EosActionCommon, checksum: bytes) -> None:
     await confirm_properties(
         "confirm_unknown",
-        TR.tr("eos__arbitrary_data"),
+        TR.eos__arbitrary_data,
         (
-            (TR.tr("eos__contract"), eos_name_to_string(action.account)),
-            (TR.tr("eos__action_name"), eos_name_to_string(action.name)),
-            (TR.tr("eos__checksum"), checksum),
+            (TR.eos__contract, eos_name_to_string(action.account)),
+            (TR.eos__action_name, eos_name_to_string(action.name)),
+            (TR.eos__checksum, checksum),
         ),
         hold=is_last,
         br_code=ButtonRequestType.ConfirmOutput,
@@ -262,7 +262,7 @@ def authorization_fields(auth: EosAuthorization) -> list[PropertyType]:
     fields: list[PropertyType] = []
     append = fields.append  # local_cache_attribute
 
-    append((TR.tr("eos__threshold"), str(auth.threshold)))
+    append((TR.eos__threshold, str(auth.threshold)))
 
     # NOTE: getting rid of f-strings saved almost 100 bytes
 

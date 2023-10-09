@@ -6,7 +6,7 @@ if TYPE_CHECKING:
 
 async def add_resident_credential(msg: WebAuthnAddResidentCredential) -> Success:
     import storage.device as storage_device
-    import trezortranslate as TR
+    from trezortranslate import TR
     from trezor import wire
     from trezor.messages import Success
     from trezor.ui.layouts import show_error_and_raise
@@ -25,11 +25,11 @@ async def add_resident_credential(msg: WebAuthnAddResidentCredential) -> Success
     except Exception:
         await show_error_and_raise(
             "warning_credential",
-            TR.tr("fido__does_not_belong"),
+            TR.fido__does_not_belong,
         )
 
     await confirm_fido(
-        TR.tr("fido__title_import_credential"),
+        TR.fido__title_import_credential,
         cred.app_name(),
         cred.icon_name(),
         [cred.account_name()],

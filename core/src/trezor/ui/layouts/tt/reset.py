@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-import trezortranslate as TR
+from trezortranslate import TR
 import trezorui2
 from trezor.enums import ButtonRequestType
 from trezor.wire import ActionCancelled
@@ -48,11 +48,11 @@ async def show_share_words(
     group_index: int | None = None,
 ) -> None:
     if share_index is None:
-        title = TR.tr("reset__recovery_seed_title")
+        title = TR.reset__recovery_seed_title
     elif group_index is None:
-        title = TR.tr("reset__recovery_share_title_template").format(share_index + 1)
+        title = TR.reset__recovery_share_title_template.format(share_index + 1)
     else:
-        title = TR.tr("reset__group_share_title_template").format(
+        title = TR.reset__group_share_title_template.format(
             group_index + 1, share_index + 1
         )
 
@@ -80,11 +80,11 @@ async def select_word(
     group_index: int | None = None,
 ) -> str:
     if share_index is None:
-        title: str = TR.tr("reset__check_seed_title")
+        title: str = TR.reset__check_seed_title
     elif group_index is None:
-        title = TR.tr("reset__check_share_title_template").format(share_index + 1)
+        title = TR.reset__check_share_title_template.format(share_index + 1)
     else:
-        title = TR.tr("reset__check_group_share_title_template").format(
+        title = TR.reset__check_group_share_title_template.format(
             group_index + 1, share_index + 1
         )
 
@@ -99,7 +99,7 @@ async def select_word(
         RustLayout(
             trezorui2.select_word(
                 title=title,
-                description=TR.tr("reset__select_word_x_of_y_template").format(
+                description=TR.reset__select_word_x_of_y_template.format(
                     checked_index + 1, count
                 ),
                 words=(words[0], words[1], words[2]),
@@ -119,23 +119,23 @@ async def slip39_show_checklist(step: int, backup_type: BackupType) -> None:
 
     items = (
         (
-            TR.tr("reset__slip39_checklist_set_num_shares"),
-            TR.tr("reset__slip39_checklist_set_threshold"),
-            TR.tr("reset__slip39_checklist_write_down_recovery"),
+            TR.reset__slip39_checklist_set_num_shares,
+            TR.reset__slip39_checklist_set_threshold,
+            TR.reset__slip39_checklist_write_down_recovery,
         )
         if backup_type == BackupType.Slip39_Basic
         else (
-            TR.tr("reset__slip39_checklist_set_num_groups"),
-            TR.tr("reset__slip39_checklist_set_num_shares"),
-            TR.tr("reset__slip39_checklist_set_sizes_longer"),
+            TR.reset__slip39_checklist_set_num_groups,
+            TR.reset__slip39_checklist_set_num_shares,
+            TR.reset__slip39_checklist_set_sizes_longer,
         )
     )
 
     result = await interact(
         RustLayout(
             trezorui2.show_checklist(
-                title=TR.tr("reset__slip39_checklist_title"),
-                button=TR.tr("buttons__continue"),
+                title=TR.reset__slip39_checklist_title,
+                button=TR.buttons__continue,
                 active=step,
                 items=items,
             )
@@ -188,7 +188,7 @@ async def _prompt_number(
                 trezorui2.show_simple(
                     title=None,
                     description=info(value),
-                    button=TR.tr("buttons__ok_i_understand"),
+                    button=TR.buttons__ok_i_understand,
                 )
             )
         )
@@ -207,41 +207,41 @@ async def slip39_prompt_threshold(
     def description(count: int) -> str:
         if group_id is None:
             if count == 1:
-                return TR.tr("reset__you_need_one_share")
+                return TR.reset__you_need_one_share
             elif count == max_count:
-                return TR.tr("reset__need_all_share_template").format(count)
+                return TR.reset__need_all_share_template.format(count)
             else:
-                return TR.tr("reset__need_any_share_template").format(count)
+                return TR.reset__need_any_share_template.format(count)
         else:
-            return TR.tr("reset__num_shares_for_group_template").format(group_id + 1)
+            return TR.reset__num_shares_for_group_template.format(group_id + 1)
 
     def info(count: int) -> str:
         # TODO: this is madness...
-        text = TR.tr("reset__the_threshold_sets_the_number_of_shares")
+        text = TR.reset__the_threshold_sets_the_number_of_shares
         if group_id is None:
-            text += TR.tr("reset__needed_to_recover_your_wallet")
-            text += TR.tr("reset__set_it_to_count_template").format(count)
+            text += TR.reset__needed_to_recover_your_wallet
+            text += TR.reset__set_it_to_count_template.format(count)
             if num_of_shares == 1:
-                text += TR.tr("reset__one_share")
+                text += TR.reset__one_share
             elif num_of_shares == count:
-                text += TR.tr("reset__all_x_of_y_template").format(count, num_of_shares)
+                text += TR.reset__all_x_of_y_template.format(count, num_of_shares)
             else:
-                text += TR.tr("reset__any_x_of_y_template").format(count, num_of_shares)
+                text += TR.reset__any_x_of_y_template.format(count, num_of_shares)
             text += "."
         else:
-            text += TR.tr("reset__needed_to_form_a_group")
-            text += TR.tr("reset__set_it_to_count_template").format(count)
+            text += TR.reset__needed_to_form_a_group
+            text += TR.reset__set_it_to_count_template.format(count)
             if num_of_shares == 1:
-                text += TR.tr("reset__one_share") + " "
+                text += TR.reset__one_share + " "
             elif num_of_shares == count:
-                text += TR.tr("reset__all_x_of_y_template").format(count, num_of_shares)
+                text += TR.reset__all_x_of_y_template.format(count, num_of_shares)
             else:
-                text += TR.tr("reset__any_x_of_y_template").format(count, num_of_shares)
-            text += " " + TR.tr("reset__to_form_group_template").format(group_id + 1)
+                text += TR.reset__any_x_of_y_template.format(count, num_of_shares)
+            text += " " + TR.reset__to_form_group_template.format(group_id + 1)
         return text
 
     return await _prompt_number(
-        TR.tr("reset__title_set_threshold"),
+        TR.reset__title_set_threshold,
         description,
         info,
         count,
@@ -259,21 +259,21 @@ async def slip39_prompt_number_of_shares(group_id: int | None = None) -> int:
     def description(i: int):
         if group_id is None:
             if i == 1:
-                return TR.tr("reset__only_one_share_will_be_created")
+                return TR.reset__only_one_share_will_be_created
             else:
-                return TR.tr("reset__num_of_share_holders_template").format(i)
+                return TR.reset__num_of_share_holders_template.format(i)
         else:
-            return TR.tr("reset__total_number_of_shares_in_group_template").format(
+            return TR.reset__total_number_of_shares_in_group_template.format(
                 group_id + 1
             )
 
     if group_id is None:
-        info = TR.tr("reset__num_of_shares_basic_info")
+        info = TR.reset__num_of_shares_basic_info
     else:
-        info = TR.tr("reset__num_of_shares_advanced_info_template").format(group_id + 1)
+        info = TR.reset__num_of_shares_advanced_info_template.format(group_id + 1)
 
     return await _prompt_number(
-        TR.tr("reset__title_set_number_of_shares"),
+        TR.reset__title_set_number_of_shares,
         description,
         lambda i: info,
         count,
@@ -287,11 +287,11 @@ async def slip39_advanced_prompt_number_of_groups() -> int:
     count = 5
     min_count = 2
     max_count = 16
-    description = TR.tr("reset__group_description")
-    info = TR.tr("reset__group_info")
+    description = TR.reset__group_description
+    info = TR.reset__group_info
 
     return await _prompt_number(
-        TR.tr("reset__title_set_number_of_groups"),
+        TR.reset__title_set_number_of_groups,
         lambda i: description,
         lambda i: info,
         count,
@@ -305,11 +305,11 @@ async def slip39_advanced_prompt_group_threshold(num_of_groups: int) -> int:
     count = num_of_groups // 2 + 1
     min_count = 1
     max_count = num_of_groups
-    description = TR.tr("reset__required_number_of_groups")
-    info = TR.tr("reset__advanced_group_threshold_info")
+    description = TR.reset__required_number_of_groups
+    info = TR.reset__advanced_group_threshold_info
 
     return await _prompt_number(
-        TR.tr("reset__title_set_group_threshold"),
+        TR.reset__title_set_group_threshold,
         lambda i: description,
         lambda i: info,
         count,
@@ -323,8 +323,8 @@ async def show_warning_backup(slip39: bool) -> None:
     result = await interact(
         RustLayout(
             trezorui2.show_info(
-                title=TR.tr("reset__never_make_digital_copy"),
-                button=TR.tr("buttons__ok_i_understand"),
+                title=TR.reset__never_make_digital_copy,
+                button=TR.buttons__ok_i_understand,
                 allow_cancel=False,
             )
         ),
@@ -340,8 +340,8 @@ async def show_success_backup() -> None:
 
     await show_success(
         "success_backup",
-        TR.tr("reset__use_your_backup"),
-        TR.tr("reset__your_backup_is_done"),
+        TR.reset__use_your_backup,
+        TR.reset__your_backup_is_done,
     )
 
 
@@ -352,7 +352,7 @@ async def show_reset_warning(
     button: str | None = None,
     br_code: ButtonRequestType = ButtonRequestType.Warning,
 ) -> None:
-    button = button or TR.tr("buttons__try_again")  # def_arg
+    button = button or TR.buttons__try_again  # def_arg
     await raise_if_not_confirmed(
         interact(
             RustLayout(

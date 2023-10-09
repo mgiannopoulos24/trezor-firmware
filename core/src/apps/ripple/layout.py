@@ -13,12 +13,12 @@ async def require_confirm_total(total: int, fee: int) -> None:
 
 
 async def require_confirm_destination_tag(tag: int) -> None:
-    import trezortranslate as TR
+    from trezortranslate import TR
 
     await confirm_metadata(
         "confirm_destination_tag",
-        TR.tr("ripple__confirm_tag"),
-        TR.tr("ripple__destination_tag_template"),
+        TR.ripple__confirm_tag,
+        TR.ripple__destination_tag_template,
         str(tag),
         ButtonRequestType.ConfirmOutput,
     )

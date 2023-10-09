@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 import storage.device as storage_device
 import storage.recovery as storage_recovery
 import storage.recovery_shares as storage_recovery_shares
-import trezortranslate as TR
+from trezortranslate import TR
 from trezor import wire
 from trezor.messages import Success
 
@@ -69,7 +69,7 @@ async def _continue_recovery_process() -> Success:
             # For TT, just continuing straight to word count keyboard
             if utils.INTERNAL_MODEL == "T2B1":
                 await layout.homescreen_dialog(
-                    TR.tr("buttons__continue"), TR.tr("recovery__num_of_words")
+                    TR.buttons__continue, TR.recovery__num_of_words
                 )
             # ask for the number of words
             word_count = await layout.request_word_count(dry_run)
@@ -159,7 +159,7 @@ async def _finish_recovery(secret: bytes, backup_type: BackupType) -> Success:
 
     storage_recovery.end_progress()
 
-    await show_success("success_recovery", TR.tr("recovery__wallet_recovered"))
+    await show_success("success_recovery", TR.recovery__wallet_recovered)
     return Success(message="Device recovered")
 
 
@@ -190,16 +190,16 @@ async def _request_share_first_screen(word_count: int) -> None:
             await _request_share_next_screen()
         else:
             await layout.homescreen_dialog(
-                TR.tr("buttons__enter_share"),
-                TR.tr("recovery__enter_any_share"),
-                TR.tr("recovery__word_count_template").format(word_count),
+                TR.buttons__enter_share,
+                TR.recovery__enter_any_share,
+                TR.recovery__word_count_template.format(word_count),
                 show_info=True,
             )
     else:  # BIP-39
         await layout.homescreen_dialog(
-            TR.tr("buttons__continue"),
-            TR.tr("recovery__enter_backup"),
-            TR.tr("recovery__word_count_template").format(word_count),
+            TR.buttons__continue,
+            TR.recovery__enter_backup,
+            TR.recovery__word_count_template.format(word_count),
             show_info=True,
         )
 
@@ -215,8 +215,8 @@ async def _request_share_next_screen() -> None:
 
     if group_count > 1:
         await layout.homescreen_dialog(
-            TR.tr("buttons__enter"),
-            TR.tr("recovery__more_shares_needed"),
+            TR.buttons__enter,
+            TR.recovery__more_shares_needed,
             info_func=_show_remaining_groups_and_shares,
         )
     else:
@@ -224,14 +224,14 @@ async def _request_share_next_screen() -> None:
         already_entered_shares = len(storage_recovery_shares.fetch_group(0))
         overall_needed = still_needed_shares + already_entered_shares
         # TODO: consider kwargs in format here
-        entered = TR.tr("recovery__x_of_y_entered_template").format(
+        entered = TR.recovery__x_of_y_entered_template.format(
             already_entered_shares, overall_needed
         )
         # TODO: support these plurals
         needed = strings.format_plural(
             "{count} more {plural} needed.", still_needed_shares, "share"
         )
-        await layout.homescreen_dialog(TR.tr("buttons__enter_share"), entered, needed)
+        await layout.homescreen_dialog(TR.buttons__enter_share, entered, needed)
 
 
 async def _show_remaining_groups_and_shares() -> None:

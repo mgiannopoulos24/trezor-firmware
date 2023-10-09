@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-import trezortranslate as TR
+from trezortranslate import TR
 from trezor.enums import ButtonRequestType
 from trezor.ui.layouts import confirm_action, confirm_metadata  # noqa: F401
 from trezor.ui.layouts.progress import (  # noqa: F401
@@ -29,25 +29,25 @@ class MoneroTransactionProgress:
     def step(self, state: State, step: int, sub_step: int = 0) -> None:
         if step == 0 or self.inner is None:
             self.inner = monero_transaction_progress_inner()
-            info = TR.tr("monero__signing")
+            info = TR.monero__signing
         elif step == state.STEP_INP:
-            info = f"{TR.tr('monero__processing_inputs')}\n{sub_step + 1}/{state.input_count}"
+            info = f"{TR.monero__processing_inputs}\n{sub_step + 1}/{state.input_count}"
         elif step == state.STEP_VINI:
             info = (
-                f"{TR.tr('monero__hashing_inputs')}n{sub_step + 1}/{state.input_count}"
+                f"{TR.monero__hashing_inputs}n{sub_step + 1}/{state.input_count}"
             )
         elif step == state.STEP_ALL_IN:
-            info = TR.tr("monero__processing")
+            info = TR.monero__processing
         elif step == state.STEP_OUT:
-            info = f"{TR.tr('monero__processing_outputs')}\n{sub_step + 1}/{state.output_count}"
+            info = f"{TR.monero__processing_outputs}\n{sub_step + 1}/{state.output_count}"
         elif step == state.STEP_ALL_OUT:
-            info = TR.tr("monero__postprocessing")
+            info = TR.monero__postprocessing
         elif step == state.STEP_SIGN:
             info = (
-                f"{TR.tr('monero__signing_inputs')}\n{sub_step + 1}/{state.input_count}"
+                f"{TR.monero__signing_inputs}\n{sub_step + 1}/{state.input_count}"
             )
         else:
-            info = TR.tr("monero__processing")
+            info = TR.monero__processing
 
         state.progress_cur += 1
 
@@ -64,8 +64,8 @@ def _format_amount(value: int) -> str:
 async def require_confirm_watchkey() -> None:
     await confirm_action(
         "get_watchkey",
-        TR.tr("monero__confirm_export"),
-        description=TR.tr("monero__wanna_export_watchkey"),
+        TR.monero__confirm_export,
+        description=TR.monero__wanna_export_watchkey,
         br_code=BRT_SignTx,
     )
 
@@ -73,8 +73,8 @@ async def require_confirm_watchkey() -> None:
 async def require_confirm_keyimage_sync() -> None:
     await confirm_action(
         "key_image_sync",
-        TR.tr("monero__confirm_ki_sync"),
-        description=TR.tr("monero__wanna_sync_key_images"),
+        TR.monero__confirm_ki_sync,
+        description=TR.monero__wanna_sync_key_images,
         br_code=BRT_SignTx,
     )
 
@@ -82,21 +82,19 @@ async def require_confirm_keyimage_sync() -> None:
 async def require_confirm_live_refresh() -> None:
     await confirm_action(
         "live_refresh",
-        TR.tr("monero__confirm_refresh"),
-        description=TR.tr("monero__wanna_start_refresh"),
+        TR.monero__confirm_refresh,
+        description=TR.monero__wanna_start_refresh,
         br_code=BRT_SignTx,
     )
 
 
 async def require_confirm_tx_key(export_key: bool = False) -> None:
     description = (
-        TR.tr("monero__wanna_export_tx_key")
-        if export_key
-        else TR.tr("monero__wanna_export_tx_der")
+        TR.monero__wanna_export_tx_key if export_key else TR.monero__wanna_export_tx_der
     )
     await confirm_action(
         "export_tx_key",
-        TR.tr("monero__confirm_export"),
+        TR.monero__confirm_export,
         description=description,
         br_code=BRT_SignTx,
     )
@@ -178,7 +176,7 @@ async def _require_confirm_payment_id(payment_id: bytes) -> None:
 
     await confirm_blob(
         "confirm_payment_id",
-        TR.tr("monero__payment_id"),
+        TR.monero__payment_id,
         payment_id,
         br_code=BRT_SignTx,
     )
@@ -187,7 +185,7 @@ async def _require_confirm_payment_id(payment_id: bytes) -> None:
 async def _require_confirm_fee(fee: int) -> None:
     await confirm_metadata(
         "confirm_final",
-        TR.tr("monero__confirm_fee"),
+        TR.monero__confirm_fee,
         "{}",
         _format_amount(fee),
         hold=True,
@@ -197,8 +195,8 @@ async def _require_confirm_fee(fee: int) -> None:
 async def _require_confirm_unlock_time(unlock_time: int) -> None:
     await confirm_metadata(
         "confirm_locktime",
-        TR.tr("monero__confirm_unlock_time"),
-        TR.tr("monero__unlock_time_set_template"),
+        TR.monero__confirm_unlock_time,
+        TR.monero__unlock_time_set_template,
         str(unlock_time),
         BRT_SignTx,
     )

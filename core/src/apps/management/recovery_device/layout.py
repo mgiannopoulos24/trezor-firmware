@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-import trezortranslate as TR
+from trezortranslate import TR
 from trezor.enums import ButtonRequestType
 from trezor.ui.layouts import confirm_action
 from trezor.ui.layouts.recovery import (  # noqa: F401
@@ -22,19 +22,19 @@ async def _confirm_abort(dry_run: bool = False) -> None:
     if dry_run:
         await confirm_action(
             "abort_recovery",
-            TR.tr("recovery__title_cancel_dry_run"),
-            TR.tr("recovery__cancel_dry_run"),
-            description=TR.tr("recovery__wanna_cancel_dry_run"),
-            verb=TR.tr("buttons__cancel"),
+            TR.recovery__title_cancel_dry_run,
+            TR.recovery__cancel_dry_run,
+            description=TR.recovery__wanna_cancel_dry_run,
+            verb=TR.buttons__cancel,
             br_code=ButtonRequestType.ProtectCall,
         )
     else:
         await confirm_action(
             "abort_recovery",
-            TR.tr("recovery__title_cancel_recovery"),
-            TR.tr("recovery__progress_will_be_lost"),
-            TR.tr("recovery__wanna_cancel_recovery"),
-            verb=TR.tr("buttons__cancel"),
+            TR.recovery__title_cancel_recovery,
+            TR.recovery__progress_will_be_lost,
+            TR.recovery__wanna_cancel_recovery,
+            verb=TR.buttons__cancel,
             reverse=True,
             br_code=ButtonRequestType.ProtectCall,
         )
@@ -63,23 +63,23 @@ async def request_mnemonic(
             # show_share_already_added
             await show_recovery_warning(
                 "warning_known_share",
-                TR.tr("recovery__share_already_entered"),
-                TR.tr("recovery__enter_different_share"),
+                TR.recovery__share_already_entered,
+                TR.recovery__enter_different_share,
             )
             return None
         except word_validity.IdentifierMismatch:
             # show_identifier_mismatch
             await show_recovery_warning(
                 "warning_mismatched_share",
-                TR.tr("recovery__share_from_another_shamir"),
+                TR.recovery__share_from_another_shamir,
             )
             return None
         except word_validity.ThresholdReached:
             # show_group_threshold_reached
             await show_recovery_warning(
                 "warning_group_threshold",
-                TR.tr("recovery__group_threshold_reached"),
-                TR.tr("recovery__enter_share_from_diff_group"),
+                TR.recovery__group_threshold_reached,
+                TR.recovery__enter_share_from_diff_group,
             )
             return None
 
@@ -91,19 +91,17 @@ async def show_dry_run_result(result: bool, is_slip39: bool) -> None:
 
     if result:
         if is_slip39:
-            text = TR.tr("recovery__dry_run_slip39_valid_match")
+            text = TR.recovery__dry_run_slip39_valid_match
         else:
-            text = TR.tr("recovery__dry_run_bip39_valid_match")
-        await show_success(
-            "success_dry_recovery", text, button=TR.tr("buttons__continue")
-        )
+            text = TR.recovery__dry_run_bip39_valid_match
+        await show_success("success_dry_recovery", text, button=TR.buttons__continue)
     else:
         if is_slip39:
-            text = TR.tr("recovery__dry_run_slip39_valid_mismatch")
+            text = TR.recovery__dry_run_slip39_valid_mismatch
         else:
-            text = TR.tr("recovery__dry_run_bip39_valid_mismatch")
+            text = TR.recovery__dry_run_bip39_valid_mismatch
         await show_recovery_warning(
-            "warning_dry_recovery", "", text, button=TR.tr("buttons__continue")
+            "warning_dry_recovery", "", text, button=TR.buttons__continue
         )
 
 
@@ -111,14 +109,14 @@ async def show_invalid_mnemonic(word_count: int) -> None:
     if backup_types.is_slip39_word_count(word_count):
         await show_recovery_warning(
             "warning_invalid_share",
-            TR.tr("recovery__invalid_share_entered"),
-            TR.tr("words__please_try_again"),
+            TR.recovery__invalid_share_entered,
+            TR.words__please_try_again,
         )
     else:
         await show_recovery_warning(
             "warning_invalid_seed",
-            TR.tr("recovery__invalid_seed_entered"),
-            TR.tr("words__please_try_again"),
+            TR.recovery__invalid_seed_entered,
+            TR.words__please_try_again,
         )
 
 

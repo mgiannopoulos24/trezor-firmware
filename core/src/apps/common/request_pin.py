@@ -2,7 +2,7 @@ import utime
 from typing import Any, NoReturn
 
 import storage.cache as storage_cache
-import trezortranslate as TR
+from trezortranslate import TR
 from trezor import config, utils, wire
 from trezor.ui.layouts import show_error_and_raise
 
@@ -54,9 +54,9 @@ async def request_pin_confirm(*args: Any, **kwargs: Any) -> str:
     from trezor.ui.layouts import confirm_reenter_pin, pin_mismatch_popup
 
     while True:
-        pin1 = await request_pin(TR.tr("pin__enter_new"), *args, **kwargs)
+        pin1 = await request_pin(TR.pin__enter_new, *args, **kwargs)
         await confirm_reenter_pin()
-        pin2 = await request_pin(TR.tr("pin__reenter_new"), *args, **kwargs)
+        pin2 = await request_pin(TR.pin__reenter_new, *args, **kwargs)
         if pin1 == pin2:
             return pin1
         await pin_mismatch_popup()
@@ -81,7 +81,7 @@ def _set_last_unlock_time() -> None:
     storage_cache.set_int(storage_cache.APP_COMMON_REQUEST_PIN_LAST_UNLOCK, now)
 
 
-_DEF_ARG_PIN_ENTER: str = TR.tr("pin__enter")
+_DEF_ARG_PIN_ENTER: str = TR.pin__enter
 
 
 async def verify_user_pin(
@@ -120,7 +120,7 @@ async def verify_user_pin(
 
     while retry:
         pin = await request_pin_on_device(  # type: ignore ["request_pin_on_device" is possibly unbound]
-            TR.tr("pin__enter"), config.get_pin_rem(), allow_cancel, wrong_pin=True
+            TR.pin__enter, config.get_pin_rem(), allow_cancel, wrong_pin=True
         )
         if config.unlock(pin, salt):
             _set_last_unlock_time()
@@ -132,8 +132,8 @@ async def verify_user_pin(
 async def error_pin_invalid() -> NoReturn:
     await show_error_and_raise(
         "warning_wrong_pin",
-        TR.tr("pin__entered_not_valid"),
-        TR.tr("pin__wrong_pin"),  # header
+        TR.pin__entered_not_valid,
+        TR.pin__wrong_pin,  # header
         exc=wire.PinInvalid,
     )
     assert False
@@ -142,8 +142,8 @@ async def error_pin_invalid() -> NoReturn:
 async def error_pin_matches_wipe_code() -> NoReturn:
     await show_error_and_raise(
         "warning_invalid_new_pin",
-        TR.tr("pin__diff_from_wipe_code"),
-        TR.tr("pin__invalid_pin"),  # header
+        TR.pin__diff_from_wipe_code,
+        TR.pin__invalid_pin,  # header
         exc=wire.PinInvalid,
     )
     assert False

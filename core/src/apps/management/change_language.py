@@ -63,19 +63,19 @@ async def send_request_chunk(data_left: int) -> TranslationDataAck:
 
 
 async def _require_confirm_change_language(language: str) -> None:
-    import trezortranslate as TR
+    from trezortranslate import TR
     from trezor.enums import ButtonRequestType
     from trezor.ui.layouts import confirm_action
 
     # TODO: might also show the length of the data, so user can check it with client?
     # Empty language means default language (english)
     if language:
-        description = TR.tr("language__change_template").format(language)
+        description = TR.language__change_template.format(language)
     else:
-        description = TR.tr("language__set_default")
+        description = TR.language__set_default
     await confirm_action(
         "set_language",
-        TR.tr("language__title_change"),
+        TR.language__title_change,
         description=description,
         br_code=ButtonRequestType.ProtectCall,
     )

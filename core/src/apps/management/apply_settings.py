@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 import storage.device as storage_device
-import trezortranslate as TR
+from trezortranslate import TR
 import trezorui2
 from trezor import utils
 from trezor.enums import ButtonRequestType
@@ -163,19 +163,19 @@ async def _require_confirm_change_label(label: str) -> None:
 
     await confirm_single(
         "set_label",
-        TR.tr("device_name__title"),
-        description=TR.tr("device_name__change_template"),
+        TR.device_name__title,
+        description=TR.device_name__change_template,
         description_param=label,
-        verb=TR.tr("buttons__change"),
+        verb=TR.buttons__change,
     )
 
 
 async def _require_confirm_change_passphrase(use: bool) -> None:
-    description = TR.tr("passphrase__turn_on") if use else TR.tr("passphrase__turn_off")
-    verb = TR.tr("buttons__turn_on") if use else TR.tr("buttons__turn_off")
+    description = TR.passphrase__turn_on if use else TR.passphrase__turn_off
+    verb = TR.buttons__turn_on if use else TR.buttons__turn_off
     await confirm_action(
         "set_passphrase",
-        TR.tr("passphrase__title_settings"),
+        TR.passphrase__title_settings,
         description=description,
         verb=verb,
         br_code=BRT_PROTECT_CALL,
@@ -186,13 +186,13 @@ async def _require_confirm_change_passphrase_source(
     passphrase_always_on_device: bool,
 ) -> None:
     description = (
-        TR.tr("passphrase__always_on_device")
+        TR.passphrase__always_on_device
         if passphrase_always_on_device
-        else TR.tr("passphrase__revoke_on_device")
+        else TR.passphrase__revoke_on_device
     )
     await confirm_action(
         "set_passphrase_source",
-        TR.tr("passphrase__title_source"),
+        TR.passphrase__title_source,
         description=description,
         br_code=BRT_PROTECT_CALL,
     )
@@ -200,20 +200,20 @@ async def _require_confirm_change_passphrase_source(
 
 async def _require_confirm_change_display_rotation(rotation: int) -> None:
     if rotation == 0:
-        label = TR.tr("rotation__north")
+        label = TR.rotation__north
     elif rotation == 90:
-        label = TR.tr("rotation__east")
+        label = TR.rotation__east
     elif rotation == 180:
-        label = TR.tr("rotation__south")
+        label = TR.rotation__south
     elif rotation == 270:
-        label = TR.tr("rotation__west")
+        label = TR.rotation__west
     else:
         raise DataError("Unsupported display rotation")
 
     await confirm_action(
         "set_rotation",
-        TR.tr("rotation__title_change"),
-        description=TR.tr("rotation__change_template"),
+        TR.rotation__title_change,
+        description=TR.rotation__change_template,
         description_param=label,
         br_code=BRT_PROTECT_CALL,
     )
@@ -224,8 +224,8 @@ async def _require_confirm_change_autolock_delay(delay_ms: int) -> None:
 
     await confirm_action(
         "set_autolock_delay",
-        TR.tr("auto_lock__title"),
-        description=TR.tr("auto_lock__change_template"),
+        TR.auto_lock__title,
+        description=TR.auto_lock__change_template,
         description_param=format_duration_ms(delay_ms),
         br_code=BRT_PROTECT_CALL,
     )
@@ -237,23 +237,23 @@ async def _require_confirm_safety_checks(level: SafetyCheckLevel) -> None:
     if level == SafetyCheckLevel.Strict:
         await confirm_action(
             "set_safety_checks",
-            TR.tr("safety_checks__title"),
-            description=TR.tr("safety_checks__enforce_strict"),
+            TR.safety_checks__title,
+            description=TR.safety_checks__enforce_strict,
             br_code=BRT_PROTECT_CALL,
         )
     elif level in (SafetyCheckLevel.PromptAlways, SafetyCheckLevel.PromptTemporarily):
         description = (
-            TR.tr("safety_checks__approve_unsafe_temporary")
+            TR.safety_checks__approve_unsafe_temporary
             if level == SafetyCheckLevel.PromptTemporarily
-            else TR.tr("safety_checks__approve_unsafe_always")
+            else TR.safety_checks__approve_unsafe_always
         )
         await confirm_action(
             "set_safety_checks",
-            TR.tr("safety_checks__title_safety_override"),
-            TR.tr("words__are_you_sure"),
+            TR.safety_checks__title_safety_override,
+            TR.words__are_you_sure,
             description,
             hold=True,
-            verb=TR.tr("buttons__hold_to_confirm"),
+            verb=TR.buttons__hold_to_confirm,
             reverse=True,
             br_code=BRT_PROTECT_CALL,
         )
@@ -265,9 +265,9 @@ async def _require_confirm_experimental_features(enable: bool) -> None:
     if enable:
         await confirm_action(
             "set_experimental_features",
-            TR.tr("experimental_mode__title"),
-            TR.tr("experimental_mode__only_for_dev"),
-            TR.tr("experimental_mode__enable"),
+            TR.experimental_mode__title,
+            TR.experimental_mode__only_for_dev,
+            TR.experimental_mode__enable,
             reverse=True,
             br_code=BRT_PROTECT_CALL,
         )
@@ -277,7 +277,7 @@ async def _require_confirm_hide_passphrase_from_host(enable: bool) -> None:
     if enable:
         await confirm_action(
             "set_hide_passphrase_from_host",
-            TR.tr("passphrase__title_hide"),
-            description=TR.tr("passphrase__hide"),
+            TR.passphrase__title_hide,
+            description=TR.passphrase__hide,
             br_code=BRT_PROTECT_CALL,
         )

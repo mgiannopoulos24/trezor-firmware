@@ -5,7 +5,7 @@ if TYPE_CHECKING:
 
 
 async def get_entropy(msg: GetEntropy) -> Entropy:
-    import trezortranslate as TR
+    from trezortranslate import TR
     from trezor.crypto import random
     from trezor.enums import ButtonRequestType
     from trezor.messages import Entropy
@@ -13,9 +13,9 @@ async def get_entropy(msg: GetEntropy) -> Entropy:
 
     await confirm_action(
         "get_entropy",
-        TR.tr("entropy__title_confirm"),
-        TR.tr("entropy__send"),
-        TR.tr("words__know_what_your_doing"),
+        TR.entropy__title_confirm,
+        TR.entropy__send,
+        TR.words__know_what_your_doing,
         br_code=ButtonRequestType.ProtectCall,
     )
 

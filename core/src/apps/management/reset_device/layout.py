@@ -1,7 +1,7 @@
 from micropython import const
 from typing import Sequence
 
-import trezortranslate as TR
+from trezortranslate import TR
 from trezor.enums import ButtonRequestType
 from trezor.ui.layouts import show_success
 from trezor.ui.layouts.reset import (  # noqa: F401
@@ -21,7 +21,7 @@ async def show_internal_entropy(entropy: bytes) -> None:
 
     await confirm_blob(
         "entropy",
-        TR.tr("entropy__title"),
+        TR.entropy__title,
         entropy,
         br_code=ButtonRequestType.ResetDevice,
     )
@@ -111,29 +111,29 @@ async def _show_confirmation_success(
     group_index: int | None = None,
 ) -> None:
     if share_index is None or num_of_shares is None:  # it is a BIP39 backup
-        subheader = TR.tr("reset__finished_verifying_seed")
+        subheader = TR.reset__finished_verifying_seed
         text = ""
 
     elif share_index == num_of_shares - 1:
         if group_index is None:
-            subheader = TR.tr("reset__finished_verifying_shares")
+            subheader = TR.reset__finished_verifying_shares
         else:
-            subheader = TR.tr("reset__finished_verifying_group_template").format(
+            subheader = TR.reset__finished_verifying_group_template.format(
                 group_index + 1
             )
         text = ""
 
     else:
         if group_index is None:
-            subheader = TR.tr("reset__share_checked_successfully_template").format(
+            subheader = TR.reset__share_checked_successfully_template.format(
                 share_index + 1
             )
-            text = TR.tr("reset__continue_with_share_template").format(share_index + 2)
+            text = TR.reset__continue_with_share_template.format(share_index + 2)
         else:
-            subheader = TR.tr(
-                "reset__group_share_checked_successfully_template"
-            ).format(group_index + 1, share_index + 1)
-            text = TR.tr("reset__continue_with_next_share")
+            subheader = TR.reset__group_share_checked_successfully_template.format(
+                group_index + 1, share_index + 1
+            )
+            text = TR.reset__continue_with_next_share
 
     return await show_success("success_recovery", text, subheader)
 
@@ -143,9 +143,9 @@ async def _show_confirmation_failure() -> None:
 
     await show_reset_warning(
         "warning_backup_check",
-        TR.tr("words__please_check_again"),
-        TR.tr("reset__wrong_word_selected"),
-        TR.tr("buttons__check_again"),
+        TR.words__please_check_again,
+        TR.reset__wrong_word_selected,
+        TR.buttons__check_again,
         ButtonRequestType.ResetDevice,
     )
 

@@ -1,6 +1,6 @@
 from typing import Callable, Iterable
 
-import trezortranslate as TR
+from trezortranslate import TR
 import trezorui2
 from trezor.enums import ButtonRequestType
 
@@ -21,7 +21,7 @@ async def request_word_count(dry_run: bool) -> int:
 async def request_word(word_index: int, word_count: int, is_slip39: bool) -> str:
     from trezor.wire.context import wait
 
-    prompt = TR.tr("recovery__word_x_of_y_template").format(word_index + 1, word_count)
+    prompt = TR.recovery__word_x_of_y_template.format(word_index + 1, word_count)
 
     if is_slip39:
         word_choice = RustLayout(trezorui2.request_slip39(prompt=prompt))
@@ -46,10 +46,10 @@ async def show_group_share_success(share_index: int, group_index: int) -> None:
             RustLayout(
                 trezorui2.show_group_share_success(
                     lines=[
-                        TR.tr("recovery__you_have_entered"),
-                        TR.tr("recovery__share_num_template").format(share_index + 1),
-                        TR.tr("words__from"),
-                        TR.tr("recovery__group_num_template").format(group_index + 1),
+                        TR.recovery__you_have_entered,
+                        TR.recovery__share_num_template.format(share_index + 1),
+                        TR.words__from,
+                        TR.recovery__group_num_template.format(group_index + 1),
                     ],
                 )
             ),
@@ -103,5 +103,5 @@ async def show_recovery_warning(
     button: str | None = None,
     br_code: ButtonRequestType = ButtonRequestType.Warning,
 ) -> None:
-    button = button or TR.tr("buttons__try_again")  # def_arg
+    button = button or TR.buttons__try_again  # def_arg
     await show_warning(br_type, content, subheader, button, br_code)
