@@ -115,11 +115,11 @@ test_emu_fido2: ## run fido2 device tests
 		$(EMU_TEST) --slip0014 $(PYTEST) --maxfail=5 --sim tests/standard/ --vendor trezor $(TESTOPTS)
 
 test_emu_click: ## run click tests
-	$(EMU_TEST) $(PYTEST) $(TESTPATH)/click_tests $(TESTOPTS)
+	$(EMU_TEST) $(PYTEST) $(TESTPATH)/click_tests $(TESTOPTS) --lang=$(TEST_LANG)
 
 test_emu_click_ui: ## run click tests with UI testing
 	$(EMU_TEST) $(PYTEST) $(TESTPATH)/click_tests $(TESTOPTS) \
-		--ui=test --ui-check-missing --do-master-diff
+		--ui=test --ui-check-missing --do-master-diff --lang=$(TEST_LANG)
 
 test_emu_persistence: ## run persistence tests
 	$(PYTEST) $(TESTPATH)/persistence_tests $(TESTOPTS) --lang=$(TEST_LANG)
