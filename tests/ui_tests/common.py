@@ -36,6 +36,11 @@ FixturesType = t.NewType("FixturesType", "dict[str, dict[str, dict[str, str]]]")
 
 FIXTURES: FixturesType = FixturesType({})
 
+ENGLISH_LANGUAGE_TREZOR = "en-US"
+ENGLISH_LANGUAGE = "en"
+FOREIGN_LANGUAGES = ["cs", "fr"]
+SUPPORTED_LANGUAGES = FOREIGN_LANGUAGES + [ENGLISH_LANGUAGE]
+
 
 def get_current_fixtures() -> FixturesType:
     global FIXTURES
@@ -65,12 +70,19 @@ def prepare_fixtures(
         # for every model/group, update the data with the new content
         current_content = fixtures.setdefault(model, {}).setdefault(group, {})
         if remove_missing:
+            # Need to preserve all the languages except the current one
+            diff_languages: dict[str, str] = {}
+            for key in list(current_content.keys()):
+                if TestCase.get_language_from_fixture_name(key) != language:
+                    diff_languages[key] = current_content.pop(key)
+
             new_tests = set(new_content.keys())
             old_tests = set(current_content.keys())
             missing_tests |= {
                 TestCase(model, group, test, language) for test in old_tests - new_tests
             }
             current_content.clear()
+            current_content.update(diff_languages)
 
         current_content.update(new_content)
 
@@ -229,15 +241,27 @@ class TestCase:
         if model == "Safe 3":
             model = "R"
         name, group = _get_test_name_and_group(request.node.nodeid)
+        language = client.features.language or ""
+        if language == ENGLISH_LANGUAGE_TREZOR:
+            language = ENGLISH_LANGUAGE
+        assert language in SUPPORTED_LANGUAGES
         return cls(
             model=f"T{model}",
             name=name,
             group=group,
-            language=client.features.language or "",
+            language=language,
         )
 
+    @staticmethod
+    def get_language_from_fixture_name(fixture_name: str) -> str:
+        lang = fixture_name.split("_")[1]
+        if lang in FOREIGN_LANGUAGES:
+            return lang
+        # English (currently) is implicit there
+        return ENGLISH_LANGUAGE
+
     def is_english(self) -> bool:
-        return self.language in ("en", "en-US")
+        return self.language == ENGLISH_LANGUAGE
 
     @property
     def id(self) -> str:
@@ -248,6 +272,10 @@ class TestCase:
 
     @property
     def fixtures_name(self) -> str:
+        # Not changing the fixture name for english to be compatible
+        # with previous test results.
+        # TODO: maybe change this after we merge it to master
+        # (when we verify that the english UI diff is OK)
         if self.is_english():
             return f"{self.model}_{self.name}"
         else:
