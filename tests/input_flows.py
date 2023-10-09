@@ -611,6 +611,10 @@ class InputFlowSignTxInformationMixed(InputFlowBase):
         self.debug.press_yes()
 
     def input_flow_tr(self) -> BRGeneratorType:
+        # multiple accounts warning
+        yield
+        self.debug.press_yes()
+
         content = yield from sign_tx_go_to_info_tr(self.client)
         self.assert_content(content, "confirm_total.title_sending_from")
         self.debug.press_yes()
