@@ -185,7 +185,7 @@ def _delete_all(debug: "DebugLink", check: bool = True) -> None:
     if debug.model == "T":
         debug.click_hold(buttons.pin_passphrase_grid(9), hold_ms=1500)
     elif debug.model == "Safe 3":
-        navigate_to_action_and_press(debug, "DELETE", TR_PIN_ACTIONS, hold_ms=1000)
+        navigate_to_action_and_press(debug, DELETE, TR_PIN_ACTIONS, hold_ms=1000)
 
     if check:
         after = debug.read_layout().pin()
