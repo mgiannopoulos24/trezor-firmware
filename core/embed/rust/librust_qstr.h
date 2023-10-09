@@ -13,6 +13,7 @@ static void _librust_qstrs(void) {
   MP_QSTR_MESSAGE_WIRE_TYPE;
   MP_QSTR_Msg;
   MP_QSTR_MsgDef;
+  MP_QSTR_TR;
   MP_QSTR___dict__;
   MP_QSTR___name__;
   MP_QSTR_account;
@@ -142,7 +143,6 @@ static void _librust_qstrs(void) {
   MP_QSTR_total_fee_new;
   MP_QSTR_total_label;
   MP_QSTR_touch_event;
-  MP_QSTR_tr;
   MP_QSTR_trace;
   MP_QSTR_trezorproto;
   MP_QSTR_trezorui2;
