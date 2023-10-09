@@ -58,5 +58,15 @@ def assert_startswith(text: str, path: str, template: Iterable[Any] = ()) -> Non
     assert False, f"{text} not found in {texts}"
 
 
+def assert_template(text: str, template_path: str) -> None:
+    templates = _resolve_path_to_texts(template_path)
+    for t in templates:
+        # Checking at least the first part
+        first_part = t.split("{")[0]
+        if text.startswith(first_part):
+            return
+    assert False, f"{text} not found in {templates}"
+
+
 def translate(path: str, template: Iterable[Any] = ()) -> list[str]:
     return _resolve_path_to_texts(path, template)

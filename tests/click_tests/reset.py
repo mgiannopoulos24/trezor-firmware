@@ -91,7 +91,7 @@ def read_words(
 def confirm_words(debug: "DebugLink", words: list[str]) -> None:
     layout = debug.wait_layout()
     if debug.model == "T":
-        assert "Select word" in layout.text_content()
+        TR.assert_template(layout.text_content(), "reset.select_word_x_of_y_template")
         for _ in range(3):
             # "Select word 3 of 20"
             #              ^
