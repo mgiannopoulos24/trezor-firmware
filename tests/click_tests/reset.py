@@ -1,5 +1,5 @@
-from typing import TYPE_CHECKING
 import re
+from typing import TYPE_CHECKING
 
 from shamir_mnemonic import shamir  # type: ignore
 
