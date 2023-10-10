@@ -2,7 +2,7 @@ from googletrans import Translator
 from typing import Any, Dict
 import json
 
-from validate_same_keys import get_missing_lang_dict, DIR
+from validate_same_keys import get_missing_lang_dict, DIR, MISSING_VALUE
 
 
 def translate_dict(
@@ -19,7 +19,8 @@ def translate_dict(
                 ).text
                 new_dict[key] = translated_text
             except Exception as e:
-                new_dict[key] = f"Translation failed: {str(e)}"
+                print(f"Error translating {value}: {e}")
+                new_dict[key] = MISSING_VALUE
     return new_dict
 
 

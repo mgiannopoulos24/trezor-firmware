@@ -9,6 +9,8 @@ CORE = HERE.parent.parent
 
 DIR = CORE / "embed" / "rust" / "src" / "ui" / "translations"
 
+MISSING_VALUE = "TODO:missing"
+
 if TYPE_CHECKING:
     DoubleDict = Dict[str, Dict[str, str]]
 
@@ -27,7 +29,7 @@ def get_missing_dict(missing_set: set[str]) -> "DoubleDict":
         section_name, key = missing.split("__")
         if section_name not in missing_dict:
             missing_dict[section_name] = {}
-        missing_dict[section_name][key] = "TODO:missing"
+        missing_dict[section_name][key] = MISSING_VALUE
     return missing_dict
 
 
