@@ -1,9 +1,9 @@
 #include "translations.h"
+#include <assert.h>
 #include <string.h>
 #include "common.h"
 #include "flash.h"
 #include "model.h"
-#include <assert.h>
 
 void translations_write(uint8_t* data, uint32_t offset, uint32_t len) {
   ensure(flash_unlock_write(), "translations_write unlock");
