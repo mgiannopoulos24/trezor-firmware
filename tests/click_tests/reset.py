@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING
+import re
 
 from shamir_mnemonic import shamir  # type: ignore
 
@@ -95,7 +96,9 @@ def confirm_words(debug: "DebugLink", words: list[str]) -> None:
         for _ in range(3):
             # "Select word 3 of 20"
             #              ^
-            word_pos = int(layout.text_content().split()[2])
+            word_pos_match = re.search(r"\d+", debug.wait_layout().text_content())
+            assert word_pos_match is not None
+            word_pos = int(word_pos_match.group(0))
             # Unifying both the buttons and words to lowercase
             btn_texts = [
                 text.lower() for text in layout.tt_check_seed_button_contents()
