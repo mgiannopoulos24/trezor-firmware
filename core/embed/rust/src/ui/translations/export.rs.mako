@@ -21,9 +21,8 @@ def get_all_json_keys(data: dict) -> set[str]:
 
 en_keys = get_all_json_keys(en_data)
 %>\
-
-use crate::micropython::{map::Map, module::Module, qstr::Qstr};
 use super::micropython::{language_name_obj, TR_OBJ};
+use crate::micropython::{map::Map, module::Module, qstr::Qstr};
 
 #[no_mangle]
 #[rustfmt::skip]

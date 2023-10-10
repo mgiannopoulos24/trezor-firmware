@@ -2,9 +2,8 @@
 //! (by running `make templates` in `core`)
 //! do not edit manually!
 
-
-use crate::micropython::{map::Map, module::Module, qstr::Qstr};
 use super::micropython::{language_name_obj, TR_OBJ};
+use crate::micropython::{map::Map, module::Module, qstr::Qstr};
 
 #[no_mangle]
 #[rustfmt::skip]
