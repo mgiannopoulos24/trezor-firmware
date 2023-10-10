@@ -7,7 +7,7 @@ ROOT = HERE.parent
 
 TRANSLATIONS = ROOT / "core" / "embed" / "rust" / "src" / "ui" / "translations"
 
-LANGUAGES = ["cs", "en"]
+LANGUAGES = ["cs", "en", "fr"]
 
 
 def _get_all_language_data() -> list[dict[str, dict[str, str]]]:
