@@ -2,6 +2,9 @@
 //! (by running `make templates` in `core`)
 //! do not edit manually!
 
+// NOTE: not used as a code, only for
+// documentation purposes
+
 use super::general::TranslationsGeneral;
 
 #[rustfmt::skip]

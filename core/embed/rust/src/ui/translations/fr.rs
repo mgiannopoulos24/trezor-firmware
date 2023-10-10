@@ -1,6 +1,9 @@
-//! generated from cs.rs.mako
+//! generated from fr.rs.mako
 //! (by running `make templates` in `core`)
 //! do not edit manually!
+
+// NOTE: not used as a code, only for
+// documentation purposes
 
 use super::general::TranslationsGeneral;
 
@@ -511,10 +514,10 @@ pub const TRANSLATIONS: TranslationsGeneral = TranslationsGeneral {
     recovery__cancel_dry_run: "Annuler le chèque de sauvegarde",
     recovery__check_dry_run: "Vérifiez votre sauvegarde?",
     recovery__cursor_will_change: "La position du curseur changera entre les entrées pour une sécurité améliorée.",
-    recovery__dry_run_bip39_valid_match: "La graine de récupération entrée est valide et correspond à celle de l'appareil.",
-    recovery__dry_run_bip39_valid_mismatch: "La graine de récupération entrée est valide mais ne correspond pas à celle de l'appareil.",
-    recovery__dry_run_slip39_valid_match: "Les parts de récupération entrées sont valides et correspondent à ce qui est actuellement dans l'appareil.",
-    recovery__dry_run_slip39_valid_mismatch: "Les parts de récupération entrées sont valides mais ne correspondent pas à ce qui est actuellement dans l'appareil.",
+    recovery__dry_run_bip39_valid_match: "Récupération entrée est valide et correspond à celle de l'appareil.",
+    recovery__dry_run_bip39_valid_mismatch: "Récupération entrée est valide mais ne correspond pas à celle de l'appareil.",
+    recovery__dry_run_slip39_valid_match: "Récupération entrées sont valides et correspondent à ce qui est actuellement dans.",
+    recovery__dry_run_slip39_valid_mismatch: "Récupération entrées sont valides mais ne correspondent pas à ce qui est actuellement dans.",
     recovery__enter_any_share: "Entrez n'importe quelle part",
     recovery__enter_backup: "Entrez votre sauvegarde.",
     recovery__enter_different_share: "Veuillez saisir une part différente.",

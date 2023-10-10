@@ -2,83 +2,19 @@ mod en;
 #[cfg(feature = "micropython")]
 mod export;
 mod general;
+#[cfg(feature = "micropython")]
+mod micropython;
 
 use en::EN_TRANSLATIONS;
 use general::LANGUAGE_INDEX;
 
-#[cfg(feature = "micropython")]
-use crate::micropython::{ffi, obj::Obj, obj::ObjBase, qstr::Qstr, typ::Type, util};
-use crate::{error::Error, trezorhal::translations::translations_get};
+use crate::trezorhal::translations::translations_get;
 
 use core::str;
 
 // Translations strings are delimited by a star
 const DELIMITER_BYTE: u8 = b'*';
 const TERMINATE_BYTE: u8 = 0xFF;
-
-extern "C" fn translate_attr_fn(_self_in: Obj, attr: ffi::qstr, dest: *mut Obj) {
-    let block = || {
-        let arg = unsafe { dest.read() };
-        if !arg.is_null() {
-            // Null destination would mean a `setattr`.
-            return Err(Error::TypeError);
-        }
-        let attr = Qstr::from_u16(attr as u16);
-        unsafe { dest.write(TR_OBJ.getattr(attr)?) };
-        Ok(())
-    };
-    unsafe { util::try_or_raise(block) }
-}
-
-#[repr(C)]
-pub struct TrObj {
-    base: ObjBase,
-}
-
-static TR_TYPE: Type = obj_type! {
-    name: Qstr::MP_QSTR_TR,
-    attr_fn: translate_attr_fn,
-};
-
-// SAFETY: We are in a single-threaded environment.
-unsafe impl Sync for TrObj {}
-
-impl TrObj {
-    fn obj_type() -> &'static Type {
-        &TR_TYPE
-    }
-
-    fn getattr(&self, attr: Qstr) -> Result<Obj, Error> {
-        tr(attr.as_str()).try_into()
-    }
-
-    /// Convert TrObj to a MicroPython object
-    const fn as_obj(&'static self) -> Obj {
-        // SAFETY:
-        //  - We are an object struct with a base and a type.
-        //  - 'static lifetime holds us in place.
-        //  - There's nothing to mutate.
-        unsafe { Obj::from_ptr(self as *const _ as *mut _) }
-    }
-}
-
-/// Translations object callable from micropython.
-pub static TR_OBJ: TrObj = TrObj {
-    base: TR_TYPE.as_base(),
-};
-
-/// Language name getter callable from micropython.
-#[cfg(feature = "micropython")]
-pub extern "C" fn language_name_obj() -> Obj {
-    let block = || {
-        if let Some(lang) = get_language_name() {
-            lang.try_into()
-        } else {
-            Ok(Obj::const_none())
-        }
-    };
-    unsafe { util::try_or_raise(block) }
-}
 
 /// Translation function for Rust.
 pub fn tr(key: &str) -> &'static str {

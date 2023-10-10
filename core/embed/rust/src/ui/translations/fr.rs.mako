@@ -1,6 +1,9 @@
-//! generated from cs.rs.mako
+//! generated from fr.rs.mako
 //! (by running `make templates` in `core`)
 //! do not edit manually!
+
+// NOTE: not used as a code, only for
+// documentation purposes
 
 <%
 import json
