@@ -7,12 +7,8 @@ use en::EN_TRANSLATIONS;
 use general::LANGUAGE_INDEX;
 
 #[cfg(feature = "micropython")]
-use crate::micropython::{obj::Obj, util};
-use crate::{
-    error::Error,
-    micropython::{ffi, obj::ObjBase, qstr::Qstr, typ::Type},
-    trezorhal::translations::translations_get,
-};
+use crate::micropython::{ffi, obj::Obj, obj::ObjBase, qstr::Qstr, typ::Type, util};
+use crate::{error::Error, trezorhal::translations::translations_get};
 
 use core::str;
 
