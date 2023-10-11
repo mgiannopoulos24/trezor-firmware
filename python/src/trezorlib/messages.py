@@ -3365,32 +3365,32 @@ class ApplySettings(protobuf.MessageType):
 class ChangeLanguage(protobuf.MessageType):
     MESSAGE_WIRE_TYPE = 900
     FIELDS = {
-        1: protobuf.Field("language", "string", repeated=False, required=True),
-        2: protobuf.Field("data_length", "uint32", repeated=False, required=True),
+        1: protobuf.Field("data_length", "uint32", repeated=False, required=True),
     }
 
     def __init__(
         self,
         *,
-        language: "str",
         data_length: "int",
     ) -> None:
-        self.language = language
         self.data_length = data_length
 
 
 class TranslationDataRequest(protobuf.MessageType):
     MESSAGE_WIRE_TYPE = 901
     FIELDS = {
-        1: protobuf.Field("data_length", "uint32", repeated=False, required=False, default=None),
+        1: protobuf.Field("data_length", "uint32", repeated=False, required=True),
+        2: protobuf.Field("data_offset", "uint32", repeated=False, required=True),
     }
 
     def __init__(
         self,
         *,
-        data_length: Optional["int"] = None,
+        data_length: "int",
+        data_offset: "int",
     ) -> None:
         self.data_length = data_length
+        self.data_offset = data_offset
 
 
 class TranslationDataAck(protobuf.MessageType):

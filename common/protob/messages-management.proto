@@ -188,8 +188,7 @@ message ApplySettings {
  * @next Failure
  */
 message ChangeLanguage {
-    required string language = 1;      // identifier of the language (e.g. "en", "cs", "fr")
-    required uint32 data_length = 2;   // byte length of the whole translation blob (set to 0 for default language)
+    required uint32 data_length = 1;   // byte length of the whole translation blob (set to 0 for default language)
 }
 
 /**
@@ -199,6 +198,7 @@ message ChangeLanguage {
  */
  message TranslationDataRequest {
     optional uint32 data_length = 1;    // Number of bytes being requested (<= 1024)
+    required uint32 data_offset = 2;    // Offset of the first byte being requested
 }
 
 /**

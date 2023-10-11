@@ -2245,13 +2245,11 @@ if TYPE_CHECKING:
             return isinstance(msg, cls)
 
     class ChangeLanguage(protobuf.MessageType):
-        language: "str"
         data_length: "int"
 
         def __init__(
             self,
             *,
-            language: "str",
             data_length: "int",
         ) -> None:
             pass
@@ -2261,12 +2259,14 @@ if TYPE_CHECKING:
             return isinstance(msg, cls)
 
     class TranslationDataRequest(protobuf.MessageType):
-        data_length: "int | None"
+        data_length: "int"
+        data_offset: "int"
 
         def __init__(
             self,
             *,
-            data_length: "int | None" = None,
+            data_length: "int",
+            data_offset: "int",
         ) -> None:
             pass
 
