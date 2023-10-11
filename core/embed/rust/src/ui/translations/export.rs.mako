@@ -10,7 +10,7 @@ THIS = Path(local.filename).resolve()
 SRCDIR = THIS.parent
 
 en_file = SRCDIR / "en.json"
-en_data = json.loads(en_file.read_text())
+en_data = json.loads(en_file.read_text())["translations"]
 
 def get_all_json_keys(data: dict) -> set[str]:
     keys: set[str] = set()

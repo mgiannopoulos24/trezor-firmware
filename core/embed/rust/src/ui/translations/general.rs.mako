@@ -23,8 +23,8 @@ SRCDIR = THIS.parent
 cs_file = SRCDIR / "cs.json"
 en_file = SRCDIR / "en.json"
 
-cs_data = json.loads(cs_file.read_text())
-en_data = json.loads(en_file.read_text())
+cs_data = json.loads(cs_file.read_text())["translations"]
+en_data = json.loads(en_file.read_text())["translations"]
 
 # checks that both files have the exact same keys
 def get_all_json_keys(data: dict) -> set[str]:

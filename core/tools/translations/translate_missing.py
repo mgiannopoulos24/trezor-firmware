@@ -49,7 +49,7 @@ if __name__ == "__main__":
     TRANSLATE = True
 
     with open(DIR / "en.json", "r") as f:
-        en_dict = json.load(f)
+        en_dict = json.load(f)["translations"]
 
     for language in ["cs", "fr"]:
         print(f"Translating to {language}")
@@ -62,7 +62,7 @@ if __name__ == "__main__":
         print("translated_dict", translated_dict)
         lang_file = DIR / f"{language}.json"
         lang_data = json.loads(lang_file.read_text())
-        extend_nested_dict(lang_data, translated_dict)
+        extend_nested_dict(lang_data["translations"], translated_dict)
         lang_file.write_text(
             json.dumps(lang_data, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
         )

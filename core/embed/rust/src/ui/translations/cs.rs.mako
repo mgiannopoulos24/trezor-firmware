@@ -16,7 +16,7 @@ SRCDIR = THIS.parent
 
 file = SRCDIR / "cs.json"
 
-data = json.loads(file.read_text())
+data = json.loads(file.read_text())["translations"]
 items_to_write: list[tuple[str, str]] = []
 for section_name, section in data.items():
     for k, v in section.items():

@@ -35,7 +35,7 @@ def get_missing_dict(missing_set: set[str]) -> "DoubleDict":
 
 def get_lang_keys(lang: str) -> set[str]:
     lang_file = DIR / f"{lang}.json"
-    lang_data = json.loads(lang_file.read_text())
+    lang_data = json.loads(lang_file.read_text())["translations"]
     return get_all_json_keys(lang_data)
 
 

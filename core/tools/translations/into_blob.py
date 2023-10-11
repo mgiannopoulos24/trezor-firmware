@@ -6,7 +6,7 @@ from validate_same_keys import DIR
 
 file = DIR / "cs.json"
 
-data = json.loads(file.read_text())
+data = json.loads(file.read_text())["translations"]
 
 DELIMITER = "*"
 
