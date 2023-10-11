@@ -1,12 +1,18 @@
 from micropython import const
 
-from storage.device import LANGUAGE_MAXLENGTH
 from trezor import config
 
-# We want to store the language name together with the data
-# (at the beginning). Accounting also for the delimiter (+1).
 DATA_MAXLENGTH = const(32 * 1024)
-TRANSLATIONS_MAXLENGTH = DATA_MAXLENGTH - (LANGUAGE_MAXLENGTH + 1)
+DEFAULT_LANGUAGE = "en-US"
+
+
+def get_language() -> str:
+    from trezortranslate import language_name
+
+    translation_lang = language_name()
+    if translation_lang:
+        return translation_lang
+    return DEFAULT_LANGUAGE
 
 
 def write(data: bytes, offset: int) -> None:

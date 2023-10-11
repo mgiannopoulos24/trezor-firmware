@@ -35,7 +35,6 @@ INITIALIZED                = const(0x13)  # bool (0x01 or empty)
 _SAFETY_CHECK_LEVEL        = const(0x14)  # int
 _EXPERIMENTAL_FEATURES     = const(0x15)  # bool (0x01 or empty)
 _HIDE_PASSPHRASE_FROM_HOST = const(0x16)  # bool (0x01 or empty)
-_LANGUAGE                  = const(0x17)  # str
 
 SAFETY_CHECK_LEVEL_STRICT  : Literal[0] = const(0)
 SAFETY_CHECK_LEVEL_PROMPT  : Literal[1] = const(1)
@@ -46,9 +45,6 @@ if TYPE_CHECKING:
 
 HOMESCREEN_MAXSIZE = const(16384)
 LABEL_MAXLENGTH = const(32)
-LANGUAGE_MAXLENGTH = const(32)
-
-DEFAULT_LANGUAGE = "en-US"
 
 if __debug__:
     AUTOLOCK_DELAY_MINIMUM = 10 * 1000  # 10 seconds
@@ -116,29 +112,6 @@ def set_label(label: str) -> None:
     if len(label) > LABEL_MAXLENGTH:
         raise ValueError  # label too long
     common.set(_NAMESPACE, _LABEL, label.encode(), True)  # public
-
-
-def get_language() -> str:
-    from trezortranslate import language_name
-
-    language = common.get(_NAMESPACE, _LANGUAGE, True)  # public
-    if language:
-        return language.decode()
-
-    # After storage wipe, language can still be set in translations area.
-    # In that case, saving it to the storage for the next quick retrieval.
-    translation_lang = language_name()
-    if translation_lang:
-        set_language(translation_lang)
-        return translation_lang
-
-    return DEFAULT_LANGUAGE
-
-
-def set_language(language: str) -> None:
-    if len(language) > LANGUAGE_MAXLENGTH:
-        raise ValueError  # language too long
-    common.set(_NAMESPACE, _LANGUAGE, language.encode(), True)  # public
 
 
 def get_mnemonic_secret() -> bytes | None:

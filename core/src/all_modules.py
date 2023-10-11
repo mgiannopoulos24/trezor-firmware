@@ -63,8 +63,6 @@ storage.resident_credentials
 import storage.resident_credentials
 storage.sd_salt
 import storage.sd_salt
-storage.translations
-import storage.translations
 trezor
 import trezor
 trezor.crypto
@@ -147,6 +145,8 @@ trezor.sdcard
 import trezor.sdcard
 trezor.strings
 import trezor.strings
+trezor.translations
+import trezor.translations
 trezor.ui
 import trezor.ui
 trezor.ui.layouts

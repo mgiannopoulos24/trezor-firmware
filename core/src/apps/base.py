@@ -45,6 +45,7 @@ def get_features() -> Features:
     import storage.recovery as storage_recovery
     from trezor.enums import Capability
     from trezor.messages import Features
+    from trezor.translations import get_language
     from trezor.ui import HEIGHT, WIDTH
 
     from apps.common import mnemonic, safety_checks
@@ -52,10 +53,7 @@ def get_features() -> Features:
     f = Features(
         vendor="trezor.io",
         fw_vendor=utils.firmware_vendor(),
-        # TODO: after wiping, the language is reset, but the translation
-        # data are still there... Have a dynamic way of getting the language
-        # from the translations data?
-        language=storage_device.get_language(),
+        language=get_language(),
         major_version=utils.VERSION_MAJOR,
         minor_version=utils.VERSION_MINOR,
         patch_version=utils.VERSION_PATCH,
