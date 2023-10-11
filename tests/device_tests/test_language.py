@@ -32,9 +32,7 @@ TRANSLATIONS = CORE / "embed" / "rust" / "src" / "ui" / "translations"
 CS_JSON = TRANSLATIONS / "cs.json"
 FR_JSON = TRANSLATIONS / "fr.json"
 
-MOCK_LANG_DATA = "abc*def*".encode()
-MAX_LANGUAGE_LENGTH = 32
-MAX_DATA_LENGTH = 32 * 1024 - (MAX_LANGUAGE_LENGTH + 1)
+MAX_DATA_LENGTH = 32 * 1024
 
 
 @contextmanager
@@ -56,63 +54,40 @@ def _set_english_return_back(client: Client) -> Generator[Client, None, None]:
 
 def _set_full_czech(client: Client):
     with client, open(CS_JSON, "r") as f:
-        language_data = translations.blob_from_file(f)
-        device.change_language(client, language="cs", language_data=language_data)
+        device.change_language(client, language_data=translations.blob_from_file(f))
 
 
 def _set_full_french(client: Client):
     with client, open(FR_JSON, "r") as f:
-        language_data = translations.blob_from_file(f)
-        device.change_language(client, language="fr", language_data=language_data)
+        device.change_language(client, language_data=translations.blob_from_file(f))
 
 
 def _set_default_english(client: Client):
     with client:
-        device.change_language(client, language="", language_data=b"")
-
-
-def test_change_language(client: Client):
-    with _set_english_return_back(client) as client:
-        assert client.features.language == "en-US"
-
-        # Setting cs language
-        with client:
-            device.change_language(client, language="cs", language_data=MOCK_LANG_DATA)
-        assert client.features.language == "cs"
-
-        # Setting the default language via empty data
-        with client:
-            device.change_language(client, language="", language_data=b"")
-        assert client.features.language == "en-US"
-
-        # Max length is accepted
-        with client:
-            device.change_language(
-                client, language="cs", language_data=b"a" * MAX_DATA_LENGTH
-            )
-        assert client.features.language == "cs"
+        device.change_language(client, language_data=b"")
 
 
 def test_change_language_errors(client: Client):
     with _set_english_return_back(client) as client:
         assert client.features.language == "en-US"
 
-        # Language name too long
+        # TODO: invalid header
+        # TODO: invalid data hash
+        # TODO: invalid signature
+        # TODO: invalid data-length
+
+        # Translations too short
         with pytest.raises(
-            exceptions.TrezorFailure, match="Language identifier too long"
+            exceptions.TrezorFailure, match="Translations too short"
         ), client:
-            device.change_language(
-                client, language=10 * "abcd", language_data=MOCK_LANG_DATA
-            )
+            device.change_language(client, language_data=10 * b"a")
         assert client.features.language == "en-US"
 
         # Translations too long
         with pytest.raises(
             exceptions.TrezorFailure, match="Translations too long"
         ), client:
-            device.change_language(
-                client, language="cs", language_data=(MAX_DATA_LENGTH + 1) * b"a"
-            )
+            device.change_language(client, language_data=(MAX_DATA_LENGTH + 1) * b"a")
         assert client.features.language == "en-US"
 
 

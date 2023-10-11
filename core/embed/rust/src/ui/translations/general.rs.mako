@@ -39,10 +39,6 @@ en_keys = get_all_json_keys(en_data)
 if cs_keys != en_keys:
     raise ValueError("cs.json and en.json have different keys")
 %>\
-/// The first entry is the language identifier
-pub const LANGUAGE_INDEX: usize = 0;
-const TRANSLATIONS_OFFSET: usize = 1;
-
 #[rustfmt::skip]
 #[allow(non_snake_case)]
 pub struct TranslationsGeneral {
@@ -58,7 +54,7 @@ impl TranslationsGeneral {
     }
 
     pub fn get_position(&self, key: &str) -> Option<usize> {
-        self.get_info(key).map(|(_, pos)| pos + TRANSLATIONS_OFFSET)
+        self.get_info(key).map(|(_, pos)| pos)
     }
 
     fn get_info(&self, key: &str) -> Option<(&'static str, usize)> {

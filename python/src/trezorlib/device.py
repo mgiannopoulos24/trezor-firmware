@@ -67,19 +67,16 @@ def apply_settings(
 @session
 def change_language(
     client: "TrezorClient",
-    language: str,
     language_data: bytes,
 ) -> "MessageType":
-    msg = messages.ChangeLanguage(
-        language=language,
-        data_length=len(language_data),
-    )
+    msg = messages.ChangeLanguage(data_length=len(language_data))
 
     response = client.call(msg)
     while not isinstance(response, messages.Success):
         assert isinstance(response, messages.TranslationDataRequest)
         data_length = response.data_length
-        language_data, chunk = language_data[data_length:], language_data[:data_length]
+        data_offset = response.data_offset
+        chunk = language_data[data_offset : data_offset + data_length]
         response = client.call(messages.TranslationDataAck(data_chunk=chunk))
 
     assert isinstance(response, messages.Success)

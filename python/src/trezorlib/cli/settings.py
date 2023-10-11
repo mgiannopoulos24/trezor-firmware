@@ -204,38 +204,27 @@ def label(client: "TrezorClient", label: str) -> str:
 
 
 @cli.command()
-@click.option("-l", "--language")
 @click.option(
     "-f", "--file", type=click.File("r"), help="Language JSON file with translations."
 )
 @click.option("-u", "--url", help="Link to translation JSON file.")
 @click.option("-r", "--remove", is_flag=True, help="Switch back to english.")
 @with_client
-def language(
-    client: "TrezorClient", language: str, file: TextIO, url: str, remove: bool
-) -> str:
+def language(client: "TrezorClient", file: TextIO, url: str, remove: bool) -> str:
     """Set new language with translations."""
     if file and url:
         raise click.ClickException("Please provide only one of -f or -u")
 
     if remove:
         language_data = b""
-        language = ""
     else:
         if file:
             language_data = translations.blob_from_file(file)
-            lang_guess = file.name.split("/")[-1].split(".")[0]
         elif url:
             language_data = translations.blob_from_url(url)
-            lang_guess = url.split("/")[-1].split(".")[0]
         else:
             raise click.ClickException("Please provide either -f or -u")
-        if not language:
-            click.echo(f"Language not specified, guessing {lang_guess}")
-            language = lang_guess
-    return device.change_language(
-        client, language=language, language_data=language_data
-    )
+    return device.change_language(client, language_data=language_data)
 
 
 @cli.command()
