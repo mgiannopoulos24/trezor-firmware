@@ -13,7 +13,7 @@ use crate::trezorhal::translations::translations_get;
 use core::str;
 
 // Translations strings are delimited by a star
-const DELIMITER_BYTE: u8 = b'*';
+const DELIMITER_BYTE: u8 = 0x00;
 const TERMINATE_BYTE: u8 = 0xFF;
 
 /// Translation function for Rust.

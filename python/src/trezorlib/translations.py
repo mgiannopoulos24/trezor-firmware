@@ -3,7 +3,7 @@ from typing import Dict, List, TextIO, Tuple
 
 import requests
 
-DELIMITER = "*"
+DELIMITER = b"\x00"
 
 
 def blob_from_file(file: TextIO) -> bytes:
@@ -22,15 +22,17 @@ def _blob_from_data(data: Dict[str, Dict[str, str]]) -> bytes:
     items_to_write: List[Tuple[str, str]] = []
     for section_name, section in data.items():
         for k, v in section.items():
-            if DELIMITER in v:
+            if DELIMITER.decode() in v:
                 raise ValueError(f"Delimiter '{DELIMITER}' found in {k}")
             name = f"{section_name}__{k}"
             items_to_write.append((name, v))
+
     # Sorting alphabetically according the key
     items_to_write.sort(key=lambda x: x[0])
 
-    buffer_str = ""
+    buffer_blob = b""
     for _key, value in items_to_write:
-        buffer_str += f"{value}{DELIMITER}"
+        buffer_blob += value.encode()
+        buffer_blob += DELIMITER
 
-    return buffer_str.encode()
+    return buffer_blob
