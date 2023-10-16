@@ -16,7 +16,7 @@ def _get_all_language_data() -> list[dict[str, dict[str, str]]]:
 
 def _get_language_data(language: str) -> dict[str, dict[str, str]]:
     file = TRANSLATIONS / f"{language}.json"
-    return json.loads(file.read_text())
+    return json.loads(file.read_text())["translations"]
 
 
 all_language_data = _get_all_language_data()
