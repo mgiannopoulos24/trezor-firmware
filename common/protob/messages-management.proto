@@ -197,7 +197,7 @@ message ChangeLanguage {
  * @next TranslationDataAck
  */
  message TranslationDataRequest {
-    optional uint32 data_length = 1;    // Number of bytes being requested (<= 1024)
+    required uint32 data_length = 1;    // Number of bytes being requested (<= 1024)
     required uint32 data_offset = 2;    // Offset of the first byte being requested
 }
 
