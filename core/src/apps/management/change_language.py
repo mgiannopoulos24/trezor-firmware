@@ -68,9 +68,20 @@ class TranslationsHeader:
         except EOFError:
             raise DataError("Invalid header data")
 
+    def version_tuple(self) -> tuple[int, int, int]:
+        try:
+            version_parts = self.version.split(".")
+            major = int(version_parts[0])
+            minor = int(version_parts[1])
+            patch = int(version_parts[2])
+            return major, minor, patch
+        except (ValueError, IndexError):
+            raise DataError("Invalid header version")
+
 
 async def change_language(msg: ChangeLanguage) -> Success:
-    from trezor import translations
+    from trezor import translations, utils
+    from trezor.crypto.hashlib import sha256
     from trezor.messages import Success
 
     data_length = msg.data_length  # local_cache_attribute
@@ -86,34 +97,46 @@ async def change_language(msg: ChangeLanguage) -> Success:
     if data_length < _HEADER_SIZE:
         raise DataError("Translations too short")
 
-    data_left = data_length
-    offset = 0
-
     # Getting and parsing the header
-    header_data = await get_data_chunk(_HEADER_SIZE, offset)
+    header_data = await get_data_chunk(_HEADER_SIZE, 0)
     header = TranslationsHeader.from_bytes(header_data)
 
+    # Verifying header information
+    # TODO: verify the header signature (signature of sha256(header))
     if header.data_length + _HEADER_SIZE != data_length:
         raise DataError("Invalid header data length")
-
-    # TODO: verify the hash of the data (get all of them and hash them)
-    # TODO: verify the header signature (signature of sha256(header))
+    # TODO: how to handle the version updates - numbers have to be bumped in cs.json and others
+    # (or have this logic in a separate blob-creating tool)
+    if header.version_tuple() != (
+        utils.VERSION_MAJOR,
+        utils.VERSION_MINOR,
+        utils.VERSION_PATCH,
+    ):
+        raise DataError("Invalid translations version")
 
     # Confirm with user and wipe old data
     await _require_confirm_change_language(header.language)
     translations.wipe()
 
     # Write the header
-    translations.write(header_data, offset)
-    offset += len(header_data)
-    data_left -= len(header_data)
+    translations.write(header_data, 0)
 
     # Requesting the data in chunks and saving them
+    # Also checking the hash of the data for consistency
+    data_left = data_length - len(header_data)
+    offset = len(header_data)
+    hash_writer = utils.HashWriter(sha256())
     while data_left > 0:
         data_chunk = await get_data_chunk(data_left, offset)
         translations.write(data_chunk, offset)
+        hash_writer.write(data_chunk)
         data_left -= len(data_chunk)
         offset += len(data_chunk)
+
+    # When the data do not match the hash, wipe all the written translations
+    if hash_writer.get_digest() != header.data_hash:
+        translations.wipe()
+        raise DataError("Invalid data hash")
 
     return Success(message="Language changed")
 

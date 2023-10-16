@@ -14,17 +14,17 @@ HeaderData = Dict[str, str]
 
 def blob_from_file(file: TextIO) -> bytes:
     data = json.load(file)
-    return _blob_from_dict(data)
+    return blob_from_dict(data)
 
 
 def blob_from_url(url: str) -> bytes:
     r = requests.get(url)
     r.raise_for_status()
     data = r.json()
-    return _blob_from_dict(data)
+    return blob_from_dict(data)
 
 
-def _blob_from_dict(data: Dict[str, Any]) -> bytes:
+def blob_from_dict(data: Dict[str, Any]) -> bytes:
     header: HeaderData = data["header"]
     translations: TranslationData = data["translations"]
     return _blob_from_data(header, translations)

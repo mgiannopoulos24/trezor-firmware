@@ -14,6 +14,7 @@
 # You should have received a copy of the License along with this library.
 # If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
 
+import json
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Generator
@@ -72,9 +73,7 @@ def test_change_language_errors(client: Client):
         assert client.features.language == "en-US"
 
         # TODO: invalid header
-        # TODO: invalid data hash
         # TODO: invalid signature
-        # TODO: invalid data-length
 
         # Translations too short
         with pytest.raises(
@@ -88,6 +87,48 @@ def test_change_language_errors(client: Client):
             exceptions.TrezorFailure, match="Translations too long"
         ), client:
             device.change_language(client, language_data=(MAX_DATA_LENGTH + 1) * b"a")
+        assert client.features.language == "en-US"
+
+        # Invalid header data length
+        with pytest.raises(
+            exceptions.TrezorFailure, match="Invalid header data length"
+        ), client:
+            with open(CS_JSON, "r") as f:
+                device.change_language(
+                    client, language_data=translations.blob_from_file(f) + b"abc"
+                )
+        assert client.features.language == "en-US"
+
+        # Invalid data hash
+        with pytest.raises(exceptions.TrezorFailure, match="Invalid data hash"), client:
+            with open(CS_JSON, "r") as f:
+                device.change_language(
+                    client, language_data=translations.blob_from_file(f)[:-4] + b"abcd"
+                )
+        assert client.features.language == "en-US"
+
+        # Invalid translations version
+        with pytest.raises(
+            exceptions.TrezorFailure, match="Invalid translations version"
+        ), client:
+            with open(CS_JSON, "r") as f:
+                data = json.load(f)
+            data["header"]["version"] = "3.5.4"
+            device.change_language(
+                client, language_data=translations.blob_from_dict(data)
+            )
+        assert client.features.language == "en-US"
+
+        # Invalid header version
+        with pytest.raises(
+            exceptions.TrezorFailure, match="Invalid header version"
+        ), client:
+            with open(CS_JSON, "r") as f:
+                data = json.load(f)
+            data["header"]["version"] = "ABC.XYZ.DEF"
+            device.change_language(
+                client, language_data=translations.blob_from_dict(data)
+            )
         assert client.features.language == "en-US"
 
 
