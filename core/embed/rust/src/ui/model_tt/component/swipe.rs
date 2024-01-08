@@ -4,9 +4,8 @@ use crate::ui::{
     event::TouchEvent,
     geometry::{Point, Rect},
     shape::Renderer,
+    model_tt::theme::backlight,
 };
-
-use super::theme;
 
 pub enum SwipeDirection {
     Up,
@@ -37,8 +36,8 @@ impl Swipe {
             allow_down: false,
             allow_left: false,
             allow_right: false,
-            backlight_start: theme::BACKLIGHT_NORMAL,
-            backlight_end: theme::BACKLIGHT_NONE,
+            backlight_start: backlight::get_backlight_normal(),
+            backlight_end: backlight::get_backlight_none(),
             origin: None,
         }
     }

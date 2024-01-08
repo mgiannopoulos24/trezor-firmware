@@ -2231,6 +2231,7 @@ if TYPE_CHECKING:
         safety_checks: "SafetyCheckLevel | None"
         experimental_features: "bool | None"
         hide_passphrase_from_host: "bool | None"
+        brightness: "int | None"
 
         def __init__(
             self,
@@ -2244,6 +2245,7 @@ if TYPE_CHECKING:
             safety_checks: "SafetyCheckLevel | None" = None,
             experimental_features: "bool | None" = None,
             hide_passphrase_from_host: "bool | None" = None,
+            brightness: "int | None" = None,
         ) -> None:
             pass
 
