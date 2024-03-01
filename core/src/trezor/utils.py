@@ -1,6 +1,6 @@
 import gc
 import sys
-from trezorutils import (  # noqa: F401
+from trezorutils import (  # noqa: F401 # pyright: ignore[reportMissingImports]
     BITCOIN_ONLY,
     EMULATOR,
     INTERNAL_MODEL,
@@ -29,13 +29,15 @@ from trezorutils import (  # noqa: F401
     unit_color,
     unit_packaging,
 )
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING  # pyright: ignore[reportShadowedImports]
 
 DISABLE_ANIMATION = 0
 
+DISABLE_ENCRYPTION: bool = False
+
 if __debug__:
     if EMULATOR:
-        import uos
+        import uos  # pyright: ignore[reportMissingModuleSource]
 
         DISABLE_ANIMATION = int(uos.getenv("TREZOR_DISABLE_ANIMATION") or "0")
         LOG_MEMORY = int(uos.getenv("TREZOR_LOG_MEMORY") or "0")
@@ -43,7 +45,13 @@ if __debug__:
         LOG_MEMORY = 0
 
 if TYPE_CHECKING:
-    from typing import Any, Iterator, Protocol, Sequence, TypeVar
+    from typing import (  # pyright: ignore[reportShadowedImports]
+        Any,
+        Iterator,
+        Protocol,
+        Sequence,
+        TypeVar,
+    )
 
     from trezor.protobuf import MessageType
 
@@ -109,21 +117,25 @@ def presize_module(modname: str, size: int) -> None:
 
 
 if __debug__:
+    from ubinascii import hexlify  # pyright: ignore[reportMissingModuleSource]
 
     def mem_dump(filename: str) -> None:
-        from micropython import mem_info
+        from micropython import mem_info  # pyright: ignore[reportMissingModuleSource]
 
         print(f"### sysmodules ({len(sys.modules)}):")
         for mod in sys.modules:
             print("*", mod)
         if EMULATOR:
-            from trezorutils import meminfo
+            from trezorutils import meminfo  # pyright: ignore[reportMissingImports]
 
             print("### dumping to", filename)
             meminfo(filename)
             mem_info()
         else:
             mem_info(True)
+
+    def get_bytes_as_str(a):
+        return hexlify(a).decode("utf-8")
 
 
 def ensure(cond: bool, msg: str | None = None) -> None:

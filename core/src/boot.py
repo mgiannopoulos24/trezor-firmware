@@ -51,7 +51,6 @@ async def bootscreen() -> None:
     """
     while True:
         try:
-
             if can_lock_device():
                 enforce_welcome_screen_duration()
                 ui.backlight_fade(ui.BacklightLevels.NONE)

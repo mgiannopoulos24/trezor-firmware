@@ -1,9 +1,12 @@
 from micropython import const
 from typing import TYPE_CHECKING
 
-import storage.cache as storage_cache
 from storage import common
+from storage.cache_common import STORAGE_DEVICE_EXPERIMENTAL_FEATURES
 from trezor import utils
+from trezor.wire import context
+
+from apps.common import cache
 
 if TYPE_CHECKING:
     from trezor.enums import BackupType
@@ -329,7 +332,7 @@ def set_safety_check_level(level: StorageSafetyCheckLevel) -> None:
     common.set_uint8(_NAMESPACE, _SAFETY_CHECK_LEVEL, level)
 
 
-@storage_cache.stored(storage_cache.STORAGE_DEVICE_EXPERIMENTAL_FEATURES)
+@cache.stored(STORAGE_DEVICE_EXPERIMENTAL_FEATURES)
 def _get_experimental_features() -> bytes:
     if common.get_bool(_NAMESPACE, _EXPERIMENTAL_FEATURES):
         return b"\x01"
@@ -343,7 +346,7 @@ def get_experimental_features() -> bool:
 
 def set_experimental_features(enabled: bool) -> None:
     cached_bytes = b"\x01" if enabled else b""
-    storage_cache.set(storage_cache.STORAGE_DEVICE_EXPERIMENTAL_FEATURES, cached_bytes)
+    context.cache_set(STORAGE_DEVICE_EXPERIMENTAL_FEATURES, cached_bytes)
     common.set_true_or_delete(_NAMESPACE, _EXPERIMENTAL_FEATURES, enabled)
 
 
