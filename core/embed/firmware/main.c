@@ -134,6 +134,12 @@ int main(void) {
 
   display_reinit();
 
+  display_bar(0, 0, 240, 240, RGB16(0, 0, 255));
+
+  display_refresh();
+
+  while(true);
+
   screen_boot_full();
 
 #if !defined TREZOR_MODEL_1
