@@ -11,11 +11,9 @@ use super::{
     op::OpTextLayout,
 };
 
-use core::cell::RefCell;
-
 #[derive(Clone)]
 pub struct FormattedText<T: StringType + Clone> {
-    op_layout: RefCell<OpTextLayout<T>>,
+    op_layout: OpTextLayout<T>,
     vertical: Alignment,
     char_offset: usize,
     y_offset: i16,
@@ -24,7 +22,7 @@ pub struct FormattedText<T: StringType + Clone> {
 impl<T: StringType + Clone> FormattedText<T> {
     pub fn new(op_layout: OpTextLayout<T>) -> Self {
         Self {
-            op_layout: RefCell::new(op_layout),
+            op_layout,
             vertical: Alignment::Start,
             char_offset: 0,
             y_offset: 0,
@@ -36,14 +34,13 @@ impl<T: StringType + Clone> FormattedText<T> {
         self
     }
 
-    fn layout_content(&self, sink: &mut dyn LayoutSink) -> LayoutFit {
+    pub(crate) fn layout_content(&self, sink: &mut dyn LayoutSink) -> LayoutFit {
         self.op_layout
-            .borrow_mut()
             .layout_ops(self.char_offset, Offset::y(self.y_offset), sink)
     }
 
     fn align_vertically(&mut self, content_height: i16) {
-        let bounds_height = self.op_layout.borrow().layout.bounds.height();
+        let bounds_height = self.op_layout.layout.bounds.height();
         if content_height >= bounds_height {
             self.y_offset = 0;
             return;
@@ -125,7 +122,7 @@ impl<T: StringType + Clone> Component for FormattedText<T> {
     type Msg = Never;
 
     fn place(&mut self, bounds: Rect) -> Rect {
-        self.op_layout.borrow_mut().place(bounds);
+        self.op_layout.place(bounds);
         let height = self.layout_content(&mut TextNoOp).height();
         self.align_vertically(height);
         bounds
@@ -141,26 +138,11 @@ impl<T: StringType + Clone> Component for FormattedText<T> {
 
     #[cfg(feature = "ui_bounds")]
     fn bounds(&self, sink: &mut dyn FnMut(Rect)) {
-        sink(self.op_layout.borrow().layout.bounds)
+        sink(self.op_layout.layout.bounds)
     }
 }
 
 // DEBUG-ONLY SECTION BELOW
-
-#[cfg(feature = "ui_debug")]
-impl<T: StringType + Clone> FormattedText<T> {
-    /// Is the same as layout_content, but does not use `&mut self`
-    /// to be compatible with `trace`.
-    /// Therefore it has to do the `clone` of `op_layout`.
-    pub fn layout_content_debug(&self, sink: &mut dyn LayoutSink) -> LayoutFit {
-        // TODO: how to solve it "properly", without the `clone`?
-        // (changing `trace` to `&mut self` had some other isses...)
-        self.op_layout
-            .borrow()
-            .clone()
-            .layout_content(self.char_offset, sink)
-    }
-}
 
 #[cfg(feature = "ui_debug")]
 impl<T: StringType + Clone> crate::trace::Trace for FormattedText<T> {
@@ -170,7 +152,7 @@ impl<T: StringType + Clone> crate::trace::Trace for FormattedText<T> {
         let fit: Cell<Option<LayoutFit>> = Cell::new(None);
         t.component("FormattedText");
         t.in_list("text", &|l| {
-            let result = self.layout_content_debug(&mut TraceSink(l));
+            let result = self.layout_content(&mut TraceSink(l));
             fit.set(Some(result));
         });
         t.bool("fits", matches!(fit.get(), Some(LayoutFit::Fitting { .. })));

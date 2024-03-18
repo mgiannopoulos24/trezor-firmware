@@ -243,7 +243,7 @@ where
         t.int("active_page", self.current_page as i64);
         t.int("page_count", self.page_count as i64);
         t.in_list("text", &|l| {
-            let result = self.formatted.layout_content_debug(&mut TraceSink(l));
+            let result = self.formatted.layout_content(&mut TraceSink(l));
             fit.set(Some(result));
         });
     }
