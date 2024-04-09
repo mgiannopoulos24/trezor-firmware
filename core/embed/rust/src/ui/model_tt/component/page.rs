@@ -560,7 +560,7 @@ mod tests {
                     "This is the first paragraph and it should fit on the screen entirely.",
                 ),
                 Paragraph::new(
-                    &theme::TEXT_BOLD,
+                    &theme::TEXT_BOLD_UPPER,
                     "Second, bold, paragraph should also fit on the screen whole I think.",
                 ),
             ]),
@@ -594,7 +594,7 @@ mod tests {
         let mut page = ButtonPage::new(
             Paragraphs::new(
                 Paragraph::new(
-                    &theme::TEXT_BOLD,
+                    &theme::TEXT_BOLD_UPPER,
                     "This is somewhat long paragraph that goes on and on and on and on and on and will definitely not fit on just a single screen. You have to swipe a bit to see all the text it contains I guess. There's just so much letters in it.",
                 )
             ),
@@ -652,7 +652,7 @@ mod tests {
         let mut page = ButtonPage::new(
             Paragraphs::new([
                 Paragraph::new(
-                    &theme::TEXT_BOLD,
+                    &theme::TEXT_BOLD_UPPER,
                     "This paragraph is using a bold font. It doesn't need to be all that long.",
                 ),
                 Paragraph::new(
@@ -660,7 +660,7 @@ mod tests {
                     "And this one is using MONO. Monospace is nice for numbers, they have the same width and can be scanned quickly. Even if they span several pages or something.",
                 ),
                 Paragraph::new(
-                    &theme::TEXT_BOLD,
+                    &theme::TEXT_BOLD_UPPER,
                     "Let's add another one for a good measure. This one should overflow all the way to the third page with a bit of luck.",
                 ),
             ]),
