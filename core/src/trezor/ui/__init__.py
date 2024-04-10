@@ -334,6 +334,7 @@ class Layout(Generic[T]):
                 msg = event_call(*event)
                 self._emit_message(msg)
                 self.layout.paint()
+                refresh()
         except Shutdown:
             return
         finally:
