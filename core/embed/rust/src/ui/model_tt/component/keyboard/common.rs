@@ -32,7 +32,6 @@ impl Pending {
         timer.start(ctx, timeout);
         Self { key, press, timer }
     }
-
 }
 
 impl MultiTapKeyboard {
