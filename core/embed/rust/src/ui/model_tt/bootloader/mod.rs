@@ -147,6 +147,7 @@ impl UIFeaturesBootloader for ModelTTFeatures {
         fingerprint: &str,
         should_keep_seed: bool,
         is_newvendor: bool,
+        is_newinstall: bool,
         version_cmp: i32,
     ) -> u32 {
         let mut version_str: BootloaderString = String::new();
@@ -155,7 +156,9 @@ impl UIFeaturesBootloader for ModelTTFeatures {
         unwrap!(version_str.push_str("\nby "));
         unwrap!(version_str.push_str(vendor));
 
-        let title_str = if is_newvendor {
+        let title_str = if is_newinstall {
+            "INSTALL FIRMWARE"
+        } else if is_newvendor {
             "CHANGE FW\nVENDOR"
         } else if version_cmp > 0 {
             "UPDATE FIRMWARE"

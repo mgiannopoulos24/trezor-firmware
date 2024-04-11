@@ -39,6 +39,7 @@ extern "C" fn screen_install_confirm(
     fingerprint: *const cty::uint8_t,
     should_keep_seed: bool,
     is_newvendor: bool,
+    is_newinstall: bool,
     version_cmp: cty::c_int,
 ) -> u32 {
     let text = unwrap!(unsafe { from_c_array(vendor_str, vendor_str_len as usize) });
@@ -57,6 +58,7 @@ extern "C" fn screen_install_confirm(
         fingerprint_str,
         should_keep_seed,
         is_newvendor,
+        is_newinstall,
         version_cmp,
     )
 }
