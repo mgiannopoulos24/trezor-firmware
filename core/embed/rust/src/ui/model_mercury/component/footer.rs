@@ -14,6 +14,7 @@ use crate::{
 /// height must be 18px (only instruction) or 37px (both description and
 /// instruction). The content and style of both description and instruction is
 /// configurable separatedly.
+#[derive(Clone)]
 pub struct Footer<'a> {
     area: Rect,
     text_instruction: TString<'a>,
@@ -33,8 +34,8 @@ impl<'a> Footer<'a> {
             area: Rect::zero(),
             text_instruction: instruction.into(),
             text_description: None,
-            style_instruction: &theme::TEXT_SUB,
-            style_description: &theme::TEXT_SUB,
+            style_instruction: &theme::TEXT_SUB_GREY,
+            style_description: &theme::TEXT_SUB_GREY_LIGHT,
         }
     }
 
@@ -63,6 +64,14 @@ impl<'a> Footer<'a> {
     pub fn update_description_style(&mut self, ctx: &mut EventCtx, style: &'static TextStyle) {
         self.style_description = style;
         ctx.request_paint();
+    }
+
+    pub fn get_necessary_height(&self) -> i16 {
+        if self.text_description.is_some() {
+            Footer::HEIGHT_DEFAULT
+        } else {
+            Footer::HEIGHT_SIMPLE
+        }
     }
 }
 
@@ -128,5 +137,16 @@ impl<'a> Component for Footer<'a> {
     #[cfg(feature = "ui_bounds")]
     fn bounds(&self, sink: &mut dyn FnMut(Rect)) {
         sink(self.area);
+    }
+}
+
+#[cfg(feature = "ui_debug")]
+impl crate::trace::Trace for Footer<'_> {
+    fn trace(&self, t: &mut dyn crate::trace::Tracer) {
+        t.component("Footer");
+        if let Some(description) = self.text_description {
+            t.string("description", description);
+        }
+        t.string("instruction", self.text_instruction);
     }
 }
