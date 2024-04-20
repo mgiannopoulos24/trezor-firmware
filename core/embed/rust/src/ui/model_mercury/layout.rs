@@ -53,8 +53,8 @@ use super::{
         FidoMsg, Frame, FrameMsg, Homescreen, HomescreenMsg, IconDialog, Lockscreen, MnemonicInput,
         MnemonicKeyboard, MnemonicKeyboardMsg, NumberInputDialog, NumberInputDialogMsg,
         PassphraseKeyboard, PassphraseKeyboardMsg, PinKeyboard, PinKeyboardMsg, Progress,
-        SelectWordCount, SelectWordCountMsg, ShareWords, SimplePage, Slip39Input, VerticalMenu,
-        VerticalMenuChoiceMsg,
+        PromptScreen, SelectWordCount, SelectWordCountMsg, ShareWords, SimplePage, Slip39Input,
+        StatusScreen, VerticalMenu, VerticalMenuChoiceMsg,
     },
     flow, theme,
 };
@@ -203,6 +203,24 @@ impl ComponentMsgObj for VerticalMenu {
     fn msg_try_into_obj(&self, msg: Self::Msg) -> Result<Obj, Error> {
         match msg {
             VerticalMenuChoiceMsg::Selected(i) => i.try_into(),
+        }
+    }
+}
+
+impl ComponentMsgObj for StatusScreen {
+    fn msg_try_into_obj(&self, msg: Self::Msg) -> Result<Obj, Error> {
+        match msg {
+            PageMsg::Confirmed => Ok(CONFIRMED.as_obj()),
+            _ => Err(Error::TypeError),
+        }
+    }
+}
+
+impl ComponentMsgObj for PromptScreen {
+    fn msg_try_into_obj(&self, msg: Self::Msg) -> Result<Obj, Error> {
+        match msg {
+            PageMsg::Confirmed => Ok(CONFIRMED.as_obj()),
+            _ => Err(Error::TypeError),
         }
     }
 }
