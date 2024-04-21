@@ -54,7 +54,7 @@ use super::{
         MnemonicKeyboard, MnemonicKeyboardMsg, NumberInputDialog, NumberInputDialogMsg,
         PassphraseKeyboard, PassphraseKeyboardMsg, PinKeyboard, PinKeyboardMsg, Progress,
         PromptScreen, SelectWordCount, SelectWordCountMsg, ShareWords, SimplePage, Slip39Input,
-        StatusScreen, VerticalMenu, VerticalMenuChoiceMsg,
+        StatusScreen, SwipeUpScreen, VerticalMenu, VerticalMenuChoiceMsg,
     },
     flow, theme,
 };
@@ -217,6 +217,18 @@ impl ComponentMsgObj for StatusScreen {
 }
 
 impl ComponentMsgObj for PromptScreen {
+    fn msg_try_into_obj(&self, msg: Self::Msg) -> Result<Obj, Error> {
+        match msg {
+            PageMsg::Confirmed => Ok(CONFIRMED.as_obj()),
+            _ => Err(Error::TypeError),
+        }
+    }
+}
+
+impl<T> ComponentMsgObj for SwipeUpScreen<T>
+where
+    T: Component,
+{
     fn msg_try_into_obj(&self, msg: Self::Msg) -> Result<Obj, Error> {
         match msg {
             PageMsg::Confirmed => Ok(CONFIRMED.as_obj()),
