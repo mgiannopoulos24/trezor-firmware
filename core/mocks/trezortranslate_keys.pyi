@@ -577,6 +577,7 @@ class TR:
     reset__check_wallet_backup_title: str = "Check wallet backup"
     reset__continue_with_next_share: str = "Continue with the next share."
     reset__continue_with_share_template: str = "Continue with share #{0}."
+    reset__create_x_of_y_shamir_backup_template: str = "Do you want to create a {0} of {1} Shamir backup?"
     reset__finished_verifying_group_template: str = "You have finished verifying your recovery shares for group {0}."
     reset__finished_verifying_shares: str = "You have finished verifying your recovery shares."
     reset__finished_verifying_wallet_backup: str = "You have finished verifying your wallet backup."

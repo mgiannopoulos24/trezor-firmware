@@ -1474,6 +1474,10 @@ class InputFlowSlip39CustomBackup(InputFlowBase):
         self.share_count = share_count
 
     def input_flow_tt(self) -> BRGeneratorType:
+        if self.share_count > 1:
+            yield  # Checklist
+            self.debug.press_yes()
+
         yield  # Confirm show seeds
         self.debug.press_yes()
 
@@ -1485,6 +1489,10 @@ class InputFlowSlip39CustomBackup(InputFlowBase):
         self.debug.press_yes()
 
     def input_flow_tr(self) -> BRGeneratorType:
+        if self.share_count > 1:
+            yield  # Checklist
+            self.debug.press_yes()
+
         yield  # Confirm show seeds
         self.debug.press_yes()
 
@@ -1496,6 +1504,10 @@ class InputFlowSlip39CustomBackup(InputFlowBase):
         self.debug.press_yes()
 
     def input_flow_t3t1(self) -> BRGeneratorType:
+        if self.share_count > 1:
+            yield  # Checklist
+            self.debug.press_yes()
+
         yield  # Confirm show seeds
         self.debug.press_yes()
 

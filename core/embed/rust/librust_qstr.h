@@ -432,6 +432,7 @@ static void _librust_qstrs(void) {
   MP_QSTR_reset__check_wallet_backup_title;
   MP_QSTR_reset__continue_with_next_share;
   MP_QSTR_reset__continue_with_share_template;
+  MP_QSTR_reset__create_x_of_y_shamir_backup_template;
   MP_QSTR_reset__finished_verifying_group_template;
   MP_QSTR_reset__finished_verifying_shares;
   MP_QSTR_reset__finished_verifying_wallet_backup;
