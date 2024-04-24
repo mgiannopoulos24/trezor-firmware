@@ -6,6 +6,7 @@ use crate::{
     strutil::TString,
     time::Duration,
     ui::{
+        button_request::{ButtonRequest, ButtonRequestCode},
         component::{maybe::PaintOverlapping, MsgMap},
         display::{self, Color},
         geometry::{Offset, Rect},
@@ -458,6 +459,7 @@ pub struct EventCtx {
     paint_requested: bool,
     anim_frame_scheduled: bool,
     page_count: Option<usize>,
+    button_request: Option<ButtonRequest>,
     root_repaint_requested: bool,
 }
 
@@ -484,6 +486,7 @@ impl EventCtx {
                                     * `Child::marked_for_paint` being true. */
             anim_frame_scheduled: false,
             page_count: None,
+            button_request: None,
             root_repaint_requested: false,
         }
     }
@@ -541,6 +544,16 @@ impl EventCtx {
         self.page_count
     }
 
+    pub fn send_button_request(&mut self, code: ButtonRequestCode, br_type: &'static str) {
+        #[cfg(feature = "ui_debug")]
+        assert!(self.button_request.is_none());
+        self.button_request = Some(ButtonRequest { code, br_type });
+    }
+
+    pub fn button_request(&mut self) -> Option<ButtonRequest> {
+        self.button_request.take()
+    }
+
     pub fn pop_timer(&mut self) -> Option<(TimerToken, Duration)> {
         self.timers.pop()
     }
@@ -550,6 +563,9 @@ impl EventCtx {
         self.paint_requested = false;
         self.anim_frame_scheduled = false;
         self.page_count = None;
+        #[cfg(feature = "ui_debug")]
+        assert!(self.button_request.is_none());
+        self.button_request = None;
         self.root_repaint_requested = false;
     }
 

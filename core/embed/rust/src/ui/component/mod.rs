@@ -2,6 +2,7 @@
 
 pub mod base;
 pub mod border;
+pub mod button_request;
 pub mod connect;
 pub mod empty;
 pub mod image;
@@ -19,6 +20,7 @@ pub mod timeout;
 
 pub use base::{Child, Component, ComponentExt, Event, EventCtx, Never, Root, TimerToken};
 pub use border::Border;
+pub use button_request::{ButtonRequestExt, OneButtonRequest};
 pub use empty::Empty;
 pub use label::Label;
 pub use map::MsgMap;
