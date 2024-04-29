@@ -58,8 +58,10 @@ def get_diff(
 
             def testname(test: str) -> str:
                 assert test.startswith(model + "_")
-                test = test[len(model) + 1 :]
-                return f"{model}-{group}-{test}"
+                prefix_len = len(model) + 3  # TT_en-
+                model_lang = test[:prefix_len]
+                test = test[prefix_len + 1 :]
+                return f"{model_lang}-{group}-{test}"
 
             # removed items
             removed_here = {

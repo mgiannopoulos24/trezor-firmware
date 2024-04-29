@@ -42,6 +42,7 @@ runs:
         echo "[UI test report](https://data.trezor.io/dev/firmware/ui_report/${{ github.run_id }}/${{ inputs.model }}-${{ inputs.lang }}-${{ github.job }}/index.html)" >> $GITHUB_STEP_SUMMARY
       shell: sh
     - name: Upload test screen recording
+      # TODO: only run this on main?
       run: |
         aws s3 sync ci/ui_test_records s3://data.trezor.io/dev/firmware/ui_tests
         # TODO: generate directory listing / autoindex
