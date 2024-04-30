@@ -684,38 +684,6 @@ extern "C" fn new_confirm_homescreen(n_args: usize, args: *const Obj, kwargs: *m
     unsafe { util::try_with_args_and_kwargs(n_args, args, kwargs, block) }
 }
 
-extern "C" fn new_show_address_details(n_args: usize, args: *const Obj, kwargs: *mut Map) -> Obj {
-    let block = move |_args: &[Obj], kwargs: &Map| {
-        let qr_title: TString = kwargs.get(Qstr::MP_QSTR_qr_title)?.try_into()?;
-        let details_title: TString = kwargs.get(Qstr::MP_QSTR_details_title)?.try_into()?;
-        let address: TString = kwargs.get(Qstr::MP_QSTR_address)?.try_into()?;
-        let case_sensitive: bool = kwargs.get(Qstr::MP_QSTR_case_sensitive)?.try_into()?;
-        let account: Option<TString> = kwargs.get(Qstr::MP_QSTR_account)?.try_into_option()?;
-        let path: Option<TString> = kwargs.get(Qstr::MP_QSTR_path)?.try_into_option()?;
-
-        let xpubs: Obj = kwargs.get(Qstr::MP_QSTR_xpubs)?;
-
-        let mut ad = AddressDetails::new(
-            qr_title,
-            address,
-            case_sensitive,
-            details_title,
-            account,
-            path,
-        )?;
-
-        for i in IterBuf::new().try_iterate(xpubs)? {
-            let [xtitle, text]: [TString; 2] = util::iter_into_array(i)?;
-            ad.add_xpub(xtitle, text)?;
-        }
-
-        let obj =
-            LayoutObj::new(SimplePage::horizontal(ad, theme::BG).with_swipe_right_to_go_back())?;
-        Ok(obj.into())
-    };
-    unsafe { util::try_with_args_and_kwargs(n_args, args, kwargs, block) }
-}
-
 extern "C" fn new_show_info_with_cancel(n_args: usize, args: *const Obj, kwargs: *mut Map) -> Obj {
     let block = move |_args: &[Obj], kwargs: &Map| {
         let title: TString = kwargs.get(Qstr::MP_QSTR_title)?.try_into()?;
@@ -1012,12 +980,13 @@ extern "C" fn new_confirm_fido(n_args: usize, args: *const Obj, kwargs: *mut Map
 extern "C" fn new_show_warning(n_args: usize, args: *const Obj, kwargs: *mut Map) -> Obj {
     let block = move |_args: &[Obj], kwargs: &Map| {
         let title: TString = kwargs.get(Qstr::MP_QSTR_title)?.try_into()?;
+        let description: TString = kwargs.get_or(Qstr::MP_QSTR_description, "".into())?;
         let value: TString = kwargs.get_or(Qstr::MP_QSTR_value, "".into())?;
 
-        let content = SwipeUpScreen::new(Paragraphs::new([Paragraph::new(
-            &theme::TEXT_MAIN_GREY_LIGHT,
-            value,
-        )]));
+        let content = SwipeUpScreen::new(Paragraphs::new([
+            Paragraph::new(&theme::TEXT_MAIN_GREY_LIGHT, description),
+            Paragraph::new(&theme::TEXT_MAIN_GREY_EXTRA_LIGHT, value),
+        ]));
         let obj = LayoutObj::new(
             Frame::left_aligned(title, content)
                 .with_warning_button()
@@ -1808,19 +1777,6 @@ pub static mp_module_trezorui2: Module = obj_module! {
     ///     """Confirm TOS before device setup."""
     Qstr::MP_QSTR_confirm_reset_device => obj_fn_kw!(0, flow::confirm_reset_device::new_confirm_reset_device).as_obj(),
 
-    /// def show_address_details(
-    ///     *,
-    ///     qr_title: str,
-    ///     address: str,
-    ///     case_sensitive: bool,
-    ///     details_title: str,
-    ///     account: str | None,
-    ///     path: str | None,
-    ///     xpubs: list[tuple[str, str]],
-    /// ) -> LayoutObj[UiResult]:
-    ///     """Show address details - QR code, account, path, cosigner xpubs."""
-    Qstr::MP_QSTR_show_address_details => obj_fn_kw!(0, new_show_address_details).as_obj(),
-
     /// def show_info_with_cancel(
     ///     *,
     ///     title: str,
@@ -2037,7 +1993,11 @@ pub static mp_module_trezorui2: Module = obj_module! {
     Qstr::MP_QSTR_show_share_words => obj_fn_kw!(0, new_show_share_words).as_obj(),
 
     // TODO: This is just POC
-    /// def confirm_backup_written_down() -> LayoutObj[UiResult]
+    /// def confirm_backup_written_down(
+    ///     *,
+    ///     title: str,
+    ///     pages: Iterable[str],
+    /// ) -> LayoutObj[UiResult]
     /// """Confirm with the user that backup words are written down."""
     Qstr::MP_QSTR_confirm_backup_written_down => obj_fn_kw!(0, new_confirm_backup_written_down).as_obj(),
 
@@ -2150,9 +2110,29 @@ pub static mp_module_trezorui2: Module = obj_module! {
     ///     """Show single-line text in the middle of the screen."""
     Qstr::MP_QSTR_show_wait_text => obj_fn_1!(new_show_wait_text).as_obj(),
 
-    /// def flow_get_address() -> LayoutObj[UiResult]:
+    /// def flow_get_address(
+    ///     *,
+    ///     address: str | bytes,
+    ///     description: str | None,
+    ///     extra: str | None,
+    ///     chunkify: bool,
+    ///     address_qr: str | None,
+    ///     case_sensitive: bool,
+    ///     account: str | None,
+    ///     path: str | None,
+    ///     xpubs: list[tuple[str, str]],
+    /// ) -> LayoutObj[UiResult]:
     ///     """Get address / receive funds."""
     Qstr::MP_QSTR_flow_get_address => obj_fn_kw!(0, flow::get_address::new_get_address).as_obj(),
+
+    /// def flow_warning_hi_prio(
+    ///     *,
+    ///     title: str,
+    ///     description: str,
+    ///     value: str = "",
+    /// ) -> LayoutObj[UiResult]:
+    ///     """Warning modal with multiple steps to confirm."""
+    Qstr::MP_QSTR_flow_warning_hi_prio => obj_fn_kw!(0, flow::warning_hi_prio::new_warning_hi_prio).as_obj(),
 };
 
 #[cfg(test)]

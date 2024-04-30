@@ -847,5 +847,12 @@
   "845": "instructions__swipe_up",
   "846": "instructions__tap_to_confirm",
   "847": "instructions__hold_to_confirm",
-  "848": "words__important"
+  "848": "words__important",
+  "849": "address_details__account_info",
+  "850": "address__cancel_contact_support",
+  "851": "address__cancel_receive",
+  "852": "address__qr_code",
+  "853": "address_details__derivation_path_no_colon",
+  "854": "instructions__continue_in_app",
+  "855": "words__cancel_and_exit"
 }

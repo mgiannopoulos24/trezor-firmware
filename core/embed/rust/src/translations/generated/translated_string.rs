@@ -1241,6 +1241,13 @@ pub enum TranslatedString {
     instructions__tap_to_confirm = 846,  // "Tap to confirm"
     instructions__hold_to_confirm = 847,  // "Hold to confirm"
     words__important = 848,  // "Important"
+    address_details__account_info = 849,  // "Account info"
+    address__cancel_contact_support = 850,  // "If receive address doesn't match, contact Trezor Support at trezor.io/support."
+    address__cancel_receive = 851,  // "Cancel receive"
+    address__qr_code = 852,  // "QR code"
+    address_details__derivation_path_no_colon = 853,  // "Derivation path"
+    instructions__continue_in_app = 854,  // "Continue in the app"
+    words__cancel_and_exit = 855,  // "Cancel and exit"
 }
 
 impl TranslatedString {
@@ -2477,6 +2484,13 @@ impl TranslatedString {
             Self::instructions__tap_to_confirm => "Tap to confirm",
             Self::instructions__hold_to_confirm => "Hold to confirm",
             Self::words__important => "Important",
+            Self::address_details__account_info => "Account info",
+            Self::address__cancel_contact_support => "If receive address doesn't match, contact Trezor Support at trezor.io/support.",
+            Self::address__cancel_receive => "Cancel receive",
+            Self::address__qr_code => "QR code",
+            Self::address_details__derivation_path_no_colon => "Derivation path",
+            Self::instructions__continue_in_app => "Continue in the app",
+            Self::words__cancel_and_exit => "Cancel and exit",
         }
     }
 
@@ -3714,6 +3728,13 @@ impl TranslatedString {
             Qstr::MP_QSTR_instructions__tap_to_confirm => Some(Self::instructions__tap_to_confirm),
             Qstr::MP_QSTR_instructions__hold_to_confirm => Some(Self::instructions__hold_to_confirm),
             Qstr::MP_QSTR_words__important => Some(Self::words__important),
+            Qstr::MP_QSTR_address_details__account_info => Some(Self::address_details__account_info),
+            Qstr::MP_QSTR_address__cancel_contact_support => Some(Self::address__cancel_contact_support),
+            Qstr::MP_QSTR_address__cancel_receive => Some(Self::address__cancel_receive),
+            Qstr::MP_QSTR_address__qr_code => Some(Self::address__qr_code),
+            Qstr::MP_QSTR_address_details__derivation_path_no_colon => Some(Self::address_details__derivation_path_no_colon),
+            Qstr::MP_QSTR_instructions__continue_in_app => Some(Self::instructions__continue_in_app),
+            Qstr::MP_QSTR_words__cancel_and_exit => Some(Self::words__cancel_and_exit),
             _ => None,
         }
     }
