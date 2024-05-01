@@ -20,13 +20,16 @@ use crate::{
 use crate::{
     trezorhal::{buffers::BufferJpegWork, uzlib::UZLIB_WINDOW_SIZE},
     ui::{
-        constant::HEIGHT,
+        constant::{screen, HEIGHT},
         display::{
             tjpgd::BufferInput,
             toif::{Toif, ToifFormat},
         },
-        model_mercury::component::homescreen::render::{
-            HomescreenJpeg, HomescreenToif, HOMESCREEN_TOIF_SIZE,
+        model_mercury::{
+            component::homescreen::render::{HomescreenJpeg, HomescreenToif, HOMESCREEN_TOIF_SIZE},
+            theme::{
+                GREEN_LIGHT, GREY_LIGHT, ICON_CENTRAL_CIRCLE, ICON_KEY, ICON_LOCKSCREEN_FILTER,
+            },
         },
     },
 };
@@ -477,14 +480,24 @@ impl Component for Lockscreen<'_> {
             shape::JpegImage::new(center, img_data)
                 .with_align(Alignment2D::CENTER)
                 .with_blur(4)
-                .with_dim(140)
-                .render(target);
-        } else if is_image_toif(img_data) {
-            shape::ToifImage::new(center, unwrap!(Toif::new(img_data)))
-                .with_align(Alignment2D::CENTER)
-                //.with_blur(5)
+                .with_dim(102)
                 .render(target);
         }
+
+        shape::ToifImage::new(center, ICON_LOCKSCREEN_FILTER.toif)
+            .with_align(Alignment2D::CENTER)
+            .with_fg(Color::black())
+            .render(target);
+
+        shape::ToifImage::new(center + Offset::y(12), ICON_CENTRAL_CIRCLE.toif)
+            .with_align(Alignment2D::CENTER)
+            .with_fg(GREEN_LIGHT)
+            .render(target);
+
+        shape::ToifImage::new(center + Offset::y(12), ICON_KEY.toif)
+            .with_align(Alignment2D::CENTER)
+            .with_fg(GREY_LIGHT)
+            .render(target);
 
         let (locked, tap) = if self.bootscreen {
             (
@@ -498,69 +511,49 @@ impl Component for Lockscreen<'_> {
         let mut label_style = theme::TEXT_DEMIBOLD;
         label_style.text_color = theme::GREY_LIGHT;
 
-        let mut texts: &[HomescreenText] = &[
-            HomescreenText {
-                text: "".into(),
-                style: theme::TEXT_NORMAL,
-                offset: Offset::new(2, COINJOIN_Y),
-                icon: Some(theme::ICON_COINJOIN),
-            },
-            HomescreenText {
-                text: locked.into(),
-                style: theme::TEXT_BOLD,
-                offset: Offset::y(LOCKED_Y),
-                icon: Some(theme::ICON_LOCK),
-            },
-            HomescreenText {
-                text: tap.into(),
-                style: theme::TEXT_NORMAL,
-                offset: Offset::y(TAP_Y),
-                icon: None,
-            },
-            HomescreenText {
-                text: self.label,
-                style: label_style,
-                offset: Offset::y(LABEL_Y),
-                icon: None,
-            },
-        ];
+        let mut offset = 0;
 
-        if !self.coinjoin_authorized {
-            texts = &texts[1..];
-        }
+        self.label.map(|t| {
+            offset = theme::TEXT_DEMIBOLD.text_font.visible_text_height(t);
 
-        for item in texts.iter() {
-            item.text.map(|t| {
-                const TEXT_ICON_SPACE: i16 = 2;
+            let text_pos = Point::new(0, offset);
 
-                let icon_width = match item.icon {
-                    Some(icon) => icon.toif.width() + TEXT_ICON_SPACE,
-                    None => 0,
-                };
+            shape::Text::new(text_pos, t)
+                .with_font(theme::TEXT_DEMIBOLD.text_font)
+                .with_fg(theme::GREY_LIGHT)
+                .render(target);
+        });
 
-                let area = constant::screen();
+        offset += 6;
 
-                let text_pos = Point::new(
-                    item.style
-                        .text_font
-                        .horz_center(area.x0 + icon_width, area.x1, t),
-                    0,
-                ) + item.offset;
+        locked.map_translated(|t| {
+            offset += theme::TEXT_SUB_GREY.text_font.visible_text_height(t);
 
-                shape::Text::new(text_pos, t)
-                    .with_font(item.style.text_font)
-                    .with_fg(item.style.text_color)
-                    .render(target);
+            let text_pos = Point::new(0, offset);
 
-                if let Some(icon) = item.icon {
-                    let icon_pos = Point::new(text_pos.x - icon_width, text_pos.y);
-                    shape::ToifImage::new(icon_pos, icon.toif)
-                        .with_align(Alignment2D::BOTTOM_LEFT)
-                        .with_fg(item.style.text_color)
-                        .render(target);
-                }
-            });
-        }
+            shape::Text::new(text_pos, t)
+                .with_font(theme::TEXT_SUB_GREY.text_font)
+                .with_fg(theme::TEXT_SUB_GREY.text_color)
+                .render(target);
+        });
+
+        tap.map_translated(|t| {
+            offset = theme::TEXT_SUB_GREY.text_font.text_baseline();
+
+            let text_pos = Point::new(
+                theme::TEXT_SUB_GREY
+                    .text_font
+                    .horz_center(screen().x0, screen().x1, t),
+                screen().y1 - offset,
+            );
+
+            shape::Text::new(text_pos, t)
+                .with_font(theme::TEXT_SUB_GREY.text_font)
+                .with_fg(theme::GREY_DARK)
+                .render(target);
+        });
+
+        // TODO coinjoin authorized text
     }
 }
 
