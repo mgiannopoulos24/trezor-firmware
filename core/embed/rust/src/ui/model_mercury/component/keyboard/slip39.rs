@@ -192,7 +192,7 @@ impl Component for Slip39Input {
         let style = self.button.style();
 
         // First, paint the button background.
-        self.button.render_background(target, style);
+        self.button.render_background(target, style, 0xFF);
 
         // Content starts in the left-center point, offset by 16px to the right and 8px
         // to the bottom.

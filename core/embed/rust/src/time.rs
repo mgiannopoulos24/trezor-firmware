@@ -163,6 +163,7 @@ impl Ord for Instant {
 /// A stopwatch is a utility designed for measuring the amount of time
 /// that elapses between its start and stop points. It can be used in various
 /// situations - animation timing, event timing, testing and debugging.
+#[derive(Clone)]
 pub enum Stopwatch {
     Stopped(Duration),
     Running(Instant),
