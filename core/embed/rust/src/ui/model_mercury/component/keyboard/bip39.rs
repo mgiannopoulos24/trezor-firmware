@@ -161,7 +161,7 @@ impl Component for Bip39Input {
         let style = self.button.style();
 
         // First, paint the button background.
-        self.button.render_background(target, style);
+        self.button.render_background(target, style, 0xFF);
 
         // Paint the entered content (the prefix of the suggested word).
         let text = self.textbox.content();
