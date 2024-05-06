@@ -18,9 +18,7 @@ use crate::{
     time::Stopwatch,
     ui::{
         component::Label,
-        display::Font,
         geometry::{Alignment, Point},
-        model_mercury::theme::{GREY_EXTRA_DARK, GREY_LIGHT},
     },
 };
 use pareen;
@@ -102,7 +100,7 @@ impl HoldToConfirmAnim {
         let o4 = header_opacity2.eval(t);
 
         let c1 = Color::lerp(
-            GREY_EXTRA_DARK,
+            theme::GREY_EXTRA_DARK,
             Color::rgb(0x09, 0x74, 0x48),
             pad_color.eval(t),
         );
@@ -151,7 +149,7 @@ impl HoldToConfirm {
             .without_haptics();
         Self {
             title: Label::new(
-                "Continue Holding".into(),
+                "Continue\nHolding".into(),
                 Alignment::Start,
                 theme::label_title_main(),
             )
@@ -176,6 +174,7 @@ impl Component for HoldToConfirm {
             Offset::uniform(120),
             Alignment2D::CENTER,
         ));
+        self.title.place(bounds.split_top(42).0);
         bounds
     }
 
@@ -231,32 +230,7 @@ impl Component for HoldToConfirm {
             .with_alpha(parent_cover)
             .render(target);
 
-        let title_alpha = if title_alpha_end < 255 {
-            title_alpha_end
-        } else {
-            title_alpha_start
-        };
-
-        let l = "Continue";
-        let mut o = Font::NORMAL.visible_text_height(l);
-        let c = theme::GREY_EXTRA_LIGHT;
-
-        shape::Text::new(Point::new(0, o), l)
-            .with_fg(c)
-            .with_alpha(title_alpha)
-            .with_font(Font::NORMAL)
-            .render(target);
-
-        let l = "holding";
-        o += Font::NORMAL.visible_text_height(l);
-
-        shape::Text::new(Point::new(0, o + 2), l)
-            .with_fg(c)
-            .with_alpha(title_alpha)
-            .with_font(Font::NORMAL)
-            .render(target);
-
-        let center = self.area.center() + Offset::y(20);
+        let center = self.area.center() + Offset::y(9);
 
         if parent_cover == 255 {
             shape::Circle::new(center, 88)
@@ -265,11 +239,19 @@ impl Component for HoldToConfirm {
                 .with_thickness(2)
                 .render(target);
 
-            shape::Bar::new(Rect::new(Point::new(0, 52), Point::new(240, h1)))
+            shape::Bar::new(Rect::new(Point::new(0, 0), Point::new(240, h1)))
                 .with_fg(theme::BLACK)
                 .with_bg(theme::BLACK)
                 .render(target);
         }
+
+        let title_alpha = if title_alpha_end < 255 {
+            title_alpha_end
+        } else {
+            title_alpha_start
+        };
+
+        self.title.render_with_alpha(target, title_alpha);
 
         shape::Circle::new(center, 70)
             .with_fg(c1)
@@ -295,7 +277,7 @@ impl Component for HoldToConfirm {
             .render(target);
 
         shape::ToifImage::new(center, theme::ICON_SIGN.toif)
-            .with_fg(GREY_LIGHT)
+            .with_fg(theme::GREY_LIGHT)
             .with_alpha(circle_alpha)
             .with_align(Alignment2D::CENTER)
             .render(target);
