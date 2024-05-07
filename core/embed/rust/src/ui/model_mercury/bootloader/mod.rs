@@ -16,6 +16,7 @@ use super::{
         bl_confirm::{Confirm, ConfirmTitle},
         Button, ResultScreen, WelcomeScreen,
     },
+    theme,
     theme::{
         bootloader::{
             button_bld, button_bld_menu, button_confirm, button_wipe_cancel, button_wipe_confirm,
@@ -343,7 +344,7 @@ impl UIFeaturesBootloader for ModelMercuryFeatures {
         if fading {
             Self::fadein();
         } else {
-            display::set_backlight(BACKLIGHT_NORMAL);
+            display::set_backlight(theme::backlight::get_backlight_normal());
         }
     }
 
