@@ -80,7 +80,6 @@
 
 #define PRODTEST_EFFECT_AMPLITUDE 127
 
-
 bool haptic_enabled = true;
 
 static bool set_reg(uint8_t addr, uint8_t value) {
@@ -176,7 +175,6 @@ static void haptic_play_lib(drv2625_lib_effect_t effect) {
 }
 
 void haptic_play(haptic_effect_t effect) {
-
   if (!haptic_enabled) {
     return;
   }
@@ -200,6 +198,4 @@ bool haptic_test(uint16_t duration_ms) {
   return haptic_play_RTP(PRODTEST_EFFECT_AMPLITUDE, duration_ms);
 }
 
-void haptic_set_enabled(bool enable){
-  haptic_enabled = enable;
-}
+void haptic_set_enabled(bool enable) { haptic_enabled = enable; }

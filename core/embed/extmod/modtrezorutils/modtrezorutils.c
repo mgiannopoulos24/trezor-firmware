@@ -441,12 +441,12 @@ STATIC const mp_rom_map_elem_t mp_module_trezorutils_globals_table[] = {
 #ifdef USE_BACKLIGHT
     {MP_ROM_QSTR(MP_QSTR_USE_BACKLIGHT), mp_const_true},
 #else
-        {MP_ROM_QSTR(MP_QSTR_USE_BACKLIGHT), mp_const_false},
+    {MP_ROM_QSTR(MP_QSTR_USE_BACKLIGHT), mp_const_false},
 #endif
 #ifdef USE_HAPTIC
     {MP_ROM_QSTR(MP_QSTR_USE_HAPTIC), mp_const_true},
 #else
-        {MP_ROM_QSTR(MP_QSTR_USE_HAPTIC), mp_const_false},
+    {MP_ROM_QSTR(MP_QSTR_USE_HAPTIC), mp_const_false},
 #endif
 #ifdef USE_OPTIGA
     {MP_ROM_QSTR(MP_QSTR_USE_OPTIGA), mp_const_true},
