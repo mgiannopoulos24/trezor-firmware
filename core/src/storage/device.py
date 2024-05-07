@@ -369,7 +369,7 @@ def set_haptic_feedback(enable: bool) -> None:
     common.set_bool(_NAMESPACE, _DISABLE_HAPTIC_FEEDBACK, not enable, True)
 
 
-def get_haptic_feedback() -> bool | None:
+def get_haptic_feedback() -> bool:
     """
     Get haptic feedback enable, default to true if not set.
     """
