@@ -362,7 +362,6 @@ def get_brightness() -> int | None:
     return common.get_uint8(_NAMESPACE, _BRIGHTNESS, True)
 
 
-
 def set_haptic_feedback(enable: bool) -> None:
     """
     Enable or disable haptic feedback.
@@ -375,5 +374,3 @@ def get_haptic_feedback() -> bool | None:
     Get haptic feedback enable, default to true if not set.
     """
     return not common.get_bool(_NAMESPACE, _DISABLE_HAPTIC_FEEDBACK, True)
-
-

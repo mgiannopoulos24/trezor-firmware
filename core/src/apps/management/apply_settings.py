@@ -272,6 +272,7 @@ async def _require_confirm_hide_passphrase_from_host(enable: bool) -> None:
             br_code=BRT_PROTECT_CALL,
         )
 
+
 if utils.USE_BACKLIGHT:
 
     async def _require_set_brightness() -> int:
@@ -287,7 +288,9 @@ if utils.USE_BACKLIGHT:
             br_name="set_brightness",
         )
 
+
 if utils.USE_HAPTIC:
+
     async def _require_confirm_haptic_feedback(enable: bool) -> None:
         if enable:
             await confirm_action(
