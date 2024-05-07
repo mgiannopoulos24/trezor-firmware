@@ -80,6 +80,9 @@
 
 #define PRODTEST_EFFECT_AMPLITUDE 127
 
+
+bool haptic_enabled = true;
+
 static bool set_reg(uint8_t addr, uint8_t value) {
   uint8_t data[] = {addr, value};
   return i2c_transmit(DRV2625_I2C_INSTANCE, DRV2625_I2C_ADDRESS, data,
@@ -173,6 +176,11 @@ static void haptic_play_lib(drv2625_lib_effect_t effect) {
 }
 
 void haptic_play(haptic_effect_t effect) {
+
+  if (!haptic_enabled) {
+    return;
+  }
+
   switch (effect) {
     case HAPTIC_BUTTON_PRESS:
       haptic_play_RTP(PRESS_EFFECT_AMPLITUDE, PRESS_EFFECT_DURATION);
@@ -190,4 +198,8 @@ void haptic_play(haptic_effect_t effect) {
 
 bool haptic_test(uint16_t duration_ms) {
   return haptic_play_RTP(PRODTEST_EFFECT_AMPLITUDE, duration_ms);
+}
+
+void haptic_set_enabled(bool enable){
+  haptic_enabled = enable;
 }

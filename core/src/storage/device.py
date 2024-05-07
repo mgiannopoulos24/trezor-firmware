@@ -36,6 +36,7 @@ _SAFETY_CHECK_LEVEL        = const(0x14)  # int
 _EXPERIMENTAL_FEATURES     = const(0x15)  # bool (0x01 or empty)
 _HIDE_PASSPHRASE_FROM_HOST = const(0x16)  # bool (0x01 or empty)
 _BRIGHTNESS                = const(0x17)  # int
+_DISABLE_HAPTIC_FEEDBACK   = const(0x18)  # bool (0x01 or empty)
 
 SAFETY_CHECK_LEVEL_STRICT  : Literal[0] = const(0)
 SAFETY_CHECK_LEVEL_PROMPT  : Literal[1] = const(1)
@@ -359,3 +360,20 @@ def get_brightness() -> int | None:
     Get the display brightness setting.
     """
     return common.get_uint8(_NAMESPACE, _BRIGHTNESS, True)
+
+
+
+def set_haptic_feedback(enable: bool) -> None:
+    """
+    Enable or disable haptic feedback.
+    """
+    common.set_bool(_NAMESPACE, _DISABLE_HAPTIC_FEEDBACK, not enable, True)
+
+
+def get_haptic_feedback() -> bool | None:
+    """
+    Get haptic feedback enable, default to true if not set.
+    """
+    return not common.get_bool(_NAMESPACE, _DISABLE_HAPTIC_FEEDBACK, True)
+
+

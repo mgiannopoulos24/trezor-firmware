@@ -48,6 +48,7 @@ def apply_settings(
     experimental_features: Optional[bool] = None,
     hide_passphrase_from_host: Optional[bool] = None,
     brightness: Optional[int] = None,
+    haptic_feedback: Optional[bool] = None,
 ) -> "MessageType":
     if language is not None:
         warnings.warn(
@@ -65,6 +66,7 @@ def apply_settings(
         experimental_features=experimental_features,
         hide_passphrase_from_host=hide_passphrase_from_host,
         brightness=brightness,
+        haptic_feedback=haptic_feedback,
     )
 
     out = client.call(settings)
