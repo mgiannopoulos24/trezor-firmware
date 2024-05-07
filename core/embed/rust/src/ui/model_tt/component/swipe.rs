@@ -3,8 +3,8 @@ use crate::ui::{
     display,
     event::TouchEvent,
     geometry::{Point, Rect},
-    shape::Renderer,
     model_tt::theme::backlight,
+    shape::Renderer,
 };
 
 pub enum SwipeDirection {
