@@ -23,7 +23,7 @@ use super::{
             FIRE40, RESULT_FW_INSTALL, RESULT_WIPE, TEXT_BOLD, TEXT_NORMAL, TEXT_WIPE_BOLD,
             TEXT_WIPE_NORMAL, WARNING40, WELCOME_COLOR, X24,
         },
-        BACKLIGHT_NORMAL, GREEN_LIGHT, GREY,
+        GREEN_LIGHT, GREY,
     },
     ModelMercuryFeatures,
 };
