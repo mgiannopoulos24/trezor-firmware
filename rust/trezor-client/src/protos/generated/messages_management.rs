@@ -460,8 +460,6 @@ pub struct Features {
     pub bootloader_locked: ::std::option::Option<bool>,
     // @@protoc_insertion_point(field:hw.trezor.messages.management.Features.language_version_matches)
     pub language_version_matches: ::std::option::Option<bool>,
-    // @@protoc_insertion_point(field:hw.trezor.messages.management.Features.haptic_feedback)
-    pub haptic_feedback: ::std::option::Option<bool>,
     // special fields
     // @@protoc_insertion_point(special_field:hw.trezor.messages.management.Features.special_fields)
     pub special_fields: ::protobuf::SpecialFields,
@@ -1550,27 +1548,8 @@ impl Features {
         self.language_version_matches = ::std::option::Option::Some(v);
     }
 
-    // optional bool haptic_feedback = 51;
-
-    pub fn haptic_feedback(&self) -> bool {
-        self.haptic_feedback.unwrap_or(false)
-    }
-
-    pub fn clear_haptic_feedback(&mut self) {
-        self.haptic_feedback = ::std::option::Option::None;
-    }
-
-    pub fn has_haptic_feedback(&self) -> bool {
-        self.haptic_feedback.is_some()
-    }
-
-    // Param is passed by value, moved
-    pub fn set_haptic_feedback(&mut self, v: bool) {
-        self.haptic_feedback = ::std::option::Option::Some(v);
-    }
-
     fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
-        let mut fields = ::std::vec::Vec::with_capacity(49);
+        let mut fields = ::std::vec::Vec::with_capacity(48);
         let mut oneofs = ::std::vec::Vec::with_capacity(0);
         fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
             "vendor",
@@ -1812,11 +1791,6 @@ impl Features {
             |m: &Features| { &m.language_version_matches },
             |m: &mut Features| { &mut m.language_version_matches },
         ));
-        fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
-            "haptic_feedback",
-            |m: &Features| { &m.haptic_feedback },
-            |m: &mut Features| { &mut m.haptic_feedback },
-        ));
         ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<Features>(
             "Features",
             fields,
@@ -1991,9 +1965,6 @@ impl ::protobuf::Message for Features {
                 400 => {
                     self.language_version_matches = ::std::option::Option::Some(is.read_bool()?);
                 },
-                408 => {
-                    self.haptic_feedback = ::std::option::Option::Some(is.read_bool()?);
-                },
                 tag => {
                     ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
                 },
@@ -2150,9 +2121,6 @@ impl ::protobuf::Message for Features {
         if let Some(v) = self.language_version_matches {
             my_size += 2 + 1;
         }
-        if let Some(v) = self.haptic_feedback {
-            my_size += 2 + 1;
-        }
         my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
         self.special_fields.cached_size().set(my_size as u32);
         my_size
@@ -2303,9 +2271,6 @@ impl ::protobuf::Message for Features {
         if let Some(v) = self.language_version_matches {
             os.write_bool(50, v)?;
         }
-        if let Some(v) = self.haptic_feedback {
-            os.write_bool(51, v)?;
-        }
         os.write_unknown_fields(self.special_fields.unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -2371,7 +2336,6 @@ impl ::protobuf::Message for Features {
         self.homescreen_height = ::std::option::Option::None;
         self.bootloader_locked = ::std::option::Option::None;
         self.language_version_matches = ::std::option::Option::None;
-        self.haptic_feedback = ::std::option::Option::None;
         self.special_fields.clear();
     }
 
@@ -2425,7 +2389,6 @@ impl ::protobuf::Message for Features {
             homescreen_height: ::std::option::Option::None,
             bootloader_locked: ::std::option::Option::None,
             language_version_matches: ::std::option::Option::None,
-            haptic_feedback: ::std::option::Option::None,
             special_fields: ::protobuf::SpecialFields::new(),
         };
         &instance
@@ -3001,8 +2964,6 @@ pub struct ApplySettings {
     pub hide_passphrase_from_host: ::std::option::Option<bool>,
     // @@protoc_insertion_point(field:hw.trezor.messages.management.ApplySettings.brightness)
     pub brightness: ::std::option::Option<u32>,
-    // @@protoc_insertion_point(field:hw.trezor.messages.management.ApplySettings.haptic_feedback)
-    pub haptic_feedback: ::std::option::Option<bool>,
     // special fields
     // @@protoc_insertion_point(special_field:hw.trezor.messages.management.ApplySettings.special_fields)
     pub special_fields: ::protobuf::SpecialFields,
@@ -3301,27 +3262,8 @@ impl ApplySettings {
         self.brightness = ::std::option::Option::Some(v);
     }
 
-    // optional bool haptic_feedback = 13;
-
-    pub fn haptic_feedback(&self) -> bool {
-        self.haptic_feedback.unwrap_or(false)
-    }
-
-    pub fn clear_haptic_feedback(&mut self) {
-        self.haptic_feedback = ::std::option::Option::None;
-    }
-
-    pub fn has_haptic_feedback(&self) -> bool {
-        self.haptic_feedback.is_some()
-    }
-
-    // Param is passed by value, moved
-    pub fn set_haptic_feedback(&mut self, v: bool) {
-        self.haptic_feedback = ::std::option::Option::Some(v);
-    }
-
     fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
-        let mut fields = ::std::vec::Vec::with_capacity(13);
+        let mut fields = ::std::vec::Vec::with_capacity(12);
         let mut oneofs = ::std::vec::Vec::with_capacity(0);
         fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
             "language",
@@ -3383,11 +3325,6 @@ impl ApplySettings {
             |m: &ApplySettings| { &m.brightness },
             |m: &mut ApplySettings| { &mut m.brightness },
         ));
-        fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
-            "haptic_feedback",
-            |m: &ApplySettings| { &m.haptic_feedback },
-            |m: &mut ApplySettings| { &mut m.haptic_feedback },
-        ));
         ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<ApplySettings>(
             "ApplySettings",
             fields,
@@ -3442,9 +3379,6 @@ impl ::protobuf::Message for ApplySettings {
                 96 => {
                     self.brightness = ::std::option::Option::Some(is.read_uint32()?);
                 },
-                104 => {
-                    self.haptic_feedback = ::std::option::Option::Some(is.read_bool()?);
-                },
                 tag => {
                     ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
                 },
@@ -3493,9 +3427,6 @@ impl ::protobuf::Message for ApplySettings {
         if let Some(v) = self.brightness {
             my_size += ::protobuf::rt::uint32_size(12, v);
         }
-        if let Some(v) = self.haptic_feedback {
-            my_size += 1 + 1;
-        }
         my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
         self.special_fields.cached_size().set(my_size as u32);
         my_size
@@ -3538,9 +3469,6 @@ impl ::protobuf::Message for ApplySettings {
         if let Some(v) = self.brightness {
             os.write_uint32(12, v)?;
         }
-        if let Some(v) = self.haptic_feedback {
-            os.write_bool(13, v)?;
-        }
         os.write_unknown_fields(self.special_fields.unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -3570,7 +3498,6 @@ impl ::protobuf::Message for ApplySettings {
         self.experimental_features = ::std::option::Option::None;
         self.hide_passphrase_from_host = ::std::option::Option::None;
         self.brightness = ::std::option::Option::None;
-        self.haptic_feedback = ::std::option::Option::None;
         self.special_fields.clear();
     }
 
@@ -3588,7 +3515,6 @@ impl ::protobuf::Message for ApplySettings {
             experimental_features: ::std::option::Option::None,
             hide_passphrase_from_host: ::std::option::Option::None,
             brightness: ::std::option::Option::None,
-            haptic_feedback: ::std::option::Option::None,
             special_fields: ::protobuf::SpecialFields::new(),
         };
         &instance
@@ -10428,7 +10354,7 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x0emessages.proto\"\x80\x01\n\nInitialize\x12\x1d\n\nsession_id\x18\x01\
     \x20\x01(\x0cR\tsessionId\x12,\n\x10_skip_passphrase\x18\x02\x20\x01(\
     \x08R\x0eSkipPassphraseB\x02\x18\x01\x12%\n\x0ederive_cardano\x18\x03\
-    \x20\x01(\x08R\rderiveCardano\"\r\n\x0bGetFeatures\"\x97\x14\n\x08Featur\
+    \x20\x01(\x08R\rderiveCardano\"\r\n\x0bGetFeatures\"\xee\x13\n\x08Featur\
     es\x12\x16\n\x06vendor\x18\x01\x20\x01(\tR\x06vendor\x12#\n\rmajor_versi\
     on\x18\x02\x20\x02(\rR\x0cmajorVersion\x12#\n\rminor_version\x18\x03\x20\
     \x02(\rR\x0cminorVersion\x12#\n\rpatch_version\x18\x04\x20\x02(\rR\x0cpa\
@@ -10472,24 +10398,23 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     n_width\x18/\x20\x01(\rR\x0fhomescreenWidth\x12+\n\x11homescreen_height\
     \x180\x20\x01(\rR\x10homescreenHeight\x12+\n\x11bootloader_locked\x181\
     \x20\x01(\x08R\x10bootloaderLocked\x12>\n\x18language_version_matches\
-    \x182\x20\x01(\x08:\x04trueR\x16languageVersionMatches\x12'\n\x0fhaptic_\
-    feedback\x183\x20\x01(\x08R\x0ehapticFeedback\"\x9f\x04\n\nCapability\
-    \x12\x1c\n\x12Capability_Bitcoin\x10\x01\x1a\x04\x80\xa6\x1d\x01\x12\x1b\
-    \n\x17Capability_Bitcoin_like\x10\x02\x12\x16\n\x12Capability_Binance\
-    \x10\x03\x12\x16\n\x12Capability_Cardano\x10\x04\x12\x1b\n\x11Capability\
-    _Crypto\x10\x05\x1a\x04\x80\xa6\x1d\x01\x12\x12\n\x0eCapability_EOS\x10\
-    \x06\x12\x17\n\x13Capability_Ethereum\x10\x07\x12\x17\n\x0fCapability_Li\
-    sk\x10\x08\x1a\x02\x08\x01\x12\x15\n\x11Capability_Monero\x10\t\x12\x12\
-    \n\x0eCapability_NEM\x10\n\x12\x15\n\x11Capability_Ripple\x10\x0b\x12\
-    \x16\n\x12Capability_Stellar\x10\x0c\x12\x14\n\x10Capability_Tezos\x10\r\
-    \x12\x12\n\x0eCapability_U2F\x10\x0e\x12\x1b\n\x11Capability_Shamir\x10\
-    \x0f\x1a\x04\x80\xa6\x1d\x01\x12!\n\x17Capability_ShamirGroups\x10\x10\
-    \x1a\x04\x80\xa6\x1d\x01\x12$\n\x1aCapability_PassphraseEntry\x10\x11\
-    \x1a\x04\x80\xa6\x1d\x01\x12\x15\n\x11Capability_Solana\x10\x12\x12!\n\
-    \x17Capability_Translations\x10\x13\x1a\x04\x80\xa6\x1d\x01\x12\x19\n\
+    \x182\x20\x01(\x08:\x04trueR\x16languageVersionMatches\"\x9f\x04\n\nCapa\
+    bility\x12\x1c\n\x12Capability_Bitcoin\x10\x01\x1a\x04\x80\xa6\x1d\x01\
+    \x12\x1b\n\x17Capability_Bitcoin_like\x10\x02\x12\x16\n\x12Capability_Bi\
+    nance\x10\x03\x12\x16\n\x12Capability_Cardano\x10\x04\x12\x1b\n\x11Capab\
+    ility_Crypto\x10\x05\x1a\x04\x80\xa6\x1d\x01\x12\x12\n\x0eCapability_EOS\
+    \x10\x06\x12\x17\n\x13Capability_Ethereum\x10\x07\x12\x17\n\x0fCapabilit\
+    y_Lisk\x10\x08\x1a\x02\x08\x01\x12\x15\n\x11Capability_Monero\x10\t\x12\
+    \x12\n\x0eCapability_NEM\x10\n\x12\x15\n\x11Capability_Ripple\x10\x0b\
+    \x12\x16\n\x12Capability_Stellar\x10\x0c\x12\x14\n\x10Capability_Tezos\
+    \x10\r\x12\x12\n\x0eCapability_U2F\x10\x0e\x12\x1b\n\x11Capability_Shami\
+    r\x10\x0f\x1a\x04\x80\xa6\x1d\x01\x12!\n\x17Capability_ShamirGroups\x10\
+    \x10\x1a\x04\x80\xa6\x1d\x01\x12$\n\x1aCapability_PassphraseEntry\x10\
+    \x11\x1a\x04\x80\xa6\x1d\x01\x12\x15\n\x11Capability_Solana\x10\x12\x12!\
+    \n\x17Capability_Translations\x10\x13\x1a\x04\x80\xa6\x1d\x01\x12\x19\n\
     \x15Capability_Brightness\x10\x14\x1a\x04\xc8\xf3\x18\x01\"\x0c\n\nLockD\
     evice\"&\n\x07SetBusy\x12\x1b\n\texpiry_ms\x18\x01\x20\x01(\rR\x08expiry\
-    Ms\"\x0c\n\nEndSession\"\xe4\x04\n\rApplySettings\x12\x1e\n\x08language\
+    Ms\"\x0c\n\nEndSession\"\xbb\x04\n\rApplySettings\x12\x1e\n\x08language\
     \x18\x01\x20\x01(\tR\x08languageB\x02\x18\x01\x12\x14\n\x05label\x18\x02\
     \x20\x01(\tR\x05label\x12%\n\x0euse_passphrase\x18\x03\x20\x01(\x08R\rus\
     ePassphrase\x12\x1e\n\nhomescreen\x18\x04\x20\x01(\x0cR\nhomescreen\x120\
@@ -10501,14 +10426,13 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     ssages.management.SafetyCheckLevelR\x0csafetyChecks\x123\n\x15experiment\
     al_features\x18\n\x20\x01(\x08R\x14experimentalFeatures\x129\n\x19hide_p\
     assphrase_from_host\x18\x0b\x20\x01(\x08R\x16hidePassphraseFromHost\x12\
-    \x1e\n\nbrightness\x18\x0c\x20\x01(\rR\nbrightness\x12'\n\x0fhaptic_feed\
-    back\x18\r\x20\x01(\x08R\x0ehapticFeedback\"T\n\x0eChangeLanguage\x12\
-    \x1f\n\x0bdata_length\x18\x01\x20\x02(\rR\ndataLength\x12!\n\x0cshow_dis\
-    play\x18\x02\x20\x01(\x08R\x0bshowDisplay\"Z\n\x16TranslationDataRequest\
-    \x12\x1f\n\x0bdata_length\x18\x01\x20\x02(\rR\ndataLength\x12\x1f\n\x0bd\
-    ata_offset\x18\x02\x20\x02(\rR\ndataOffset\"3\n\x12TranslationDataAck\
-    \x12\x1d\n\ndata_chunk\x18\x01\x20\x02(\x0cR\tdataChunk\"\"\n\nApplyFlag\
-    s\x12\x14\n\x05flags\x18\x01\x20\x02(\rR\x05flags\"#\n\tChangePin\x12\
+    \x1e\n\nbrightness\x18\x0c\x20\x01(\rR\nbrightness\"T\n\x0eChangeLanguag\
+    e\x12\x1f\n\x0bdata_length\x18\x01\x20\x02(\rR\ndataLength\x12!\n\x0csho\
+    w_display\x18\x02\x20\x01(\x08R\x0bshowDisplay\"Z\n\x16TranslationDataRe\
+    quest\x12\x1f\n\x0bdata_length\x18\x01\x20\x02(\rR\ndataLength\x12\x1f\n\
+    \x0bdata_offset\x18\x02\x20\x02(\rR\ndataOffset\"3\n\x12TranslationDataA\
+    ck\x12\x1d\n\ndata_chunk\x18\x01\x20\x02(\x0cR\tdataChunk\"\"\n\nApplyFl\
+    ags\x12\x14\n\x05flags\x18\x01\x20\x02(\rR\x05flags\"#\n\tChangePin\x12\
     \x16\n\x06remove\x18\x01\x20\x01(\x08R\x06remove\"(\n\x0eChangeWipeCode\
     \x12\x16\n\x06remove\x18\x01\x20\x01(\x08R\x06remove\"\xaa\x01\n\tSdProt\
     ect\x12]\n\toperation\x18\x01\x20\x02(\x0e2?.hw.trezor.messages.manageme\
