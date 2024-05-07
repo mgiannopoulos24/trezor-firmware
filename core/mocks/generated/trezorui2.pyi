@@ -413,7 +413,7 @@ def request_number_slider(
     min_count: int,
     max_count: int,
     callback: Callable[[int], None] | None = None,
-) -> object:
+) -> LayoutObj[tuple[UiResult, int]]:
     """Number input with slider."""
 
 
@@ -1425,7 +1425,7 @@ def request_number_slider(
     min_count: int,
     max_count: int,
     callback: Callable[[int], None] | None = None,
-) -> object:
+) -> LayoutObj[tuple[UiResult, int]]::
     """Number input with slider."""
 
 

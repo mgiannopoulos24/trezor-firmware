@@ -9,7 +9,7 @@ from trezor.wire.context import wait as ctx_wait
 from ..common import button_request, interact
 
 if TYPE_CHECKING:
-    from typing import Any, Awaitable, Iterable, NoReturn, Sequence, TypeVar
+    from typing import Any, Awaitable, Callable, Iterable, NoReturn, Sequence, TypeVar
 
     from ..common import ExceptionType, PropertyType
 
@@ -1471,13 +1471,14 @@ async def confirm_firmware_update(description: str, fingerprint: str) -> None:
         )
     )
 
+
 async def request_number_slider(
-        title: str,
-        callback: Callable[[int], None],
-        count: int,
-        min_count: int,
-        max_count: int,
-        br_name: str,
+    title: str,
+    callback: Callable[[int], None],
+    count: int,
+    min_count: int,
+    max_count: int,
+    br_name: str,
 ) -> int:
     num_input = RustLayout(
         trezorui2.request_number_slider(

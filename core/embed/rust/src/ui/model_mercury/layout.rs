@@ -1944,7 +1944,7 @@ pub static mp_module_trezorui2: Module = obj_module! {
     ///     min_count: int,
     ///     max_count: int,
     ///     callback: Callable[[int], None] | None = None,
-    /// ) -> object:
+    /// ) -> LayoutObj[tuple[UiResult, int]]:
     ///     """Number input with slider."""
     Qstr::MP_QSTR_request_number_slider => obj_fn_kw!(0, new_request_number_slider).as_obj(),
 
