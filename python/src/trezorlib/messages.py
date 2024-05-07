@@ -478,6 +478,7 @@ class Capability(IntEnum):
     PassphraseEntry = 17
     Solana = 18
     Translations = 19
+    Brightness = 20
 
 
 class SdProtectOperationType(IntEnum):
