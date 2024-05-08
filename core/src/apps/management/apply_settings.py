@@ -297,6 +297,7 @@ if utils.USE_HAPTIC:
                 "haptic_feedback__enable",
                 TR.haptic_feedback__title,
                 TR.haptic_feedback__enable,
+                subtitle=TR.haptic_feedback__subtitle,
                 br_code=BRT_PROTECT_CALL,
             )
         else:
@@ -304,5 +305,6 @@ if utils.USE_HAPTIC:
                 "haptic_feedback__disable",
                 TR.haptic_feedback__title,
                 TR.haptic_feedback__disable,
+                subtitle=TR.haptic_feedback__subtitle,
                 br_code=BRT_PROTECT_CALL,
             )
