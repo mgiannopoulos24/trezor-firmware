@@ -26,7 +26,7 @@ pub struct Swipe {
 
 impl Swipe {
     const DISTANCE: i32 = 120;
-    const THRESHOLD: f32 = 0.2;
+    const THRESHOLD: f32 = 0.8;
 
     pub fn new() -> Self {
         Self {
