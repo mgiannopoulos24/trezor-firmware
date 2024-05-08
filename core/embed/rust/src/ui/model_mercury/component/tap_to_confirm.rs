@@ -34,7 +34,7 @@ impl TapToConfirmAmin {
         self.timer.elapsed() >= Duration::from(Self::DURATION)
     }
 
-    pub fn eval(&self) -> (u8, u8, u8, i16, i16, Color) {
+    pub fn eval(&self, final_color: Color) -> (u8, u8, u8, i16, i16, Color) {
         let parent_cover_opacity = pareen::constant(0.0).seq_ease_in_out(
             0.0,
             easer::functions::Cubic,
@@ -86,11 +86,7 @@ impl TapToConfirmAmin {
         let o3 = pad_opacity.eval(t);
         let o3: u8 = u8::lerp(255, 0, o3);
 
-        let c1 = Color::lerp(
-            Color::black(),
-            Color::rgb(0x0F, 0xA4, 0x67),
-            circle_color.eval(t),
-        );
+        let c1 = Color::lerp(Color::black(), final_color, circle_color.eval(t));
 
         let s1 = i16::lerp(0, 80, circle_scale.eval(t));
         let s2 = i16::lerp(0, 400, black_mask_scale.eval(t));
@@ -116,6 +112,7 @@ pub struct TapToConfirm {
     circle_color: Color,
     circle_pad_color: Color,
     circle_inner_color: Color,
+    mask_color: Color,
     anim: TapToConfirmAmin,
 }
 
@@ -126,7 +123,12 @@ enum DismissType {
 }
 
 impl TapToConfirm {
-    pub fn new(circle_color: Color, circle_inner_color: Color, circle_pad_color: Color) -> Self {
+    pub fn new(
+        circle_color: Color,
+        circle_inner_color: Color,
+        circle_pad_color: Color,
+        mask_color: Color,
+    ) -> Self {
         let button = Button::new(ButtonContent::Empty)
             .styled(theme::button_default())
             .with_long_press(Duration::from_millis(2200));
@@ -135,6 +137,7 @@ impl TapToConfirm {
             circle_color,
             circle_inner_color,
             circle_pad_color,
+            mask_color,
             button,
             anim: TapToConfirmAmin::default(),
         }
@@ -186,7 +189,7 @@ impl Component for TapToConfirm {
     }
 
     fn render<'s>(&'s self, target: &mut impl Renderer<'s>) {
-        let (o1, o2, o3, s1, s2, c1) = self.anim.eval();
+        let (o1, o2, o3, s1, s2, c1) = self.anim.eval(self.mask_color);
 
         let center = self.area.center() + Offset::y(9);
 

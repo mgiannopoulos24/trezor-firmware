@@ -32,6 +32,7 @@ impl PromptScreen {
                 theme::GREEN,
                 theme::GREEN,
                 theme::GREY_EXTRA_DARK,
+                theme::GREEN_LIGHT,
             )),
             hold_to_confirm: None,
         }
@@ -44,6 +45,7 @@ impl PromptScreen {
                 theme::ORANGE_LIGHT,
                 theme::ORANGE_LIGHT,
                 theme::GREY_EXTRA_DARK,
+                theme::ORANGE_DIMMED,
             )),
             hold_to_confirm: None,
         }
