@@ -13,8 +13,8 @@ let
   acceptJlink = builtins.getEnv "TREZOR_FIRMWARE_ACCEPT_JLINK_LICENSE" == "yes";
   # the last successful build of nixpkgs-unstable as of 2024-04-10
   nixpkgs = import (builtins.fetchTarball {
-    url = "https://github.com/NixOS/nixpkgs/archive/a76c4553d7e741e17f289224eda135423de0491d.tar.gz";
-    sha256 = "0rwdzp942b8ay625lqgra83qrp64b3wqm6w9a0i4z593df8x822v";
+    url = "https://github.com/NixOS/nixpkgs/archive/25865a40d14b3f9cf19f19b924e2ab4069b09588.tar.gz";
+    sha256 = "03954l2g8kczg2skf1c7xfz60a3v6jri7l2h4r9g3157n2v5jm2j";
   }) {
     config = {
       allowUnfree = acceptJlink;
