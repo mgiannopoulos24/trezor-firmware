@@ -1,6 +1,7 @@
 use crate::ui::{
     component::{Component, Event, EventCtx},
     geometry::Rect,
+    model_mercury::theme,
     shape::Renderer,
 };
 
@@ -27,7 +28,11 @@ impl PromptScreen {
     pub fn new_tap_to_confirm() -> Self {
         Self {
             area: Rect::zero(),
-            tap_to_confirm: Some(TapToConfirm::new()),
+            tap_to_confirm: Some(TapToConfirm::new(
+                theme::GREEN,
+                theme::GREEN,
+                theme::GREY_EXTRA_DARK,
+            )),
             hold_to_confirm: None,
         }
     }
@@ -35,7 +40,11 @@ impl PromptScreen {
     pub fn new_tap_to_cancel() -> Self {
         Self {
             area: Rect::zero(),
-            tap_to_confirm: Some(TapToConfirm::new()),
+            tap_to_confirm: Some(TapToConfirm::new(
+                theme::ORANGE_LIGHT,
+                theme::ORANGE_LIGHT,
+                theme::GREY_EXTRA_DARK,
+            )),
             hold_to_confirm: None,
         }
     }

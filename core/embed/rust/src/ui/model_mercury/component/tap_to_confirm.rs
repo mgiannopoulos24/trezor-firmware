@@ -126,15 +126,15 @@ enum DismissType {
 }
 
 impl TapToConfirm {
-    pub fn new() -> Self {
+    pub fn new(circle_color: Color, circle_inner_color: Color, circle_pad_color: Color) -> Self {
         let button = Button::new(ButtonContent::Empty)
             .styled(theme::button_default())
             .with_long_press(Duration::from_millis(2200));
         Self {
             area: Rect::zero(),
-            circle_color: theme::GREEN,
-            circle_inner_color: theme::GREEN,
-            circle_pad_color: theme::GREY_EXTRA_DARK,
+            circle_color,
+            circle_inner_color,
+            circle_pad_color,
             button,
             anim: TapToConfirmAmin::default(),
         }
