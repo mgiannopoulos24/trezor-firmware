@@ -863,5 +863,6 @@
   "861": "address__confirmed",
   "862": "haptic_feedback__disable",
   "863": "haptic_feedback__enable",
-  "864": "haptic_feedback__title"
+  "864": "haptic_feedback__title",
+  "865": "haptic_feedback__subtitle"
 }

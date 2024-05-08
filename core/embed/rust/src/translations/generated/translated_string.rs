@@ -1254,9 +1254,10 @@ pub enum TranslatedString {
     instructions__continue_in_app = 859,  // "Continue in the app"
     words__cancel_and_exit = 860,  // "Cancel and exit"
     address__confirmed = 861,  // "Receive address confirmed"
-    haptic_feedback__disable = 862,  // "Disable haptic feedback?"
-    haptic_feedback__enable = 863,  // "Enable haptic feedback?"
-    haptic_feedback__title = 864,  // "HAPTIC FEEDBACK"
+    haptic_feedback__disable = 862,  // "Turn off haptic feedback?"
+    haptic_feedback__enable = 863,  // "Turn on haptic feedback?"
+    haptic_feedback__title = 864,  // "Haptic feedback"
+    haptic_feedback__subtitle = 865,  // "Setting"
 }
 
 impl TranslatedString {
@@ -2506,9 +2507,10 @@ impl TranslatedString {
             Self::instructions__continue_in_app => "Continue in the app",
             Self::words__cancel_and_exit => "Cancel and exit",
             Self::address__confirmed => "Receive address confirmed",
-            Self::haptic_feedback__disable => "Disable haptic feedback?",
-            Self::haptic_feedback__enable => "Enable haptic feedback?",
-            Self::haptic_feedback__title => "HAPTIC FEEDBACK",
+            Self::haptic_feedback__disable => "Turn off haptic feedback?",
+            Self::haptic_feedback__enable => "Turn on haptic feedback?",
+            Self::haptic_feedback__title => "Haptic feedback",
+            Self::haptic_feedback__subtitle => "Setting",
         }
     }
 
@@ -3762,6 +3764,7 @@ impl TranslatedString {
             Qstr::MP_QSTR_haptic_feedback__disable => Some(Self::haptic_feedback__disable),
             Qstr::MP_QSTR_haptic_feedback__enable => Some(Self::haptic_feedback__enable),
             Qstr::MP_QSTR_haptic_feedback__title => Some(Self::haptic_feedback__title),
+            Qstr::MP_QSTR_haptic_feedback__subtitle => Some(Self::haptic_feedback__subtitle),
             _ => None,
         }
     }
