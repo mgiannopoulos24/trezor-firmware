@@ -10,7 +10,7 @@ welcome_screen_start_ms = utime.ticks_ms()
 
 import storage
 import storage.device
-from trezor import config, log, loop, ui, io, utils, wire, translations
+from trezor import config, io, log, loop, ui, utils, wire, translations
 from trezor.pin import (
     allow_all_loader_messages,
     ignore_nonpin_loader_messages,
@@ -52,7 +52,7 @@ async def bootscreen() -> None:
                 ui.backlight_fade(ui.style.get_backlight_dim())
                 ui.display.orientation(storage.device.get_rotation())
                 if utils.USE_HAPTIC:
-                    io.haptic.haptic_set(storage.device.get_haptic_feedback())
+                    io.haptic.haptic_set_enabled(storage.device.get_haptic_feedback())
 
                 await lockscreen
                 await verify_user_pin()
@@ -65,7 +65,7 @@ async def bootscreen() -> None:
                 enforce_welcome_screen_duration()
                 rotation = storage.device.get_rotation()
                 if utils.USE_HAPTIC:
-                    io.haptic.haptic_set(storage.device.get_haptic_feedback())
+                    io.haptic.haptic_set_enabled(storage.device.get_haptic_feedback())
 
                 if rotation != ui.display.orientation():
                     # there is a slight delay before next screen is shown,

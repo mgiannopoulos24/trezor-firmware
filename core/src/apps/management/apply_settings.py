@@ -127,7 +127,7 @@ async def apply_settings(msg: ApplySettings) -> Success:
         from trezor import io
 
         await _require_confirm_haptic_feedback(haptic_feedback)
-        io.haptic.haptic_set(haptic_feedback)
+        io.haptic.haptic_set_enabled(haptic_feedback)
         storage_device.set_haptic_feedback(haptic_feedback)
 
     reload_settings_from_storage()
@@ -292,17 +292,9 @@ if utils.USE_BACKLIGHT:
 if utils.USE_HAPTIC:
 
     async def _require_confirm_haptic_feedback(enable: bool) -> None:
-        if enable:
-            await confirm_action(
-                "haptic_feedback__enable",
-                TR.haptic_feedback__title,
-                TR.haptic_feedback__enable,
-                br_code=BRT_PROTECT_CALL,
-            )
-        else:
-            await confirm_action(
-                "haptic_feedback__disable",
-                TR.haptic_feedback__title,
-                TR.haptic_feedback__disable,
-                br_code=BRT_PROTECT_CALL,
-            )
+        await confirm_action(
+            "haptic_feedback__settings",
+            TR.haptic_feedback__title,
+            TR.haptic_feedback__enable if enable else TR.haptic_feedback__disable,
+            br_code=BRT_PROTECT_CALL,
+        )

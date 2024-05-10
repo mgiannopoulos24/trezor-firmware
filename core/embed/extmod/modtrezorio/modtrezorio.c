@@ -60,7 +60,7 @@ bool usb_connected_previously = true;
 #endif
 
 /// package: trezorio.__init__
-/// from . import fatfs, sdcard, haptic
+/// from . import fatfs, haptic, sdcard
 
 /// POLL_READ: int  # wait until interface is readable and return read data
 /// POLL_WRITE: int  # wait until interface is writable
