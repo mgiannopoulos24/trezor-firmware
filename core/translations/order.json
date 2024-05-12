@@ -861,7 +861,11 @@
   "859": "instructions__continue_in_app",
   "860": "words__cancel_and_exit",
   "861": "address__confirmed",
-  "862": "send__cancel_sign",
-  "863": "send__send_from",
-  "864": "instructions__hold_to_sign"
+  "862": "pin__cancel_description",
+  "863": "pin__cancel_info",
+  "864": "pin__cancel_setup",
+  "865": "address__confirmed",
+  "866": "send__cancel_sign",
+  "867": "send__send_from",
+  "868": "instructions__hold_to_sign"
 }

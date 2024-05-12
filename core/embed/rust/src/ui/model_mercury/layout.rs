@@ -331,54 +331,6 @@ impl ComponentMsgObj for super::component::bl_confirm::Confirm<'_> {
     }
 }
 
-extern "C" fn new_confirm_action(n_args: usize, args: *const Obj, kwargs: *mut Map) -> Obj {
-    let block = move |_args: &[Obj], kwargs: &Map| {
-        let title: TString = kwargs.get(Qstr::MP_QSTR_title)?.try_into()?;
-        let action: Option<TString> = kwargs.get(Qstr::MP_QSTR_action)?.try_into_option()?;
-        let description: Option<TString> =
-            kwargs.get(Qstr::MP_QSTR_description)?.try_into_option()?;
-        let verb: Option<TString> = kwargs
-            .get(Qstr::MP_QSTR_verb)
-            .unwrap_or_else(|_| Obj::const_none())
-            .try_into_option()?;
-        let verb_cancel: Option<TString> = kwargs
-            .get(Qstr::MP_QSTR_verb_cancel)
-            .unwrap_or_else(|_| Obj::const_none())
-            .try_into_option()?;
-        let reverse: bool = kwargs.get_or(Qstr::MP_QSTR_reverse, false)?;
-        let hold: bool = kwargs.get_or(Qstr::MP_QSTR_hold, false)?;
-        let hold_danger: bool = kwargs.get_or(Qstr::MP_QSTR_hold_danger, false)?;
-
-        let paragraphs = {
-            let action = action.unwrap_or("".into());
-            let description = description.unwrap_or("".into());
-            let mut paragraphs = ParagraphVecShort::new();
-            if !reverse {
-                paragraphs
-                    .add(Paragraph::new(&theme::TEXT_DEMIBOLD, action))
-                    .add(Paragraph::new(&theme::TEXT_NORMAL, description));
-            } else {
-                paragraphs
-                    .add(Paragraph::new(&theme::TEXT_NORMAL, description))
-                    .add(Paragraph::new(&theme::TEXT_DEMIBOLD, action));
-            }
-            paragraphs.into_paragraphs()
-        };
-
-        let mut page = if hold {
-            ButtonPage::new(paragraphs, theme::BG).with_hold()?
-        } else {
-            ButtonPage::new(paragraphs, theme::BG).with_cancel_confirm(verb_cancel, verb)
-        };
-        if hold && hold_danger {
-            page = page.with_confirm_style(theme::button_danger())
-        }
-        let obj = LayoutObj::new(Frame::left_aligned(title, page))?;
-        Ok(obj.into())
-    };
-    unsafe { util::try_with_args_and_kwargs(n_args, args, kwargs, block) }
-}
-
 extern "C" fn new_confirm_emphasized(n_args: usize, args: *const Obj, kwargs: *mut Map) -> Obj {
     let block = move |_args: &[Obj], kwargs: &Map| {
         let title: TString = kwargs.get(Qstr::MP_QSTR_title)?.try_into()?;
@@ -882,14 +834,26 @@ fn new_show_modal(
 
 extern "C" fn new_show_error(n_args: usize, args: *const Obj, kwargs: *mut Map) -> Obj {
     let block = move |_args: &[Obj], kwargs: &Map| {
-        let icon = BlendedImage::new(
-            theme::IMAGE_BG_CIRCLE,
-            theme::IMAGE_FG_ERROR,
-            theme::ERROR_COLOR,
-            theme::FG,
-            theme::BG,
-        );
-        new_show_modal(kwargs, icon, theme::button_default())
+        let title: TString = kwargs.get(Qstr::MP_QSTR_title)?.try_into()?;
+        let description: TString = kwargs.get(Qstr::MP_QSTR_description)?.try_into()?;
+        let allow_cancel: bool = kwargs.get(Qstr::MP_QSTR_allow_cancel)?.try_into()?;
+
+        let content = SwipeUpScreen::new(Paragraphs::new([Paragraph::new(
+            &theme::TEXT_MAIN_GREY_LIGHT,
+            description,
+        )]));
+        let frame = if allow_cancel {
+            Frame::left_aligned(title, content)
+                .with_cancel_button()
+                .with_danger()
+                .with_footer(TR::instructions__swipe_up.into(), None)
+        } else {
+            Frame::left_aligned(title, content)
+                .with_danger()
+                .with_footer(TR::instructions__swipe_up.into(), None)
+        };
+        let obj = LayoutObj::new(frame)?;
+        Ok(obj.into())
     };
     unsafe { util::try_with_args_and_kwargs(n_args, args, kwargs, block) }
 }
@@ -1598,14 +1562,16 @@ pub static mp_module_trezorui2: Module = obj_module! {
     ///     title: str,
     ///     action: str | None,
     ///     description: str | None,
+    ///     subtitle: str | None = None,
     ///     verb: str | None = None,
     ///     verb_cancel: str | None = None,
     ///     hold: bool = False,
     ///     hold_danger: bool = False,
     ///     reverse: bool = False,
+    ///     prompt_screen: bool = False,
     /// ) -> LayoutObj[UiResult]:
     ///     """Confirm action."""
-    Qstr::MP_QSTR_confirm_action => obj_fn_kw!(0, new_confirm_action).as_obj(),
+    Qstr::MP_QSTR_confirm_action => obj_fn_kw!(0, flow::confirm_action::new_confirm_action).as_obj(),
 
     /// def confirm_emphasized(
     ///     *,
@@ -1669,6 +1635,10 @@ pub static mp_module_trezorui2: Module = obj_module! {
     /// def flow_confirm_reset_create() -> LayoutObj[UiResult]:
     ///     """Confirm TOS before creating a wallet and have a user hold to confirm creation."""
     Qstr::MP_QSTR_flow_confirm_reset_create => obj_fn_kw!(0, flow::confirm_reset_create::new_confirm_reset_create).as_obj(),
+
+    /// def flow_confirm_set_new_pin() -> LayoutObj[UiResult]:
+    ///     """Confirm new PIN setup with an option to cancel action."""
+    Qstr::MP_QSTR_flow_confirm_set_new_pin => obj_fn_kw!(0, flow::confirm_set_new_pin::new_set_new_pin).as_obj(),
 
     /// def show_info_with_cancel(
     ///     *,

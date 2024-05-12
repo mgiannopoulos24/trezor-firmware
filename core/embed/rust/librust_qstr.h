@@ -217,6 +217,7 @@ static void _librust_qstrs(void) {
   MP_QSTR_flow_confirm_output;
   MP_QSTR_flow_confirm_reset_create;
   MP_QSTR_flow_confirm_reset_recover;
+  MP_QSTR_flow_confirm_set_new_pin;
   MP_QSTR_flow_confirm_summary;
   MP_QSTR_flow_get_address;
   MP_QSTR_flow_prompt_backup;
@@ -312,6 +313,9 @@ static void _librust_qstrs(void) {
   MP_QSTR_passphrase__turn_off;
   MP_QSTR_passphrase__turn_on;
   MP_QSTR_path;
+  MP_QSTR_pin__cancel_description;
+  MP_QSTR_pin__cancel_info;
+  MP_QSTR_pin__cancel_setup;
   MP_QSTR_pin__change;
   MP_QSTR_pin__changed;
   MP_QSTR_pin__cursor_will_change;
@@ -359,6 +363,7 @@ static void _librust_qstrs(void) {
   MP_QSTR_progress__x_seconds_left_template;
   MP_QSTR_progress_event;
   MP_QSTR_prompt;
+  MP_QSTR_prompt_screen;
   MP_QSTR_qr_title;
   MP_QSTR_reboot_to_bootloader__just_a_moment;
   MP_QSTR_reboot_to_bootloader__restart;

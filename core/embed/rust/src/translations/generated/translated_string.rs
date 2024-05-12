@@ -1254,9 +1254,12 @@ pub enum TranslatedString {
     instructions__continue_in_app = 859,  // "Continue in the app"
     words__cancel_and_exit = 860,  // "Cancel and exit"
     address__confirmed = 861,  // "Receive address confirmed"
-    send__cancel_sign = 862,  // "Cancel sign"
-    send__send_from = 863,  // "Send from"
-    instructions__hold_to_sign = 864,  // "Hold to sign"
+    pin__cancel_description = 862,  // "Continue without PIN"
+    pin__cancel_info = 863,  // "Without a PIN, anyone can access this device."
+    pin__cancel_setup = 864,  // "Cancel PIN setup"
+    send__cancel_sign = 865,  // "Cancel sign"
+    send__send_from = 866,  // "Send from"
+    instructions__hold_to_sign = 867,  // "Hold to sign"
 }
 
 impl TranslatedString {
@@ -2506,6 +2509,9 @@ impl TranslatedString {
             Self::instructions__continue_in_app => "Continue in the app",
             Self::words__cancel_and_exit => "Cancel and exit",
             Self::address__confirmed => "Receive address confirmed",
+            Self::pin__cancel_description => "Continue without PIN",
+            Self::pin__cancel_info => "Without a PIN, anyone can access this device.",
+            Self::pin__cancel_setup => "Cancel PIN setup",
             Self::send__cancel_sign => "Cancel sign",
             Self::send__send_from => "Send from",
             Self::instructions__hold_to_sign => "Hold to sign",
@@ -3759,6 +3765,9 @@ impl TranslatedString {
             Qstr::MP_QSTR_instructions__continue_in_app => Some(Self::instructions__continue_in_app),
             Qstr::MP_QSTR_words__cancel_and_exit => Some(Self::words__cancel_and_exit),
             Qstr::MP_QSTR_address__confirmed => Some(Self::address__confirmed),
+            Qstr::MP_QSTR_pin__cancel_description => Some(Self::pin__cancel_description),
+            Qstr::MP_QSTR_pin__cancel_info => Some(Self::pin__cancel_info),
+            Qstr::MP_QSTR_pin__cancel_setup => Some(Self::pin__cancel_setup),
             Qstr::MP_QSTR_send__cancel_sign => Some(Self::send__cancel_sign),
             Qstr::MP_QSTR_send__send_from => Some(Self::send__send_from),
             Qstr::MP_QSTR_instructions__hold_to_sign => Some(Self::instructions__hold_to_sign),
