@@ -1260,6 +1260,10 @@ pub enum TranslatedString {
     send__cancel_sign = 865,  // "Cancel sign"
     send__send_from = 866,  // "Send from"
     instructions__hold_to_sign = 867,  // "Hold to sign"
+    haptic_feedback__disable = 862,  // "Turn off haptic feedback?"
+    haptic_feedback__enable = 863,  // "Turn on haptic feedback?"
+    haptic_feedback__title = 864,  // "Haptic feedback"
+    haptic_feedback__subtitle = 865,  // "Setting"
 }
 
 impl TranslatedString {
@@ -2515,6 +2519,10 @@ impl TranslatedString {
             Self::send__cancel_sign => "Cancel sign",
             Self::send__send_from => "Send from",
             Self::instructions__hold_to_sign => "Hold to sign",
+            Self::haptic_feedback__disable => "Turn off haptic feedback?",
+            Self::haptic_feedback__enable => "Turn on haptic feedback?",
+            Self::haptic_feedback__title => "Haptic feedback",
+            Self::haptic_feedback__subtitle => "Setting",
         }
     }
 
@@ -3771,6 +3779,10 @@ impl TranslatedString {
             Qstr::MP_QSTR_send__cancel_sign => Some(Self::send__cancel_sign),
             Qstr::MP_QSTR_send__send_from => Some(Self::send__send_from),
             Qstr::MP_QSTR_instructions__hold_to_sign => Some(Self::instructions__hold_to_sign),
+            Qstr::MP_QSTR_haptic_feedback__disable => Some(Self::haptic_feedback__disable),
+            Qstr::MP_QSTR_haptic_feedback__enable => Some(Self::haptic_feedback__enable),
+            Qstr::MP_QSTR_haptic_feedback__title => Some(Self::haptic_feedback__title),
+            Qstr::MP_QSTR_haptic_feedback__subtitle => Some(Self::haptic_feedback__subtitle),
             _ => None,
         }
     }

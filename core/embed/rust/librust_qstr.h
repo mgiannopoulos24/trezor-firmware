@@ -225,6 +225,10 @@ static void _librust_qstrs(void) {
   MP_QSTR_flow_show_share_words;
   MP_QSTR_flow_warning_hi_prio;
   MP_QSTR_get_language;
+  MP_QSTR_haptic_feedback__disable;
+  MP_QSTR_haptic_feedback__enable;
+  MP_QSTR_haptic_feedback__subtitle;
+  MP_QSTR_haptic_feedback__title;
   MP_QSTR_hold;
   MP_QSTR_hold_danger;
   MP_QSTR_homescreen__click_to_connect;

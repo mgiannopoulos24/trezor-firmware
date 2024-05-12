@@ -52,6 +52,7 @@ async def apply_settings(msg: ApplySettings) -> Success:
     experimental_features = msg.experimental_features  # local_cache_attribute
     hide_passphrase_from_host = msg.hide_passphrase_from_host  # local_cache_attribute
     brightness = msg.brightness
+    haptic_feedback = msg.haptic_feedback
 
     if (
         homescreen is None
@@ -64,6 +65,7 @@ async def apply_settings(msg: ApplySettings) -> Success:
         and experimental_features is None
         and hide_passphrase_from_host is None
         and (brightness is None or not utils.USE_BACKLIGHT)
+        and (haptic_feedback is None or not utils.USE_HAPTIC)
     ):
         raise ProcessError("No setting provided")
 
@@ -120,6 +122,13 @@ async def apply_settings(msg: ApplySettings) -> Success:
     if brightness is not None and utils.USE_BACKLIGHT:
         new_brightness = await _require_set_brightness()
         storage_device.set_brightness(new_brightness)
+
+    if haptic_feedback is not None and utils.USE_HAPTIC:
+        from trezor import io
+
+        await _require_confirm_haptic_feedback(haptic_feedback)
+        io.haptic.haptic_set_enabled(haptic_feedback)
+        storage_device.set_haptic_feedback(haptic_feedback)
 
     reload_settings_from_storage()
 
@@ -277,4 +286,15 @@ if utils.USE_BACKLIGHT:
             max_count=style.get_backlight_max(),
             count=style.get_backlight_normal(),
             br_name="set_brightness",
+        )
+
+
+if utils.USE_HAPTIC:
+
+    async def _require_confirm_haptic_feedback(enable: bool) -> None:
+        await confirm_action(
+            "haptic_feedback__settings",
+            TR.haptic_feedback__title,
+            TR.haptic_feedback__enable if enable else TR.haptic_feedback__disable,
+            br_code=BRT_PROTECT_CALL,
         )

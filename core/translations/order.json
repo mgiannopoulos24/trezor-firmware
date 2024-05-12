@@ -867,5 +867,9 @@
   "865": "address__confirmed",
   "866": "send__cancel_sign",
   "867": "send__send_from",
-  "868": "instructions__hold_to_sign"
+  "868": "instructions__hold_to_sign",
+  "869": "haptic_feedback__disable",
+  "870": "haptic_feedback__enable",
+  "871": "haptic_feedback__title",
+  "872": "haptic_feedback__subtitle"
 }

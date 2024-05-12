@@ -2137,6 +2137,7 @@ if TYPE_CHECKING:
         homescreen_height: "int | None"
         bootloader_locked: "bool | None"
         language_version_matches: "bool"
+        haptic_feedback: "bool | None"
 
         def __init__(
             self,
@@ -2188,6 +2189,7 @@ if TYPE_CHECKING:
             homescreen_height: "int | None" = None,
             bootloader_locked: "bool | None" = None,
             language_version_matches: "bool | None" = None,
+            haptic_feedback: "bool | None" = None,
         ) -> None:
             pass
 
@@ -2232,6 +2234,7 @@ if TYPE_CHECKING:
         experimental_features: "bool | None"
         hide_passphrase_from_host: "bool | None"
         brightness: "int | None"
+        haptic_feedback: "bool | None"
 
         def __init__(
             self,
@@ -2246,6 +2249,7 @@ if TYPE_CHECKING:
             experimental_features: "bool | None" = None,
             hide_passphrase_from_host: "bool | None" = None,
             brightness: "int | None" = None,
+            haptic_feedback: "bool | None" = None,
         ) -> None:
             pass
 
