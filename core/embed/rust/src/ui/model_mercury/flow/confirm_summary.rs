@@ -104,7 +104,7 @@ impl ConfirmSummary {
 
         // Hold to confirm
         let content_hold = Frame::left_aligned(
-            TR::eos__sign_transaction.into(),
+            "Sign transaction".into(),
             PromptScreen::new_hold_to_confirm(),
         )
         .with_menu_button()

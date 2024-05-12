@@ -18,13 +18,12 @@ use crate::{
 use crate::{
     trezorhal::{buffers::BufferJpegWork, uzlib::UZLIB_WINDOW_SIZE},
     ui::{
-        constant::{screen, HEIGHT},
+        constant::{screen, HEIGHT, WIDTH},
         display::{
             tjpgd::BufferInput,
             toif::{Toif, ToifFormat},
         },
         model_mercury::{
-            component::homescreen::render::{HomescreenJpeg, HomescreenToif, HOMESCREEN_TOIF_SIZE},
             theme::{
                 GREEN_LIGHT, GREY_LIGHT, ICON_CENTRAL_CIRCLE, ICON_KEY, ICON_LOCKSCREEN_FILTER,
             },
