@@ -242,6 +242,7 @@ async def confirm_action(
     action: str | None = None,
     description: str | None = None,
     description_param: str | None = None,
+    subtitle: str | None = None,
     verb: str | None = None,
     verb_cancel: str | None = None,
     hold: bool = False,
@@ -262,7 +263,8 @@ async def confirm_action(
         interact(
             RustLayout(
                 trezorui2.confirm_action(
-                    title=title.upper(),
+                    title=title,
+                    subtitle=subtitle,
                     action=action,
                     description=description,
                     verb=verb,

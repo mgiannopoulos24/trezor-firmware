@@ -33,6 +33,7 @@ mod simple_page;
 mod status_screen;
 mod swipe;
 mod swipe_up_screen;
+mod tap_to_confirm;
 mod welcome_screen;
 
 #[cfg(feature = "translations")]
@@ -76,6 +77,7 @@ pub use simple_page::SimplePage;
 pub use status_screen::StatusScreen;
 pub use swipe::{Swipe, SwipeDirection};
 pub use swipe_up_screen::{SwipeUpScreen, SwipeUpScreenMsg};
+pub use tap_to_confirm::TapToConfirm;
 pub use vertical_menu::{VerticalMenu, VerticalMenuChoiceMsg};
 pub use welcome_screen::WelcomeScreen;
 

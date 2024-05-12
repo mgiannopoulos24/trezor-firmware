@@ -13,22 +13,11 @@ use super::super::{
     theme,
 };
 
-// TODO: merge with code from https://github.com/trezor/trezor-firmware/pull/3805
-// when ready
-
 #[derive(Copy, Clone, PartialEq, Eq, ToPrimitive)]
 pub enum ConfirmAction {
     Intro,
     Menu,
     Confirm,
-}
-
-/// ConfirmAction flow without a separate "Tap to confirm" or "Hold to confirm"
-/// screen. Swiping up directly from the intro screen confirms action.
-#[derive(Copy, Clone, PartialEq, Eq, ToPrimitive)]
-pub enum ConfirmActionSimple {
-    Intro,
-    Menu,
 }
 
 impl FlowState for ConfirmAction {
@@ -71,36 +60,6 @@ impl FlowState for ConfirmAction {
     }
 }
 
-impl FlowState for ConfirmActionSimple {
-    fn handle_swipe(&self, direction: SwipeDirection) -> Decision<Self> {
-        match (self, direction) {
-            (ConfirmActionSimple::Intro, SwipeDirection::Left) => {
-                Decision::Goto(ConfirmActionSimple::Menu, direction)
-            }
-            (ConfirmActionSimple::Menu, SwipeDirection::Right) => {
-                Decision::Goto(ConfirmActionSimple::Intro, direction)
-            }
-            (ConfirmActionSimple::Intro, SwipeDirection::Up) => {
-                Decision::Return(FlowMsg::Confirmed)
-            }
-            _ => Decision::Nothing,
-        }
-    }
-
-    fn handle_event(&self, msg: FlowMsg) -> Decision<Self> {
-        match (self, msg) {
-            (ConfirmActionSimple::Intro, FlowMsg::Info) => {
-                Decision::Goto(ConfirmActionSimple::Menu, SwipeDirection::Left)
-            }
-            (ConfirmActionSimple::Menu, FlowMsg::Cancelled) => {
-                Decision::Goto(ConfirmActionSimple::Intro, SwipeDirection::Right)
-            }
-            (ConfirmActionSimple::Menu, FlowMsg::Choice(0)) => Decision::Return(FlowMsg::Cancelled),
-            _ => Decision::Nothing,
-        }
-    }
-}
-
 use crate::{
     micropython::{map::Map, obj::Obj, qstr::Qstr, util},
     ui::{
@@ -111,69 +70,72 @@ use crate::{
 
 #[allow(clippy::not_unsafe_ptr_arg_deref)]
 pub extern "C" fn new_confirm_action(n_args: usize, args: *const Obj, kwargs: *mut Map) -> Obj {
-    unsafe { util::try_with_args_and_kwargs(n_args, args, kwargs, new_confirm_action_obj) }
+    unsafe { util::try_with_args_and_kwargs(n_args, args, kwargs, ConfirmAction::new_obj) }
 }
 
-fn new_confirm_action_obj(_args: &[Obj], kwargs: &Map) -> Result<Obj, error::Error> {
-    let title: TString = kwargs.get(Qstr::MP_QSTR_title)?.try_into()?;
-    let action: Option<TString> = kwargs.get(Qstr::MP_QSTR_action)?.try_into_option()?;
-    let description: Option<TString> = kwargs.get(Qstr::MP_QSTR_description)?.try_into_option()?;
-    // let verb: Option<TString> = kwargs
-    //     .get(Qstr::MP_QSTR_verb)
-    //     .unwrap_or_else(|_| Obj::const_none())
-    //     .try_into_option()?;
-    let verb_cancel: Option<TString> = kwargs
-        .get(Qstr::MP_QSTR_verb_cancel)
-        .unwrap_or_else(|_| Obj::const_none())
-        .try_into_option()?;
-    let reverse: bool = kwargs.get_or(Qstr::MP_QSTR_reverse, false)?;
-    let hold: bool = kwargs.get_or(Qstr::MP_QSTR_hold, false)?;
-    // let hold_danger: bool = kwargs.get_or(Qstr::MP_QSTR_hold_danger, false)?;
-    let prompt_screen: bool = kwargs.get_or(Qstr::MP_QSTR_prompt_screen, false)?;
+impl ConfirmAction {
+    fn new_obj(_args: &[Obj], kwargs: &Map) -> Result<Obj, error::Error> {
+        let title: TString = kwargs.get(Qstr::MP_QSTR_title)?.try_into()?;
+        let subtitle: Option<TString> = kwargs.get(Qstr::MP_QSTR_subtitle)?.try_into_option()?;
+        let action: Option<TString> = kwargs.get(Qstr::MP_QSTR_action)?.try_into_option()?;
+        let description: Option<TString> =
+            kwargs.get(Qstr::MP_QSTR_description)?.try_into_option()?;
+        let verb: Option<TString> = kwargs
+            .get(Qstr::MP_QSTR_verb)
+            .unwrap_or_else(|_| Obj::const_none())
+            .try_into_option()?;
+        let verb_cancel: Option<TString> = kwargs
+            .get(Qstr::MP_QSTR_verb_cancel)
+            .unwrap_or_else(|_| Obj::const_none())
+            .try_into_option()?;
+        let reverse: bool = kwargs.get_or(Qstr::MP_QSTR_reverse, false)?;
+        let hold: bool = kwargs.get_or(Qstr::MP_QSTR_hold, false)?;
+        let hold_danger: bool = kwargs.get_or(Qstr::MP_QSTR_hold_danger, false)?;
 
-    let paragraphs = {
-        let action = action.unwrap_or("".into());
-        let description = description.unwrap_or("".into());
-        let mut paragraphs = ParagraphVecShort::new();
-        if !reverse {
-            paragraphs
-                .add(Paragraph::new(&theme::TEXT_MAIN_GREY_LIGHT, action))
-                .add(Paragraph::new(&theme::TEXT_MAIN_GREY_LIGHT, description));
-        } else {
-            paragraphs
-                .add(Paragraph::new(&theme::TEXT_MAIN_GREY_LIGHT, description))
-                .add(Paragraph::new(&theme::TEXT_MAIN_GREY_LIGHT, action));
+        let paragraphs = {
+            let action = action.unwrap_or("".into());
+            let description = description.unwrap_or("".into());
+            let mut paragraphs = ParagraphVecShort::new();
+            if !reverse {
+                paragraphs
+                    .add(Paragraph::new(&theme::TEXT_MAIN_GREY_LIGHT, action))
+                    .add(Paragraph::new(&theme::TEXT_MAIN_GREY_LIGHT, description));
+            } else {
+                paragraphs
+                    .add(Paragraph::new(&theme::TEXT_MAIN_GREY_LIGHT, description))
+                    .add(Paragraph::new(&theme::TEXT_MAIN_GREY_LIGHT, action));
+            }
+            paragraphs.into_paragraphs()
+        };
+
+        let mut content_intro = Frame::left_aligned(title, SwipePage::vertical(paragraphs))
+            .with_menu_button()
+            .with_footer(TR::instructions__swipe_up.into(), None);
+
+        if let Some(subtitle) = subtitle {
+            content_intro = content_intro.with_subtitle(subtitle);
         }
-        paragraphs.into_paragraphs()
-    };
 
-    let content_intro = Frame::left_aligned(title, SwipePage::vertical(paragraphs))
-        .with_menu_button()
-        .with_footer(TR::instructions__swipe_up.into(), None)
-        .map(|msg| matches!(msg, FrameMsg::Button(_)).then_some(FlowMsg::Info));
+        let content_intro =
+            content_intro.map(|msg| matches!(msg, FrameMsg::Button(_)).then_some(FlowMsg::Info));
 
-    let content_menu = if let Some(verb_cancel) = verb_cancel {
-        Frame::left_aligned(
-            "".into(),
-            VerticalMenu::empty().danger(theme::ICON_CANCEL, verb_cancel.into()),
-        )
-    } else {
-        Frame::left_aligned(
-            "".into(),
-            VerticalMenu::empty().danger(theme::ICON_CANCEL, TR::buttons__cancel.into()),
-        )
-    }
-    .with_cancel_button()
-    .map(move |msg| match msg {
-        FrameMsg::Content(VerticalMenuChoiceMsg::Selected(_)) => Some(FlowMsg::Choice(0)),
-        FrameMsg::Button(_) => Some(FlowMsg::Cancelled),
-    });
+        let content_menu = if let Some(verb_cancel) = verb_cancel {
+            Frame::left_aligned(
+                "".into(),
+                VerticalMenu::empty().danger(theme::ICON_CANCEL, verb_cancel.into()),
+            )
+        } else {
+            Frame::left_aligned(
+                "".into(),
+                VerticalMenu::empty().danger(theme::ICON_CANCEL, "Cancel".into()), // TODO: use TR
+            )
+        }
+        .with_cancel_button()
+        .map(move |msg| match msg {
+            FrameMsg::Content(VerticalMenuChoiceMsg::Selected(_)) => Some(FlowMsg::Choice(0)),
+            FrameMsg::Button(_) => Some(FlowMsg::Cancelled),
+        });
 
-    if !prompt_screen {
-        let store = flow_store().add(content_intro)?.add(content_menu)?;
-        let res = SwipeFlow::new(ConfirmActionSimple::Intro, store)?;
-        return Ok(LayoutObj::new(res)?.into());
-    } else {
         let (prompt, prompt_action) = if hold {
             (
                 PromptScreen::new_hold_to_confirm(),
@@ -186,14 +148,14 @@ fn new_confirm_action_obj(_args: &[Obj], kwargs: &Map) -> Result<Obj, error::Err
             )
         };
 
-        let content_confirm = Frame::left_aligned(title, prompt)
+        let mut content_confirm = Frame::left_aligned(title, prompt)
             .with_footer(prompt_action, None)
-            .with_menu_button();
-        // .with_overlapping_content();
+            .with_menu_button()
+            .with_overlapping_content();
 
-        // if let Some(subtitle) = subtitle {
-        //     content_confirm = content_confirm.with_subtitle(subtitle);
-        // }
+        if let Some(subtitle) = subtitle {
+            content_confirm = content_confirm.with_subtitle(subtitle);
+        }
 
         let content_confirm = content_confirm.map(move |msg| match msg {
             FrameMsg::Content(()) => Some(FlowMsg::Confirmed),
@@ -204,7 +166,8 @@ fn new_confirm_action_obj(_args: &[Obj], kwargs: &Map) -> Result<Obj, error::Err
             .add(content_intro)?
             .add(content_menu)?
             .add(content_confirm)?;
+
         let res = SwipeFlow::new(ConfirmAction::Intro, store)?;
-        return Ok(LayoutObj::new(res)?.into());
-    };
+        Ok(LayoutObj::new(res)?.into())
+    }
 }
