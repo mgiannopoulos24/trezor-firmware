@@ -411,6 +411,18 @@ def request_number(
 
 
 # rust/src/ui/model_mercury/layout.rs
+def request_number_slider(
+    *,
+    title: str,
+    count: int,
+    min_count: int,
+    max_count: int,
+    callback: Callable[[int], None] | None = None,
+) -> LayoutObj[tuple[UiResult, int]]:
+    """Number input with slider."""
+
+
+# rust/src/ui/model_mercury/layout.rs
 def show_checklist(
     *,
     title: str,
@@ -1432,6 +1444,18 @@ def request_number(
     description: Callable[[int], str] | None = None,
 ) -> LayoutObj[tuple[UiResult, int]]:
     """Number input with + and - buttons, description, and info button."""
+
+
+# rust/src/ui/model_tt/layout.rs
+def request_number_slider(
+    *,
+    title: str,
+    count: int,
+    min_count: int,
+    max_count: int,
+    callback: Callable[[int], None] | None = None,
+) -> LayoutObj[tuple[UiResult, int]]::
+    """Number input with slider."""
 
 
 # rust/src/ui/model_tt/layout.rs

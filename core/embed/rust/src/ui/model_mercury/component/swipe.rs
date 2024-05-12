@@ -33,8 +33,8 @@ impl Swipe {
             allow_down: false,
             allow_left: false,
             allow_right: false,
-            backlight_start: theme::BACKLIGHT_NORMAL,
-            backlight_end: theme::BACKLIGHT_NONE,
+            backlight_start: theme::backlight::get_backlight_normal(),
+            backlight_end: theme::backlight::get_backlight_none(),
             origin: None,
         }
     }
