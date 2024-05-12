@@ -32,6 +32,7 @@ pub struct Button {
     state: State,
     long_press: Option<Duration>,
     long_timer: Option<TimerToken>,
+    haptics: bool,
 }
 
 impl Button {
@@ -48,6 +49,7 @@ impl Button {
             state: State::Initial,
             long_press: None,
             long_timer: None,
+            haptics: true,
         }
     }
 
@@ -83,6 +85,11 @@ impl Button {
 
     pub fn with_long_press(mut self, duration: Duration) -> Self {
         self.long_press = Some(duration);
+        self
+    }
+
+    pub const fn without_haptics(mut self) -> Self {
+        self.haptics = false;
         self
     }
 
@@ -305,7 +312,9 @@ impl Component for Button {
                         // Touch started in our area, transform to `Pressed` state.
                         if touch_area.contains(pos) {
                             #[cfg(feature = "haptic")]
-                            play(HapticEffect::ButtonPress);
+                            if self.haptics {
+                                play(HapticEffect::ButtonPress);
+                            }
                             self.set(ctx, State::Pressed);
                             if let Some(duration) = self.long_press {
                                 self.long_timer = Some(ctx.request_timer(duration));
@@ -349,7 +358,9 @@ impl Component for Button {
                     self.long_timer = None;
                     if matches!(self.state, State::Pressed) {
                         #[cfg(feature = "haptic")]
-                        play(HapticEffect::ButtonPress);
+                        if self.haptics {
+                            play(HapticEffect::ButtonPress);
+                        }
                         self.set(ctx, State::Initial);
                         return Some(ButtonMsg::LongPressed);
                     }

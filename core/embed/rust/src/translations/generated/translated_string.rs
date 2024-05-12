@@ -1260,10 +1260,10 @@ pub enum TranslatedString {
     send__cancel_sign = 865,  // "Cancel sign"
     send__send_from = 866,  // "Send from"
     instructions__hold_to_sign = 867,  // "Hold to sign"
-    haptic_feedback__disable = 862,  // "Turn off haptic feedback?"
-    haptic_feedback__enable = 863,  // "Turn on haptic feedback?"
-    haptic_feedback__title = 864,  // "Haptic feedback"
-    haptic_feedback__subtitle = 865,  // "Setting"
+    haptic_feedback__disable = 868,  // "Turn off haptic feedback?"
+    haptic_feedback__enable = 869,  // "Turn on haptic feedback?"
+    haptic_feedback__title = 870,  // "Haptic feedback"
+    haptic_feedback__subtitle = 871,  // "Setting"
 }
 
 impl TranslatedString {

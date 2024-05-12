@@ -114,9 +114,12 @@ static void dma2d_config_clut(uint32_t layer, gfx_color32_t fg,
   volatile uint32_t* clut =
       layer ? dma2d_handle.Instance->FGCLUT : dma2d_handle.Instance->BGCLUT;
 
-  if (fg != cache[layer].c_fg || bg != cache[layer].c_bg) {
+  if (fg != cache[layer].c_fg || bg != cache[layer].c_bg ||
+      alpha != cache[layer].alpha || blend != cache[layer].blend) {
     cache[layer].c_fg = fg;
     cache[layer].c_bg = bg;
+    cache[layer].alpha = alpha;
+    cache[layer].blend = blend;
 
     for (int step = 0; step < GRADIENT_STEPS; step++) {
       clut[step] = gfx_color32_rgba(
@@ -404,63 +407,63 @@ static void dma2d_rgba8888_copy_mono4_first_col(gfx_bitblt_t* bb,
 }
 
 static void dma2d_rgba8888_copy_mono4_last_col(gfx_bitblt_t* bb,
-                                               const gfx_color32_t* gradient) {
-  uint32_t* dst_ptr = (uint32_t*)bb->dst_row + (bb->dst_x + bb->width - 1);
-  uint8_t* src_ptr = (uint8_t*)bb->src_row + (bb->src_x + bb->width - 1) / 2;
+                                           const gfx_color32_t* gradient) {
+uint32_t* dst_ptr = (uint32_t*)bb->dst_row + (bb->dst_x + bb->width - 1);
+uint8_t* src_ptr = (uint8_t*)bb->src_row + (bb->src_x + bb->width - 1) / 2;
 
-  int height = bb->height;
+int height = bb->height;
 
-  while (height-- > 0) {
-    uint8_t fg_lum = src_ptr[0] & 0x0F;
-    dst_ptr[0] = gradient[fg_lum];
-    dst_ptr += bb->dst_stride / sizeof(*dst_ptr);
-    src_ptr += bb->src_stride / sizeof(*src_ptr);
-  }
+while (height-- > 0) {
+uint8_t fg_lum = src_ptr[0] & 0x0F;
+dst_ptr[0] = gradient[fg_lum];
+dst_ptr += bb->dst_stride / sizeof(*dst_ptr);
+src_ptr += bb->src_stride / sizeof(*src_ptr);
+}
 }
 
 bool dma2d_rgba8888_copy_mono4(const gfx_bitblt_t* params) {
-  const gfx_color32_t* src_gradient = NULL;
+const gfx_color32_t* src_gradient = NULL;
 
-  gfx_bitblt_t bb_copy = *params;
-  gfx_bitblt_t* bb = &bb_copy;
+gfx_bitblt_t bb_copy = *params;
+gfx_bitblt_t* bb = &bb_copy;
 
-  dma2d_wait();
+dma2d_wait();
 
-  if (!dma2d_accessible(bb->dst_row) || !dma2d_accessible(bb->src_row)) {
-    return false;
-  }
+if (!dma2d_accessible(bb->dst_row) || !dma2d_accessible(bb->src_row)) {
+return false;
+}
 
-  if (bb->src_x & 1) {
-    // First column of mono4 bitmap is odd
-    // Use the CPU to draw the first column
-    src_gradient = gfx_color32_gradient_a4(bb->src_fg, bb->src_bg);
-    dma2d_rgba8888_copy_mono4_first_col(bb, src_gradient);
-    bb->dst_x += 1;
-    bb->src_x += 1;
-    bb->width -= 1;
-  }
+if (bb->src_x & 1) {
+// First column of mono4 bitmap is odd
+// Use the CPU to draw the first column
+src_gradient = gfx_color32_gradient_a4(bb->src_fg, bb->src_bg);
+dma2d_rgba8888_copy_mono4_first_col(bb, src_gradient);
+bb->dst_x += 1;
+bb->src_x += 1;
+bb->width -= 1;
+}
 
-  if (bb->width > 0 && bb->width & 1) {
-    // The width is odd
-    // Use the CPU to draw the last column
-    if (src_gradient == NULL) {
-      src_gradient = gfx_color32_gradient_a4(bb->src_fg, bb->src_bg);
-    }
-    dma2d_rgba8888_copy_mono4_last_col(bb, src_gradient);
-    bb->width -= 1;
-  }
+if (bb->width > 0 && bb->width & 1) {
+// The width is odd
+// Use the CPU to draw the last column
+if (src_gradient == NULL) {
+  src_gradient = gfx_color32_gradient_a4(bb->src_fg, bb->src_bg);
+}
+dma2d_rgba8888_copy_mono4_last_col(bb, src_gradient);
+bb->width -= 1;
+}
 
-  dma2d_handle.Init.ColorMode = DMA2D_OUTPUT_ARGB8888;
-  dma2d_handle.Init.Mode = DMA2D_M2M_PFC;
-  dma2d_handle.Init.OutputOffset =
-      bb->dst_stride / sizeof(uint32_t) - bb->width;
-  HAL_DMA2D_Init(&dma2d_handle);
+dma2d_handle.Init.ColorMode = DMA2D_OUTPUT_ARGB8888;
+dma2d_handle.Init.Mode = DMA2D_M2M_PFC;
+dma2d_handle.Init.OutputOffset =
+  bb->dst_stride / sizeof(uint32_t) - bb->width;
+HAL_DMA2D_Init(&dma2d_handle);
 
-  dma2d_handle.LayerCfg[1].InputColorMode = DMA2D_INPUT_L4;
-  dma2d_handle.LayerCfg[1].InputOffset = bb->src_stride * 2 - bb->width;
-  dma2d_handle.LayerCfg[1].AlphaMode = 0;
-  dma2d_handle.LayerCfg[1].InputAlpha = 0;
-  HAL_DMA2D_ConfigLayer(&dma2d_handle, 1);
+dma2d_handle.LayerCfg[1].InputColorMode = DMA2D_INPUT_L4;
+dma2d_handle.LayerCfg[1].InputOffset = bb->src_stride * 2 - bb->width;
+dma2d_handle.LayerCfg[1].AlphaMode = 0;
+dma2d_handle.LayerCfg[1].InputAlpha = 0;
+HAL_DMA2D_ConfigLayer(&dma2d_handle, 1);
 
   dma2d_config_clut(1, gfx_color_to_color32(bb->src_fg),
                     gfx_color_to_color32(bb->src_bg));
