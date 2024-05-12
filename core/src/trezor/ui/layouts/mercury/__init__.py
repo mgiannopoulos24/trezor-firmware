@@ -506,9 +506,9 @@ async def show_warning(
         interact(
             RustLayout(
                 trezorui2.show_warning(
-                    title=content,
-                    description=subheader or "",
-                    button=button.upper(),
+                    title="Important",
+                    value=content,
+                    button=subheader or TR.words__continue_anyway,
                 )
             ),
             br_type,
@@ -547,57 +547,32 @@ async def confirm_output(
     output_index: int | None = None,
     chunkify: bool = False,
 ) -> None:
-    if title is not None:
-        # TODO: handle translation
-        if title.upper().startswith("CONFIRM "):
-            title = title[len("CONFIRM ") :]
-        amount_title = title
-        recipient_title = title
+    if address_label is not None:
+        title = address_label
+    elif title is not None:
+        pass
     elif output_index is not None:
-        amount_title = f"{TR.words__amount} #{output_index + 1}"
-        recipient_title = f"{TR.words__recipient} #{output_index + 1}"
+        title = f"{TR.words__recipient} #{output_index + 1}"
     else:
-        amount_title = TR.send__confirm_sending
-        recipient_title = TR.send__title_sending_to
+        title = TR.send__title_sending_to
 
-    while True:
-        result = await interact(
+    # TODO: this should send 2x ButtonRequest
+    await raise_if_not_confirmed(
+        interact(
             RustLayout(
-                trezorui2.confirm_value(
-                    title=recipient_title.upper(),
-                    subtitle=address_label,
-                    description=None,
-                    value=address,
-                    verb=TR.buttons__continue,
-                    hold=False,
-                    info_button=False,
+                trezorui2.flow_confirm_output(
+                    address=address,
+                    amount=amount,
+                    title=title,
                     chunkify=chunkify,
+                    account=None,
+                    account_path=None,  # TODO: sending from
                 )
             ),
             "confirm_output",
             br_code,
         )
-        if result is not CONFIRMED:
-            raise ActionCancelled
-
-        result = await interact(
-            RustLayout(
-                trezorui2.confirm_value(
-                    title=amount_title.upper(),
-                    subtitle=None,
-                    description=None,
-                    value=amount,
-                    verb=None if hold else TR.buttons__confirm,
-                    verb_cancel="^",
-                    hold=hold,
-                    info_button=False,
-                )
-            ),
-            "confirm_output",
-            br_code,
-        )
-        if result is CONFIRMED:
-            return
+    )
 
 
 async def should_show_payment_request_details(
@@ -889,6 +864,7 @@ async def confirm_total(
     fee_label: str | None = None,
     account_label: str | None = None,
     fee_rate_amount: str | None = None,
+    path: str | None = None,
     br_type: str = "confirm_total",
     br_code: ButtonRequestType = ButtonRequestType.SignTx,
 ) -> None:
@@ -900,18 +876,28 @@ async def confirm_total(
         (total_label, total_amount),
         (fee_label, fee_amount),
     ]
-    info_items = []
+    fee_items = []
+    account_items = []
     if account_label:
-        info_items.append((TR.confirm_total__sending_from_account, account_label))
+        account_items.append((TR.confirm_total__sending_from_account, account_label))
+    if path:
+        account_items.append((TR.address_details__derivation_path, path))
     if fee_rate_amount:
-        info_items.append((TR.confirm_total__fee_rate, fee_rate_amount))
+        fee_items.append((TR.confirm_total__fee_rate, fee_rate_amount))
 
-    await confirm_summary(
-        items,
-        TR.words__title_summary,
-        info_items=info_items,
-        br_type=br_type,
-        br_code=br_code,
+    await raise_if_not_confirmed(
+        interact(
+            RustLayout(
+                trezorui2.flow_confirm_summary(
+                    title=title,
+                    items=items,
+                    fee_items=fee_items,
+                    account_items=account_items,
+                )
+            ),
+            br_type,
+            br_code,
+        )
     )
 
 

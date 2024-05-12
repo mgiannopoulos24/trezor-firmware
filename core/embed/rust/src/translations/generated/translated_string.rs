@@ -353,7 +353,7 @@ pub enum TranslatedString {
     coinjoin__waiting_for_others = 219,  // "Waiting for others"
     confirm_total__fee_rate = 220,  // "Fee rate:"
     confirm_total__sending_from_account = 221,  // "Sending from account:"
-    confirm_total__title_fee = 222,  // "FEE INFORMATION"
+    confirm_total__title_fee = 222,  // "Fee info"
     confirm_total__title_sending_from = 223,  // "SENDING FROM"
     debug__loading_seed = 224,  // "Loading seed"
     debug__loading_seed_not_recommended = 225,  // "Loading private seed is not recommended."
@@ -1210,7 +1210,7 @@ pub enum TranslatedString {
     words__title_share = 823,  // "SHARE"
     words__title_shares = 824,  // "SHARES"
     words__title_success = 825,  // "SUCCESS"
-    words__title_summary = 826,  // "SUMMARY"
+    words__title_summary = 826,  // "Summary"
     words__title_threshold = 827,  // "THRESHOLD"
     words__unknown = 828,  // "Unknown"
     words__warning = 829,  // "Warning"
@@ -1254,6 +1254,9 @@ pub enum TranslatedString {
     instructions__continue_in_app = 859,  // "Continue in the app"
     words__cancel_and_exit = 860,  // "Cancel and exit"
     address__confirmed = 861,  // "Receive address confirmed"
+    send__cancel_sign = 862,  // "Cancel sign"
+    send__send_from = 863,  // "Send from"
+    instructions__hold_to_sign = 864,  // "Hold to sign"
 }
 
 impl TranslatedString {
@@ -1602,7 +1605,7 @@ impl TranslatedString {
             Self::coinjoin__waiting_for_others => "Waiting for others",
             Self::confirm_total__fee_rate => "Fee rate:",
             Self::confirm_total__sending_from_account => "Sending from account:",
-            Self::confirm_total__title_fee => "FEE INFORMATION",
+            Self::confirm_total__title_fee => "Fee info",
             Self::confirm_total__title_sending_from => "SENDING FROM",
             Self::debug__loading_seed => "Loading seed",
             Self::debug__loading_seed_not_recommended => "Loading private seed is not recommended.",
@@ -2459,7 +2462,7 @@ impl TranslatedString {
             Self::words__title_share => "SHARE",
             Self::words__title_shares => "SHARES",
             Self::words__title_success => "SUCCESS",
-            Self::words__title_summary => "SUMMARY",
+            Self::words__title_summary => "Summary",
             Self::words__title_threshold => "THRESHOLD",
             Self::words__unknown => "Unknown",
             Self::words__warning => "Warning",
@@ -2503,6 +2506,9 @@ impl TranslatedString {
             Self::instructions__continue_in_app => "Continue in the app",
             Self::words__cancel_and_exit => "Cancel and exit",
             Self::address__confirmed => "Receive address confirmed",
+            Self::send__cancel_sign => "Cancel sign",
+            Self::send__send_from => "Send from",
+            Self::instructions__hold_to_sign => "Hold to sign",
         }
     }
 
@@ -3753,6 +3759,9 @@ impl TranslatedString {
             Qstr::MP_QSTR_instructions__continue_in_app => Some(Self::instructions__continue_in_app),
             Qstr::MP_QSTR_words__cancel_and_exit => Some(Self::words__cancel_and_exit),
             Qstr::MP_QSTR_address__confirmed => Some(Self::address__confirmed),
+            Qstr::MP_QSTR_send__cancel_sign => Some(Self::send__cancel_sign),
+            Qstr::MP_QSTR_send__send_from => Some(Self::send__send_from),
+            Qstr::MP_QSTR_instructions__hold_to_sign => Some(Self::instructions__hold_to_sign),
             _ => None,
         }
     }

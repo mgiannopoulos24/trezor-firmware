@@ -860,5 +860,8 @@
   "858": "address_details__derivation_path",
   "859": "instructions__continue_in_app",
   "860": "words__cancel_and_exit",
-  "861": "address__confirmed"
+  "861": "address__confirmed",
+  "862": "send__cancel_sign",
+  "863": "send__send_from",
+  "864": "instructions__hold_to_sign"
 }
