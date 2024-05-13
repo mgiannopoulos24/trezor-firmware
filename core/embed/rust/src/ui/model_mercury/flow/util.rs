@@ -10,7 +10,7 @@ use crate::{
     ui::{
         component::{
             base::ComponentExt,
-            text::paragraphs::{Paragraph, ParagraphSource, ParagraphVecLong, VecExt},
+            text::paragraphs::{Paragraph, ParagraphSource, ParagraphVecShort, VecExt},
             Component,
         },
         flow::{FlowMsg, Swipable, SwipePage},
@@ -184,7 +184,7 @@ impl ShowInfoParams {
     }
 
     pub fn into_layout(self) -> Result<impl Component<Msg = FlowMsg> + Swipable + Trace, Error> {
-        let mut paragraphs = ParagraphVecLong::new();
+        let mut paragraphs = ParagraphVecShort::new();
         let mut first: bool = true;
         for item in self.items {
             // FIXME: padding:
