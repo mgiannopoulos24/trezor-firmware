@@ -871,5 +871,6 @@
   "869": "haptic_feedback__enable",
   "870": "haptic_feedback__title",
   "871": "haptic_feedback__subtitle",
-  "872": "reset__title_shamir_backup"
+  "872": "reset__title_shamir_backup",
+  "873": "reset__create_x_of_y_shamir_backup_template"
 }

@@ -1265,6 +1265,7 @@ pub enum TranslatedString {
     haptic_feedback__title = 870,  // "Haptic feedback"
     haptic_feedback__subtitle = 871,  // "Setting"
     reset__title_shamir_backup = 872,  // "Shamir backup"
+    reset__create_x_of_y_shamir_backup_template = 873,  // "Do you want to create a {0} of {1} Shamir backup?"
 }
 
 impl TranslatedString {
@@ -2525,6 +2526,7 @@ impl TranslatedString {
             Self::haptic_feedback__title => "Haptic feedback",
             Self::haptic_feedback__subtitle => "Setting",
             Self::reset__title_shamir_backup => "Shamir backup",
+            Self::reset__create_x_of_y_shamir_backup_template => "Do you want to create a {0} of {1} Shamir backup?",
         }
     }
 
@@ -3786,6 +3788,7 @@ impl TranslatedString {
             Qstr::MP_QSTR_haptic_feedback__title => Some(Self::haptic_feedback__title),
             Qstr::MP_QSTR_haptic_feedback__subtitle => Some(Self::haptic_feedback__subtitle),
             Qstr::MP_QSTR_reset__title_shamir_backup => Some(Self::reset__title_shamir_backup),
+            Qstr::MP_QSTR_reset__create_x_of_y_shamir_backup_template => Some(Self::reset__create_x_of_y_shamir_backup_template),
             _ => None,
         }
     }
