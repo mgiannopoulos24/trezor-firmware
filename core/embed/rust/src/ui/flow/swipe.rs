@@ -26,8 +26,6 @@ pub struct SwipeFlow<Q, S> {
     transition: Transition<Q>,
     /// Swipe detector.
     swipe: Swipe,
-    /// Animation parameter.
-    anim_offset: Offset,
 }
 
 enum Transition<Q> {
@@ -53,7 +51,6 @@ impl<Q: FlowState, S: FlowStore> SwipeFlow<Q, S> {
             store,
             transition: Transition::None,
             swipe: Swipe::new().down().up().left().right(),
-            anim_offset: Offset::zero(),
         })
     }
 
@@ -157,10 +154,6 @@ impl<Q: FlowState, S: FlowStore> Component for SwipeFlow<Q, S> {
     type Msg = FlowMsg;
 
     fn place(&mut self, bounds: Rect) -> Rect {
-        // Save screen size for slide animation. Once we have reasonable constants trait
-        // this can be set in the constructor.
-        self.anim_offset = bounds.size();
-
         self.swipe.place(bounds);
         self.store.place(bounds)
     }
