@@ -5,10 +5,10 @@ use crate::{
     translations::TR,
     ui::{
         animation::Animation,
-        component::{Component, Event, EventCtx, Never},
+        component::{Component, Event, EventCtx, Never, SwipeDirection},
         flow::Swipable,
         geometry::{Alignment, Alignment2D, Insets, Offset, Rect},
-        model_mercury::component::{Footer, SwipeDirection},
+        model_mercury::component::Footer,
         shape,
         shape::Renderer,
         util,

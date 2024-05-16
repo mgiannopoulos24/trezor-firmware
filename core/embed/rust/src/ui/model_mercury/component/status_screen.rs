@@ -1,7 +1,7 @@
 use crate::{
     time::{Duration, Stopwatch},
     ui::{
-        component::{Component, Event, EventCtx, Timeout},
+        component::{Component, Event, EventCtx, Swipe, SwipeDirection, Timeout},
         constant::screen,
         display::{Color, Icon},
         geometry::{Alignment2D, Insets, Rect},
@@ -11,7 +11,7 @@ use crate::{
     },
 };
 
-use super::{theme, Swipe, SwipeDirection};
+use super::theme;
 
 const TIMEOUT_MS: u32 = 2000;
 

@@ -3,13 +3,13 @@ use crate::{
     ui::{
         component::{
             base::ComponentExt, text::common::TextBox, Child, Component, Event, EventCtx, Never,
+            Swipe, SwipeDirection,
         },
         display,
         geometry::{Grid, Offset, Rect},
         model_mercury::component::{
             button::{Button, ButtonContent, ButtonMsg},
             keyboard::common::{paint_pending_marker, render_pending_marker, MultiTapKeyboard},
-            swipe::{Swipe, SwipeDirection},
             theme, ScrollBar,
         },
         shape,
