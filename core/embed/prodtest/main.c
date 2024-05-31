@@ -620,8 +620,7 @@ void cpuid_read(void) {
 
 int main(void) {
   svc_init();
-  display_reinit();
-  display_orientation(0);
+  display_init(DISPLAY_RETAIN_CONTENT);
   random_delays_init();
 #ifdef STM32U5
   secure_aes_init();
