@@ -125,15 +125,11 @@ async def ensure_sdcard(ensure_filesystem: bool = True) -> None:
 
             # Proceed to formatting. Failure is caught by the outside OSError handler
             with sdcard.filesystem(mounted=False):
-                render_func = None
-                if not utils.DISABLE_ANIMATION:
-                    _start_progress()
-                    render_func = _render_progress
-                fatfs.mkfs(render_func)
+                _start_progress()
+                fatfs.mkfs(_render_progress)
                 fatfs.mount()
                 fatfs.setlabel("TREZOR")
-                if not utils.DISABLE_ANIMATION:
-                    _finish_progress()
+                _finish_progress()
 
             # format and mount succeeded
             return
@@ -172,10 +168,11 @@ def _start_progress() -> None:
 
     global _progress_obj
 
-    # Because we are drawing to the screen manually, without a layout, we
-    # should make sure that no other layout is running.
-    workflow.close_others()
-    _progress_obj = progress()
+    if not utils.DISABLE_ANIMATION:
+        # Because we are drawing to the screen manually, without a layout, we
+        # should make sure that no other layout is running.
+        workflow.close_others()
+        _progress_obj = progress()
 
 
 def _render_progress(progress: int) -> None:
