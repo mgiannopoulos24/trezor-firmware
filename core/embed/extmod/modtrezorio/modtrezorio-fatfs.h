@@ -550,7 +550,8 @@ STATIC mp_obj_t mod_trezorio_fatfs_mkfs(size_t n_args, const mp_obj_t *args) {
   if (n_args == 1) {
     // format with a progress callback
     ui_wait_callback = args[0];
-    res = f_mkfs("", &params, working_buf, sizeof(working_buf), wrapped_ui_wait_callback);
+    res = f_mkfs("", &params, working_buf, sizeof(working_buf),
+                 wrapped_ui_wait_callback);
     ui_wait_callback = mp_const_none;
   } else {
     // format without a progress callback
@@ -562,8 +563,8 @@ STATIC mp_obj_t mod_trezorio_fatfs_mkfs(size_t n_args, const mp_obj_t *args) {
   }
   return mp_const_none;
 }
-STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(mod_trezorio_fatfs_mkfs_obj, 0,
-                                           1, mod_trezorio_fatfs_mkfs);
+STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(mod_trezorio_fatfs_mkfs_obj, 0, 1,
+                                           mod_trezorio_fatfs_mkfs);
 
 /// def setlabel(label: str) -> None:
 ///     """
