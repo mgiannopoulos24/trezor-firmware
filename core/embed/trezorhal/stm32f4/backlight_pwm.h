@@ -20,9 +20,6 @@
 #ifndef TREZORHAL_BACKLIGHT_H
 #define TREZORHAL_BACKLIGHT_H
 
-// Level of backlight in range 0-255
-typedef int backlight_level_t;
-
 // Action to be taken when initializing or
 // deinitializing the backlight driver
 typedef enum {
@@ -50,11 +47,11 @@ void backlight_pwm_deinit(backlight_action_t action);
 // If the level is outside the range, the function has no effect
 // and just returns the actual level set. If the backlight driver
 // is not initialized, the function returns 0.
-backlight_level_t backlight_pwm_set(backlight_level_t val);
+int backlight_pwm_set(int val);
 
 // Gets the backlight level in range 0-255
 //
 // Returns 0 if the backlight driver is not initialized.
-backlight_level_t backlight_pwm_get(void);
+int backlight_pwm_get(void);
 
 #endif  // TREZORHAL_BACKLIGHT_H

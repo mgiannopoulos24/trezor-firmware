@@ -38,7 +38,7 @@ typedef struct {
   // Set if driver is initialized
   bool initialized;
   // Current backlight level in range 0-255
-  backlight_level_t current_level;
+  int current_level;
 
 } backlight_driver_t;
 
@@ -56,7 +56,7 @@ void backlight_pwm_init(backlight_action_t action) {
 
   memset(drv, 0, sizeof(backlight_driver_t));
 
-  backlight_level_t initial_level = 0;
+  int initial_level = 0;
 
   if (action == BACKLIGHT_RETAIN) {
     // We expect the BACKLIGHT_PWM_TIM to be already initialized
