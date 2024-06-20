@@ -182,7 +182,6 @@ int main(void) {
 #endif
 
   // Init peripherals
-  pendsv_init();
 
   fault_handlers_init();
 
