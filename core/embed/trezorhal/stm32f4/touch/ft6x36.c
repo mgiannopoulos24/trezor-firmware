@@ -232,7 +232,7 @@ static void ft6x36_panel_correction(uint16_t x, uint16_t y, uint16_t* x_new,
   lx154a2422cpt23_touch_correction(x, y, x_new, y_new);
 #else
   *x_new = x;
-  *y_new = y
+  *y_new = y;
 #endif
 }
 
