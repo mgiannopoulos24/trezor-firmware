@@ -185,5 +185,3 @@ __attribute__((noreturn)) void jump_to(void *addr) {
                       "STORAGE WAS RETAINED");
   }
 }
-
-void ensure_compatible_settings(void) {}
