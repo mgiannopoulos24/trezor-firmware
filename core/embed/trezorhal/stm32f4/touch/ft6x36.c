@@ -226,11 +226,13 @@ static secbool ft6x36_configure(void) {
   return sectrue;
 }
 
-static uint32_t ft6x36_panel_correction(uint32_t event) {
+static void ft6x36_panel_correction(uint16_t x, uint16_t y, uint16_t* x_new,
+                                    uint16_t* y_new) {
 #ifdef TOUCH_PANEL_LX154A2422CPT23
-  return lx154a2422cpt23_touch_correction(event);
+  lx154a2422cpt23_touch_correction(x, y, x_new, y_new);
 #else
-  return event;
+  *x_new = x;
+  *y_new = y
 #endif
 }
 
@@ -388,8 +390,14 @@ uint32_t touch_get_event(void) {
   uint8_t flags = regs[FT6X63_REG_P1_XH] & FT6X63_EVENT_MASK;
 
   // Extract touch coordinates
-  uint16_t x = ((regs[FT6X63_REG_P1_XH] & 0x0F) << 8) | regs[FT6X63_REG_P1_XL];
-  uint16_t y = ((regs[FT6X63_REG_P1_YH] & 0x0F) << 8) | regs[FT6X63_REG_P1_YL];
+  uint16_t x_raw =
+      ((regs[FT6X63_REG_P1_XH] & 0x0F) << 8) | regs[FT6X63_REG_P1_XL];
+  uint16_t y_raw =
+      ((regs[FT6X63_REG_P1_YH] & 0x0F) << 8) | regs[FT6X63_REG_P1_YL];
+
+  uint16_t x, y;
+
+  ft6x36_panel_correction(x_raw, y_raw, &x, &y);
 
   uint32_t event = 0;
 
@@ -457,5 +465,5 @@ uint32_t touch_get_event(void) {
   driver->last_x = x;
   driver->last_y = y;
 
-  return ft6x36_panel_correction(event);
+  return event;
 }

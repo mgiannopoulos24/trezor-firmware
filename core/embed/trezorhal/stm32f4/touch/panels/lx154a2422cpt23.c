@@ -23,29 +23,20 @@
 
 #include "touch.h"
 
-uint32_t lx154a2422cpt23_touch_correction(uint32_t event) {
-#define CORRECTION_AT_EDGE 30
+void lx154a2422cpt23_touch_correction(uint16_t x, uint16_t y, uint16_t *x_new,
+                                      uint16_t *y_new) {
 #define CENTER (DISPLAY_RESX / 2)
+#define CORRECTION 30
 
-  int16_t x_old = touch_unpack_x(event);
-  int16_t y_old = touch_unpack_y(event);
+  int x_corrected = CENTER + ((x - CENTER) * (CORRECTION + CENTER) / CENTER);
 
-  int16_t x_dist_from_center =
-      (x_old > CENTER) ? (x_old - CENTER) : (CENTER - x_old);
-
-  int16_t x_correction = (x_dist_from_center * CORRECTION_AT_EDGE) / CENTER;
-
-  int16_t x_new = x_old > CENTER ? x_old + x_correction : x_old - x_correction;
-
-  if (x_new < 0) {
-    x_new = 0;
-  } else if (x_new >= DISPLAY_RESX) {
-    x_new = DISPLAY_RESX - 1;
+  if (x_corrected < 0) {
+    *x_new = 0;
+  } else if (x_corrected >= DISPLAY_RESX) {
+    *x_new = DISPLAY_RESX - 1;
+  } else {
+    *x_new = (uint16_t)x_corrected;
   }
 
-  uint32_t new_coords = touch_pack_xy(x_new, y_old);
-
-  event = (event & TOUCH_EVENT_MASK) | new_coords;
-
-  return event;
+  *y_new = y;
 }
