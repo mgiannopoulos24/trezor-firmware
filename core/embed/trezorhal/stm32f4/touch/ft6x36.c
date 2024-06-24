@@ -29,6 +29,10 @@
 #include "i2c.h"
 #include "touch.h"
 
+#ifdef TOUCH_PANEL_LX154A2422CPT23
+#include "panels/lx154a2422cpt23.h"
+#endif
+
 typedef struct {
   // Set if the driver is initialized
   secbool initialized;
@@ -220,6 +224,14 @@ static secbool ft6x36_configure(void) {
   }
 
   return sectrue;
+}
+
+static uint32_t ft6x36_panel_correction(uint32_t event) {
+#ifdef TOUCH_PANEL_LX154A2422CPT23
+  return lx154a2422cpt23_touch_correction(event);
+#else
+  return event;
+#endif
 }
 
 secbool touch_init(void) {
@@ -445,5 +457,5 @@ uint32_t touch_get_event(void) {
   driver->last_x = x;
   driver->last_y = y;
 
-  return event;
+  return ft6x36_panel_correction(event);
 }
