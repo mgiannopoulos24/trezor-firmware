@@ -124,18 +124,24 @@ async def continue_recovery(
     if show_info:
         # Show this just one-time
         description = TR.recovery__enter_each_word
-    else:
-        description = subtext or ""
-
-    homepage = RustLayout(
-        trezorui2.confirm_recovery(
-            title=text,
-            description=description,
-            button=button_label,
-            info_button=info_func is not None,
-            recovery_type=recovery_type,
+        homepage = RustLayout(
+            trezorui2.confirm_recovery(
+                title=text,
+                description=description,
+                button=button_label,
+                info_button=info_func is not None,
+                recovery_type=recovery_type,
+            )
         )
-    )
+    else:
+        homepage = RustLayout(
+            trezorui2.show_success(
+                title=text,
+                subtitle=subtext or "",
+                description=TR.instructions__enter_next_share,
+                allow_cancel=True,
+            )
+        )
 
     await button_request("recovery", ButtonRequestType.RecoveryHomepage)
 

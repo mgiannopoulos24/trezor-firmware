@@ -373,7 +373,9 @@ def confirm_reset_device(_title: str, recovery: bool = False) -> Awaitable[None]
 async def show_wallet_created_success() -> None:
     await interact(
         RustLayout(
-            trezorui2.show_success(title=TR.backup__new_wallet_created, description="")
+            trezorui2.show_success(
+                title=TR.backup__new_wallet_created, subtitle="", description=""
+            )
         ),
         "backup_device",
         ButtonRequestType.ResetDevice,
@@ -574,6 +576,7 @@ def show_success(
             RustLayout(
                 trezorui2.show_success(
                     title=content,
+                    subtitle="",
                     description=subheader if subheader else "",
                 )
             ),

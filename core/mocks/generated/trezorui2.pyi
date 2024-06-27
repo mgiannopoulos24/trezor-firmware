@@ -280,6 +280,7 @@ def show_warning(
 def show_success(
     *,
     title: str,
+    subtitle: str = "",
     button: str = "CONTINUE",
     description: str = "",
     allow_cancel: bool = False,
@@ -1378,6 +1379,7 @@ def show_warning(
 def show_success(
     *,
     title: str,
+    subtitle: str = "",
     button: str = "CONTINUE",
     description: str = "",
     allow_cancel: bool = False,

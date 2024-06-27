@@ -1912,6 +1912,7 @@ pub static mp_module_trezorui2: Module = obj_module! {
     /// def show_success(
     ///     *,
     ///     title: str,
+    ///     subtitle: str = "",
     ///     button: str = "CONTINUE",
     ///     description: str = "",
     ///     allow_cancel: bool = False,

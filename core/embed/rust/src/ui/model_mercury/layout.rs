@@ -804,17 +804,25 @@ extern "C" fn new_show_warning(n_args: usize, args: *const Obj, kwargs: *mut Map
 extern "C" fn new_show_success(n_args: usize, args: *const Obj, kwargs: *mut Map) -> Obj {
     let block = move |_args: &[Obj], kwargs: &Map| {
         let title: TString = kwargs.get(Qstr::MP_QSTR_title)?.try_into()?;
+        let subtitle: Option<TString> = kwargs
+            .get(Qstr::MP_QSTR_subtitle)?
+            .try_into_option()?
+            .and_then(|sub: TString| if sub.is_empty() { None } else { Some(sub) });
         let description: Option<TString> = kwargs
             .get(Qstr::MP_QSTR_description)?
             .try_into_option()?
             .and_then(|desc: TString| if desc.is_empty() { None } else { Some(desc) });
 
         let content = StatusScreen::new_success();
-        let obj = LayoutObj::new(SwipeUpScreen::new(
+        let mut frame =
             Frame::left_aligned(title, SwipeContent::new(content).with_no_attach_anim())
                 .with_footer(TR::instructions__swipe_up.into(), description)
-                .with_swipe(SwipeDirection::Up, SwipeSettings::default()),
-        ))?;
+                .with_swipe(SwipeDirection::Up, SwipeSettings::default());
+        if let Some(sub) = subtitle {
+            frame = frame.with_subtitle(sub);
+        }
+
+        let obj = LayoutObj::new(SwipeUpScreen::new(frame))?;
         Ok(obj.into())
     };
     unsafe { util::try_with_args_and_kwargs(n_args, args, kwargs, block) }
@@ -1080,6 +1088,7 @@ extern "C" fn new_show_checklist(n_args: usize, args: *const Obj, kwargs: *mut M
 }
 
 extern "C" fn new_confirm_recovery(n_args: usize, args: *const Obj, kwargs: *mut Map) -> Obj {
+    // TODO: this could potentially be replaced with existing function
     let block = move |_args: &[Obj], kwargs: &Map| {
         let _title: TString = kwargs.get(Qstr::MP_QSTR_title)?.try_into()?;
         let description: TString = kwargs.get(Qstr::MP_QSTR_description)?.try_into()?;
@@ -1593,6 +1602,7 @@ pub static mp_module_trezorui2: Module = obj_module! {
     /// def show_success(
     ///     *,
     ///     title: str,
+    ///     subtitle: str = "",
     ///     button: str = "CONTINUE",
     ///     description: str = "",
     ///     allow_cancel: bool = False,
