@@ -694,11 +694,15 @@ impl LockscreenAnim {
         match event {
             Event::Attach(AttachType::Initial) => {
                 self.start = 0.0;
-                ctx.request_anim_frame();
+                if !animation_disabled() {
+                    ctx.request_anim_frame();
+                }
             }
             Event::Attach(AttachType::Resume) => {
                 self.start = resume.angle;
-                ctx.request_anim_frame();
+                if !animation_disabled() {
+                    ctx.request_anim_frame();
+                }
             }
             Event::Timer(EventCtx::ANIM_FRAME_TIMER) => {
                 if !animation_disabled() {
