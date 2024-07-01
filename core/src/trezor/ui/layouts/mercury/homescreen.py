@@ -64,13 +64,14 @@ class Homescreen(HomescreenBase):
             elif notification_is_error:
                 level = 0
 
+        skip = storage_cache.homescreen_shown is self.RENDER_INDICATOR
         super().__init__(
             layout=trezorui2.show_homescreen(
                 label=label,
                 notification=notification,
                 notification_level=level,
                 hold=hold_to_lock,
-                skip_first_paint=False,
+                skip_first_paint=skip,
             ),
         )
 

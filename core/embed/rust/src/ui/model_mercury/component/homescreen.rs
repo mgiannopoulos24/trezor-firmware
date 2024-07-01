@@ -194,7 +194,9 @@ impl AttachAnimation {
             Event::Attach(AttachType::Initial) => {
                 self.duration = Duration::from_millis(Self::DURATION_MS);
                 self.reset();
-                ctx.request_anim_frame();
+                if !animation_disabled() {
+                    ctx.request_anim_frame();
+                }
             }
             Event::Attach(AttachType::Resume) => {
                 let start_opacity = resume.opacity as f32 / 255.0;
@@ -203,7 +205,10 @@ impl AttachAnimation {
                 self.duration = Duration::from_millis(duration as u32);
                 self.timer = Stopwatch::new_stopped();
                 self.active = resume.opacity < 255;
-                ctx.request_anim_frame();
+
+                if !animation_disabled() {
+                    ctx.request_anim_frame();
+                }
             }
             Event::Timer(EventCtx::ANIM_FRAME_TIMER) => {
                 if !self.timer.is_running() {
