@@ -15432,7 +15432,7 @@
 "T3T1_en_test_backup_slip39_custom.py::test_backup_slip39_custom[1of1]": "cb89fec564c9e44dee3c9516a44940f948bbc30a96c7ba6295179692b402c275",
 "T3T1_en_test_backup_slip39_custom.py::test_backup_slip39_custom[2of3]": "d69d4743c013521ea76f3f5f4182d525600520c116357dac0545193e5745ec23",
 "T3T1_en_test_backup_slip39_custom.py::test_backup_slip39_custom[5of5]": "cdfca792b399e20645b0fbb2d12dbd2238fd869f805ebe54f86b9e3c80769d90",
-"T3T1_en_test_lock.py::test_hold_to_lock": "ca9e3e0e5bb18225d28cbd3350456e66244cdb21252bc8e58a9831457cf72a63",
+"T3T1_en_test_lock.py::test_hold_to_lock": "4159467dd4ddcb2956207f4e7d4dde4ff38789848f8a3dd5ca616dcf1feb05a7",
 "T3T1_en_test_passphrase_mercury.py::test_cycle_through_last_character": "45b7d15ee8c8741d65803aa7e14f7beed2ceb25fdc928c77009f303e5f62758a",
 "T3T1_en_test_passphrase_mercury.py::test_passphrase_click_same_button_many_times": "6d6d745741b4b9c2cf3ce58b3dcab21cc4c7a739b1d5b71237709831558a3722",
 "T3T1_en_test_passphrase_mercury.py::test_passphrase_delete": "ce62533885547708e9ab37fb07e90d5a828da79c3a4754a56585fc1427b33db7",
