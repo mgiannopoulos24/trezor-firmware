@@ -1,5 +1,4 @@
 use crate::{
-    storage,
     trezorhal::display,
     ui::{
         component::{Component, Event, EventCtx},
@@ -11,7 +10,6 @@ use crate::{
 use super::{
     super::theme,
     number_input_slider::{NumberInputSliderDialog, NumberInputSliderDialogMsg},
-    CancelConfirmMsg,
 };
 
 pub struct SetBrightnessDialog(NumberInputSliderDialog);
@@ -28,7 +26,7 @@ impl SetBrightnessDialog {
 }
 
 impl Component for SetBrightnessDialog {
-    type Msg = CancelConfirmMsg;
+    type Msg = NumberInputSliderDialogMsg;
 
     fn place(&mut self, bounds: Rect) -> Rect {
         self.0.place(bounds)
@@ -38,14 +36,7 @@ impl Component for SetBrightnessDialog {
         match self.0.event(ctx, event) {
             Some(NumberInputSliderDialogMsg::Changed(value)) => {
                 display::backlight(value as _);
-                None
-            }
-            Some(NumberInputSliderDialogMsg::Cancelled) => Some(CancelConfirmMsg::Cancelled),
-            Some(NumberInputSliderDialogMsg::Confirmed) => {
-                match storage::set_brightness(self.0.value() as _) {
-                    Ok(_) => Some(CancelConfirmMsg::Confirmed),
-                    Err(_) => Some(CancelConfirmMsg::Cancelled), // TODO: handle error
-                }
+                Some(NumberInputSliderDialogMsg::Changed(value))
             }
             None => None,
         }
