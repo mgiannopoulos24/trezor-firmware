@@ -71,6 +71,7 @@ impl FlowState for SetBrightness {
 
 static BRIGHTNESS: AtomicU16 = AtomicU16::new(0);
 
+#[allow(clippy::not_unsafe_ptr_arg_deref)]
 pub extern "C" fn new_set_brightness(n_args: usize, args: *const Obj, kwargs: *mut Map) -> Obj {
     unsafe { util::try_with_args_and_kwargs(n_args, args, kwargs, SetBrightness::new_obj) }
 }
@@ -119,9 +120,8 @@ impl SetBrightness {
         .with_swipe(SwipeDirection::Left, SwipeSettings::default())
         .map(move |msg| match msg {
             FrameMsg::Content(()) => {
-                match storage::set_brightness(BRIGHTNESS.load(Ordering::Relaxed) as u8) {
-                    _ => Some(FlowMsg::Confirmed),
-                }
+                let _ = storage::set_brightness(BRIGHTNESS.load(Ordering::Relaxed) as u8);
+                Some(FlowMsg::Confirmed)
             }
             FrameMsg::Button(_) => Some(FlowMsg::Info),
         });
