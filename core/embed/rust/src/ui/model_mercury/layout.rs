@@ -14,7 +14,6 @@ use crate::{
         qstr::Qstr,
         util,
     },
-    storage,
     strutil::TString,
     translations::TR,
     trezorhal::model,
@@ -34,7 +33,7 @@ use crate::{
             },
             Border, CachedJpeg, Component, FormattedText, Label, Never, SwipeDirection, Timeout,
         },
-        flow::{Swipable, base::{FlowMsg, Decision}, SwipeFlow, flow_store, FlowState, FlowStore},
+        flow::Swipable,
         geometry,
         layout::{
             obj::{ComponentMsgObj, LayoutObj},
@@ -42,7 +41,7 @@ use crate::{
             util::{upy_disable_animation, ConfirmBlob, PropsList},
         },
         model_mercury::{
-            component::{check_homescreen_format, SwipeContent, number_input_slider::NumberInputSliderDialogMsg},
+            component::{check_homescreen_format, SwipeContent},
             flow::new_confirm_action_simple,
         },
     },
@@ -54,8 +53,8 @@ use super::{
         CoinJoinProgress, FidoConfirm, FidoMsg, Frame, FrameMsg, Homescreen, HomescreenMsg,
         Lockscreen, MnemonicInput, MnemonicKeyboard, MnemonicKeyboardMsg, PassphraseKeyboard,
         PassphraseKeyboardMsg, PinKeyboard, PinKeyboardMsg, Progress, PromptScreen,
-        SelectWordCount, SelectWordCountMsg, SetBrightnessDialog, Slip39Input, StatusScreen,
-        SwipeUpScreen, SwipeUpScreenMsg, VerticalMenu, VerticalMenuChoiceMsg,
+        SelectWordCount, SelectWordCountMsg, Slip39Input, StatusScreen, SwipeUpScreen,
+        SwipeUpScreenMsg, VerticalMenu, VerticalMenuChoiceMsg,
     },
     flow, theme,
 };
@@ -1018,108 +1017,6 @@ extern "C" fn new_select_word(n_args: usize, args: *const Obj, kwargs: *mut Map)
     unsafe { util::try_with_args_and_kwargs(n_args, args, kwargs, block) }
 }
 
-#[derive(Copy, Clone, PartialEq, Eq, ToPrimitive)]
-pub enum SetBrightnessAction {
-    Slider,
-    Menu,
-    Confirm,
-}
-
-impl FlowState for SetBrightnessAction {
-    fn handle_swipe(&self, direction: SwipeDirection) -> Decision<Self> {
-        match (self, direction) {
-            (SetBrightnessAction::Menu, SwipeDirection::Right) => {
-                Decision::Goto(SetBrightnessAction::Slider, direction)
-            }
-            (SetBrightnessAction::Slider, SwipeDirection::Up) => {
-                Decision::Goto(SetBrightnessAction::Confirm, direction)
-            }
-            (SetBrightnessAction::Confirm, SwipeDirection::Down) => {
-                Decision::Goto(SetBrightnessAction::Slider, direction)
-            }
-            (SetBrightnessAction::Confirm, SwipeDirection::Left) => {
-                Decision::Goto(SetBrightnessAction::Menu, direction)
-            }
-            _ => Decision::Nothing,
-        }
-    }
-
-    fn handle_event(&self, msg: FlowMsg) -> Decision<Self> {
-        match (self, msg) {
-            (SetBrightnessAction::Slider, FlowMsg::Info) => {
-                Decision::Goto(SetBrightnessAction::Menu, SwipeDirection::Left)
-            }
-            (SetBrightnessAction::Menu, FlowMsg::Cancelled) => {
-                Decision::Goto(SetBrightnessAction::Slider, SwipeDirection::Right)
-            }
-            (SetBrightnessAction::Menu, FlowMsg::Choice(0)) => Decision::Return(FlowMsg::Cancelled),
-            (SetBrightnessAction::Confirm, FlowMsg::Confirmed) => Decision::Return(FlowMsg::Confirmed),
-            (SetBrightnessAction::Confirm, FlowMsg::Info) => {
-                Decision::Goto(SetBrightnessAction::Menu, SwipeDirection::Left)
-            }
-            _ => Decision::Nothing,
-        }
-    }
-}
-
-static mut BRIGHTNESS: u16 = 0;
-
-extern "C" fn new_set_brightness(n_args: usize, args: *const Obj, kwargs: *mut Map) -> Obj {
-    let block = move |_args: &[Obj], kwargs: &Map| {
-        let current: Option<u16> = kwargs.get(Qstr::MP_QSTR_current)?.try_into_option()?;
-
-        let content_slider = Frame::centered(TR::brightness__title.into(), SetBrightnessDialog::new(current))
-            .with_menu_button()
-            .with_footer(TR::instructions__swipe_up.into(), None)
-            .with_swipe(SwipeDirection::Up, SwipeSettings::default())
-            .map(|msg| match msg {
-                FrameMsg::Content(NumberInputSliderDialogMsg::Changed(n)) => {
-                    unsafe { BRIGHTNESS = n; }
-                    None
-                },
-                FrameMsg::Button(_) => Some(FlowMsg::Info),
-            });
-
-        let content_menu = Frame::left_aligned("".into(),
-            VerticalMenu::empty().danger(theme::ICON_CANCEL, TR::buttons__cancel.into())
-        )
-            .with_cancel_button()
-            .with_swipe(SwipeDirection::Right, SwipeSettings::immediate())
-            .map(move |msg| match msg {
-                FrameMsg::Content(VerticalMenuChoiceMsg::Selected(i)) => {
-                    Some(FlowMsg::Choice(i))
-                },
-                FrameMsg::Button(_) => Some(FlowMsg::Cancelled),
-            });
-
-        let content_confirm = Frame::left_aligned(TR::brightness__title.into(),
-            SwipeContent::new(PromptScreen::new_tap_to_confirm()))
-            .with_footer(TR::instructions__tap_to_confirm.into(), None)
-            .with_menu_button()
-            .with_swipe(SwipeDirection::Down, SwipeSettings::default())
-            .with_swipe(SwipeDirection::Left, SwipeSettings::default())
-            .map(move |msg| match msg {
-                FrameMsg::Content(()) => {
-                    match storage::set_brightness(unsafe { BRIGHTNESS } as _) {
-                        Ok(_) => Some(FlowMsg::Confirmed),
-                        Err(_) => Some(FlowMsg::Cancelled),
-                    }
-                },
-                FrameMsg::Button(_) => Some(FlowMsg::Info),
-        });
-
-        let store = flow_store()
-            .add(content_slider)?
-            .add(content_menu)?
-            .add(content_confirm)?;
-
-        let res = SwipeFlow::new(SetBrightnessAction::Slider, store)?;
-
-        Ok(LayoutObj::new(res)?.into())
-    };
-    unsafe { util::try_with_args_and_kwargs(n_args, args, kwargs, block) }
-}
-
 extern "C" fn new_show_checklist(n_args: usize, args: *const Obj, kwargs: *mut Map) -> Obj {
     let block = move |_args: &[Obj], kwargs: &Map| {
         let title: TString = kwargs.get(Qstr::MP_QSTR_title)?.try_into()?;
@@ -1820,7 +1717,7 @@ pub static mp_module_trezorui2: Module = obj_module! {
     ///     current: int | None = None
     /// ) -> LayoutObj[UiResult]:
     ///     """Show the brightness configuration dialog."""
-    Qstr::MP_QSTR_set_brightness => obj_fn_kw!(0, new_set_brightness).as_obj(),
+    Qstr::MP_QSTR_set_brightness => obj_fn_kw!(0, flow::set_brightness::new_set_brightness).as_obj(),
 
     /// def show_checklist(
     ///     *,
