@@ -630,10 +630,10 @@ impl EventCtx {
         self.page_count
     }
 
-    pub fn send_button_request(&mut self, code: ButtonRequestCode, br_type: TString<'static>) {
+    pub fn send_button_request(&mut self, code: ButtonRequestCode, br_name: TString<'static>) {
         #[cfg(feature = "ui_debug")]
         assert!(self.button_request.is_none());
-        self.button_request = Some(ButtonRequest::new(code, br_type));
+        self.button_request = Some(ButtonRequest::new(code, br_name));
     }
 
     pub fn button_request(&mut self) -> Option<ButtonRequest> {

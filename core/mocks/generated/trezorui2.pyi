@@ -428,7 +428,7 @@ def flow_request_number(
     description: Callable[[int], str] | None = None,
     info: Callable[[int], str] | None = None,
     br_code: ButtonRequestType,
-    br_type: str,
+    br_name: str,
 ) -> LayoutObj[tuple[UiResult, int]]:
     """Numer input with + and - buttons, description, and context menu with cancel and
     info."""
@@ -570,7 +570,7 @@ def flow_get_address(
     path: str | None,
     xpubs: list[tuple[str, str]],
     br_code: ButtonRequestType,
-    br_type: str,
+    br_name: str,
 ) -> LayoutObj[UiResult]:
     """Get address / receive funds."""
 
@@ -595,7 +595,7 @@ def flow_confirm_output(
     account: str | None,
     account_path: str | None,
     br_code: ButtonRequestType,
-    br_type: str,
+    br_name: str,
 ) -> LayoutObj[UiResult]:
     """Confirm recipient."""
 
@@ -608,7 +608,7 @@ def flow_confirm_summary(
     account_items: Iterable[tuple[str, str]],
     fee_items: Iterable[tuple[str, str]],
     br_code: ButtonRequestType,
-    br_type: str,
+    br_name: str,
 ) -> LayoutObj[UiResult]:
     """Total summary and hold to confirm."""
 
