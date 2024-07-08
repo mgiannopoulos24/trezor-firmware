@@ -12,7 +12,7 @@
 #define USE_HASH_PROCESSOR 1
 #define USE_CONSUMPTION_MASK 1
 
-#include "displays/vg-2864ksweg01.h"
+#define DISPLAY_LEGACY_HEADER "displays/vg-2864ksweg01.h"
 
 #define BTN_LEFT_PIN GPIO_PIN_11
 #define BTN_LEFT_PORT GPIOC

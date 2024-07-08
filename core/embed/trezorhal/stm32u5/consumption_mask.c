@@ -21,15 +21,8 @@
 #include "rng.h"
 
 #define SAMPLES 110
-#define TIMER_PERIOD 16640  // cca 10 KHz @ 180MHz
+#define TIMER_PERIOD 16640  // cca 10 KHz @ 160MHz
 
-#if defined BOARDLOADER
-#error Not implemented for boardloader!
-#endif
-
-#if defined BOOTLOADER
-__attribute__((section(".buf")))
-#endif
 uint32_t pwm_data[SAMPLES] = {0};
 
 static DMA_NodeTypeDef Node1;
